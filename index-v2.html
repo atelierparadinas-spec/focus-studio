@@ -137,29 +137,18 @@
     }
     .hero-bg-img{ display:none; }
     .hero-bg-overlay{ display:none; }
-    /* Track frame — encadré avec bordure blanche dans hero-right */
-    .hero-track-frame{
-      width:100%;
-      aspect-ratio:16/9;
-      border:2px solid rgba(255,255,255,.55);
-      overflow:hidden;
-      position:relative;
-      flex-shrink:0;
-    }
-    .hero-track-frame img{
-      width:100%;height:100%;
-      object-fit:cover;
-      opacity:.88;
-      display:block;
-    }
-    .hero-bg-text{
+    .hero-track-frame{ display:none; }
+    .hero-bg-text{ display:none; }
+    /* Logo FOCUS centré en fond */
+    .hero-bg-logo{
       position:absolute;left:50%;top:50%;
       transform:translate(-50%,-50%);
-      font-family:var(--font-title);
-      font-size:clamp(200px,36vw,520px);
-      letter-spacing:12px;color:rgba(243,239,230,.04);
-      line-height:.85;z-index:2;pointer-events:none;
-      user-select:none;white-space:nowrap;
+      width:clamp(280px,40vw,560px);
+      opacity:.07;
+      pointer-events:none;
+      user-select:none;
+      z-index:2;
+      filter:invert(1) brightness(3);
     }
     .hero-content{
       position:relative;z-index:3;
@@ -782,7 +771,7 @@
   <section id="hero">
     <div class="hero-bg-img" id="hero-bg-img"></div>
     <div class="hero-bg-overlay"></div>
-    <div class="hero-bg-text" aria-hidden="true">FOCUS</div>
+    <img class="hero-bg-logo" src="focus-logo-clean.svg" alt="" aria-hidden="true">
 
     <div class="hero-content">
       <div class="hero-left">
@@ -801,9 +790,6 @@
       </div>
 
       <div class="hero-right">
-        <div class="hero-track-frame">
-          <img src="hero-track.svg" alt="Piste athlétisme">
-        </div>
         <div class="hero-stats">
           <div class="hero-stat"><div class="hero-stat-num" data-editable>24</div><div class="hero-stat-label" data-editable>Pièces</div></div>
           <div class="hero-stat"><div class="hero-stat-num" data-editable>03</div><div class="hero-stat-label" data-editable>Couleurs</div></div>
