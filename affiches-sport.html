@@ -2,441 +2,471 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FOCUS — 100 Affiches Sport · A4</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FOCUS — Affiches Sport</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:#0a0a0a;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;}
-
-.site-header{
-  padding:40px 40px 24px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  display:flex;align-items:flex-end;justify-content:space-between;
-  margin-bottom:32px;
-}
-.site-title{font-family:'Bebas Neue',sans-serif;font-size:52px;color:#F3EFE6;letter-spacing:8px;line-height:1}
-.site-sub{font-size:10px;letter-spacing:4px;color:rgba(243,239,230,.3);text-transform:uppercase;margin-top:6px;}
-.site-actions{display:flex;gap:12px;align-items:center;}
-.btn-print{
-  padding:10px 22px;background:#162035;color:#F3EFE6;border:none;
-  font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;
-  cursor:pointer;border-radius:2px;transition:background .2s;
-}
-.btn-print:hover{background:#2a3d5c;}
-
-.filters{
-  padding:0 40px 28px;
-  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
-}
-.filter-label{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.25);text-transform:uppercase;margin-right:4px;}
-.fbtn{
-  padding:5px 14px;border:1px solid rgba(255,255,255,.12);background:none;
-  color:rgba(255,255,255,.35);font-size:9px;letter-spacing:2px;text-transform:uppercase;
-  cursor:pointer;border-radius:2px;transition:all .15s;font-family:'Inter',sans-serif;
-}
-.fbtn:hover,.fbtn.on{border-color:rgba(255,255,255,.4);color:#fff;}
-.sep{width:1px;height:18px;background:rgba(255,255,255,.1);margin:0 4px;}
-
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-  padding:0 40px 60px;
-}
-.poster-wrap{
-  position:relative;cursor:pointer;
-  transition:transform .2s,box-shadow .2s;
-  aspect-ratio:210/297;
-  overflow:hidden;
-}
-.poster-wrap:hover{transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.6);}
-.poster-wrap svg{width:100%;height:100%;display:block;}
-.poster-num{
-  position:absolute;bottom:7px;right:9px;
-  font-size:8px;letter-spacing:1px;opacity:.3;
-  font-family:'Inter',sans-serif;pointer-events:none;
-}
-.poster-wrap.hidden{display:none;}
-
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#111;color:#f3efe6;font-family:'Bebas Neue',sans-serif;padding:32px}
+h1{font-size:13px;letter-spacing:.2em;color:#888;margin-bottom:32px;text-transform:uppercase}
+.controls{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:40px}
+.ctrl-group{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ctrl-label{font-size:11px;letter-spacing:.15em;color:#555;margin-right:4px}
+button{background:none;border:1px solid #333;color:#888;padding:7px 16px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;cursor:pointer;transition:all .2s}
+button:hover,button.active{background:#f3efe6;color:#111;border-color:#f3efe6}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:20px}
+.poster-wrap{cursor:pointer;transition:transform .2s}
+.poster-wrap:hover{transform:scale(1.03)}
+.poster-wrap svg{width:100%;height:auto;display:block}
+.poster-label{font-size:10px;letter-spacing:.12em;color:#444;margin-top:6px;text-align:center}
+.poster-wrap.hidden{display:none}
+.print-btn{position:fixed;bottom:32px;right:32px;background:#f3efe6;color:#111;border:none;padding:12px 28px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.15em;cursor:pointer}
 @media print{
-  body{background:#fff;}
-  .site-header,.filters{display:none!important;}
-  .gallery{display:block;padding:0;gap:0;}
-  .poster-wrap{
-    page-break-after:always;break-after:page;
-    width:210mm;height:297mm;
-    aspect-ratio:auto;
-    transform:none!important;
-    box-shadow:none!important;
-  }
-  .poster-wrap svg{width:210mm;height:297mm;}
+  body{background:#fff;padding:0}
+  .controls,.print-btn,h1{display:none}
+  .grid{display:block}
+  .poster-wrap{page-break-after:always;margin:0}
+  .poster-wrap.hidden{display:none!important}
+  .poster-wrap svg{width:210mm;height:297mm}
+  .poster-label{display:none}
 }
-
-@media(max-width:1200px){.gallery{grid-template-columns:repeat(4,1fr);}}
-@media(max-width:900px){.gallery{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:600px){.gallery{grid-template-columns:repeat(2,1fr);padding:0 12px 40px;}}
 </style>
 </head>
 <body>
-
-<div class="site-header">
-  <div>
-    <div class="site-title">FOCUS</div>
-    <div class="site-sub">Collection Affiches Sport — 100 Designs · Format A4</div>
+<h1>FOCUS — 100 Affiches Sport</h1>
+<div class="controls">
+  <div class="ctrl-group" id="sport-btns">
+    <span class="ctrl-label">Sport</span>
+    <button class="active" onclick="filterSport('all',this)">Tous</button>
+    <button onclick="filterSport('tennis',this)">Tennis</button>
+    <button onclick="filterSport('golf',this)">Golf</button>
+    <button onclick="filterSport('basket',this)">Basket</button>
+    <button onclick="filterSport('football',this)">Football</button>
+    <button onclick="filterSport('natation',this)">Natation</button>
+    <button onclick="filterSport('athletisme',this)">Athlétisme</button>
+    <button onclick="filterSport('boxe',this)">Boxe</button>
+    <button onclick="filterSport('cyclisme',this)">Cyclisme</button>
+    <button onclick="filterSport('ski',this)">Ski</button>
+    <button onclick="filterSport('surf',this)">Surf</button>
+    <button onclick="filterSport('rugby',this)">Rugby</button>
+    <button onclick="filterSport('volley',this)">Volley</button>
+    <button onclick="filterSport('baseball',this)">Baseball</button>
+    <button onclick="filterSport('badminton',this)">Badminton</button>
+    <button onclick="filterSport('tir',this)">Tir à l'arc</button>
+    <button onclick="filterSport('escalade',this)">Escalade</button>
+    <button onclick="filterSport('pingpong',this)">Ping-Pong</button>
+    <button onclick="filterSport('hockey',this)">Hockey</button>
+    <button onclick="filterSport('escrime',this)">Escrime</button>
+    <button onclick="filterSport('gym',this)">Gym</button>
   </div>
-  <div class="site-actions">
-    <button class="btn-print" onclick="window.print()">↓ Imprimer / PDF</button>
+  <div class="ctrl-group" id="pal-btns">
+    <span class="ctrl-label">Palette</span>
+    <button class="active" onclick="filterPalette('all',this)">Toutes</button>
+    <button onclick="filterPalette('navy',this)">Navy</button>
+    <button onclick="filterPalette('kaki',this)">Kaki</button>
+    <button onclick="filterPalette('terra',this)">Terracotta</button>
+    <button onclick="filterPalette('noir',this)">Noir Or</button>
+    <button onclick="filterPalette('creme',this)">Crème</button>
   </div>
 </div>
-
-<div class="filters" id="filters">
-  <span class="filter-label">Sport</span>
-  <button class="fbtn on" data-f="sport" data-v="all" onclick="filter('sport','all',this)">Tout</button>
-  <div class="sep"></div>
-  <span class="filter-label">Couleur</span>
-  <button class="fbtn on" data-f="pal" data-v="all" onclick="filter('pal','all',this)">Tout</button>
-</div>
-
-<div class="gallery" id="gallery"></div>
+<div class="grid" id="grid"></div>
+<button class="print-btn" onclick="window.print()">↓ Imprimer / PDF</button>
 
 <script>
-// ─── PALETTES ──────────────────────────────────────────────────────
-const PAL = [
-  { id:'navy',  name:'Navy',       bg:'#162035', fg:'#F3EFE6', acc:'rgba(200,184,154,.5)' },
-  { id:'kaki',  name:'Kaki',       bg:'#6a7558', fg:'#FFFFFF', acc:'rgba(255,255,255,.4)' },
-  { id:'terra', name:'Terracotta', bg:'#C05A2A', fg:'#F3EFE6', acc:'rgba(243,239,230,.4)' },
-  { id:'noir',  name:'Noir Or',    bg:'#0D0D0D', fg:'#C8A96E', acc:'rgba(200,169,110,.35)' },
-  { id:'creme', name:'Crème',      bg:'#F3EFE6', fg:'#162035', acc:'rgba(22,32,53,.3)' },
-];
+const PALETTES = {
+  navy:  {id:'navy',  name:'Navy',       bg:'#162035',fg:'#F3EFE6',ac:'#C8412B'},
+  kaki:  {id:'kaki',  name:'Kaki',       bg:'#6a7558',fg:'#F3EFE6',ac:'#14110F'},
+  terra: {id:'terra', name:'Terracotta', bg:'#C8412B',fg:'#F3EFE6',ac:'#14110F'},
+  noir:  {id:'noir',  name:'Noir Or',    bg:'#0D0D0D',fg:'#C8A96E',ac:'#F3EFE6'},
+  creme: {id:'creme', name:'Crème',      bg:'#F3EFE6',fg:'#162035',ac:'#C8412B'}
+};
 
-// ─── ILLUSTRATIONS (viewBox 0 0 200 200) ──────────────────────────
-const SPORTS = [
-
-{ id:'golf', name:'Golf', svg:(c,a)=>`
-  <line x1="105" y1="158" x2="105" y2="42" stroke="${c}" stroke-width="3.5" stroke-linecap="round"/>
-  <polygon points="105,42 150,60 105,78" fill="${c}"/>
-  <ellipse cx="105" cy="167" rx="33" ry="9" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <circle cx="105" cy="167" r="7" fill="${c}"/>
-  <ellipse cx="62" cy="180" rx="20" ry="5.5" fill="none" stroke="${a}" stroke-width="1.5"/>
-  <ellipse cx="148" cy="180" rx="20" ry="5.5" fill="none" stroke="${a}" stroke-width="1.5"/>
-`},
-
-{ id:'tennis', name:'Tennis', svg:(c,a)=>`
-  <ellipse cx="100" cy="83" rx="54" ry="67" fill="none" stroke="${c}" stroke-width="5"/>
-  <line x1="68" y1="24" x2="65" y2="140" stroke="${c}" stroke-width="1.5" opacity="0.55"/>
-  <line x1="82" y1="17" x2="80" y2="148" stroke="${c}" stroke-width="1.5" opacity="0.55"/>
-  <line x1="96" y1="16" x2="96" y2="150" stroke="${c}" stroke-width="1.5" opacity="0.55"/>
-  <line x1="110" y1="17" x2="112" y2="148" stroke="${c}" stroke-width="1.5" opacity="0.55"/>
-  <line x1="124" y1="24" x2="127" y2="140" stroke="${c}" stroke-width="1.5" opacity="0.55"/>
-  <line x1="52" y1="56" x2="148" y2="61" stroke="${c}" stroke-width="1.5" opacity="0.55"/>
-  <line x1="47" y1="73" x2="153" y2="78" stroke="${c}" stroke-width="1.5" opacity="0.55"/>
-  <line x1="46" y1="90" x2="154" y2="90" stroke="${c}" stroke-width="1.5" opacity="0.55"/>
-  <line x1="47" y1="107" x2="153" y2="102" stroke="${c}" stroke-width="1.5" opacity="0.55"/>
-  <line x1="52" y1="122" x2="148" y2="117" stroke="${c}" stroke-width="1.5" opacity="0.55"/>
-  <path d="M87 148 L81 172 Q100 183 119 172 L113 148Z" fill="${c}"/>
-`},
-
-{ id:'basketball', name:'Basketball', svg:(c,a)=>`
-  <circle cx="100" cy="88" r="62" fill="none" stroke="${c}" stroke-width="4"/>
-  <path d="M38 88 Q68 55 100 88 Q132 121 162 88" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <path d="M38 88 Q68 121 100 88 Q132 55 162 88" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <line x1="100" y1="26" x2="100" y2="150" stroke="${c}" stroke-width="2.5"/>
-  <rect x="62" y="166" width="76" height="8" rx="4" fill="${c}"/>
-  <line x1="70" y1="174" x2="65" y2="196" stroke="${a}" stroke-width="1.5"/>
-  <line x1="83" y1="177" x2="80" y2="196" stroke="${a}" stroke-width="1.5"/>
-  <line x1="100" y1="178" x2="100" y2="196" stroke="${a}" stroke-width="1.5"/>
-  <line x1="117" y1="177" x2="120" y2="196" stroke="${a}" stroke-width="1.5"/>
-  <line x1="130" y1="174" x2="135" y2="196" stroke="${a}" stroke-width="1.5"/>
-  <line x1="70" y1="183" x2="130" y2="183" stroke="${a}" stroke-width="1"/>
-  <line x1="68" y1="191" x2="132" y2="191" stroke="${a}" stroke-width="1"/>
-`},
-
-{ id:'football', name:'Football', svg:(c,a)=>`
-  <circle cx="100" cy="100" r="70" fill="none" stroke="${c}" stroke-width="4"/>
-  <polygon points="100,57 127,77 117,108 83,108 73,77" fill="none" stroke="${c}" stroke-width="3"/>
-  <polygon points="100,30 122,42 127,77 100,57 78,42" fill="none" stroke="${c}" stroke-width="2"/>
-  <polygon points="157,72 170,100 150,130 127,119 127,77" fill="none" stroke="${c}" stroke-width="2"/>
-  <polygon points="150,130 132,162 100,170 83,140 117,108" fill="none" stroke="${c}" stroke-width="2"/>
-  <polygon points="50,130 68,162 100,170 117,108 83,108 73,77" fill="none" stroke="${c}" stroke-width="2"/>
-  <polygon points="30,100 43,72 73,77 83,108 50,130" fill="none" stroke="${c}" stroke-width="2"/>
-`},
-
-{ id:'natation', name:'Natation', svg:(c,a)=>`
-  <circle cx="70" cy="92" r="32" fill="none" stroke="${c}" stroke-width="5"/>
-  <circle cx="130" cy="92" r="32" fill="none" stroke="${c}" stroke-width="5"/>
-  <path d="M40 80 Q18 80 16 96 Q16 112 40 112" fill="none" stroke="${c}" stroke-width="4"/>
-  <path d="M160 80 Q182 80 184 96 Q184 112 160 112" fill="none" stroke="${c}" stroke-width="4"/>
-  <path d="M100 78 Q100 88 100 92" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="70" cy="92" r="14" fill="${a}" opacity="0.3"/>
-  <circle cx="130" cy="92" r="14" fill="${a}" opacity="0.3"/>
-  <path d="M22 152 Q48 140 74 152 Q100 164 126 152 Q152 140 178 152" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M30 168 Q56 158 82 168 Q108 178 134 168 Q160 158 178 168" fill="none" stroke="${a}" stroke-width="2" stroke-linecap="round"/>
-  <path d="M22 184 Q48 174 74 184 Q100 194 126 184 Q152 174 178 184" fill="none" stroke="${a}" stroke-width="1.5" stroke-linecap="round"/>
-`},
-
-{ id:'athletisme', name:'Athlétisme', svg:(c,a)=>`
-  <line x1="28" y1="112" x2="172" y2="112" stroke="${c}" stroke-width="9" stroke-linecap="round"/>
-  <line x1="53" y1="112" x2="53" y2="175" stroke="${c}" stroke-width="7" stroke-linecap="round"/>
-  <line x1="147" y1="112" x2="147" y2="175" stroke="${c}" stroke-width="7" stroke-linecap="round"/>
-  <line x1="30" y1="175" x2="78" y2="175" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
-  <line x1="122" y1="175" x2="170" y2="175" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
-  <line x1="20" y1="196" x2="180" y2="196" stroke="${a}" stroke-width="2"/>
-  <line x1="20" y1="186" x2="180" y2="186" stroke="${a}" stroke-width="1.5" opacity="0.6"/>
-  <line x1="20" y1="40" x2="180" y2="40" stroke="${a}" stroke-width="2" opacity="0.5"/>
-  <line x1="20" y1="38" x2="20" y2="56" stroke="${a}" stroke-width="2" opacity="0.5"/>
-  <line x1="70" y1="38" x2="70" y2="56" stroke="${a}" stroke-width="2" opacity="0.5"/>
-  <line x1="130" y1="38" x2="130" y2="56" stroke="${a}" stroke-width="2" opacity="0.5"/>
-  <line x1="180" y1="38" x2="180" y2="56" stroke="${a}" stroke-width="2" opacity="0.5"/>
-`},
-
-{ id:'boxe', name:'Boxe', svg:(c,a)=>`
-  <path d="M58 138 Q53 98 58 68 Q63 42 90 40 Q102 38 110 42 L117 36 Q128 30 136 37 Q144 44 140 58 L152 60 Q162 63 162 80 Q162 93 148 98 L150 132 Q150 157 126 160 L78 160 Q58 160 58 138Z" fill="none" stroke="${c}" stroke-width="5" stroke-linejoin="round"/>
-  <line x1="58" y1="138" x2="150" y2="138" stroke="${c}" stroke-width="4"/>
-  <line x1="60" y1="150" x2="148" y2="150" stroke="${c}" stroke-width="2.5" opacity="0.55"/>
-  <line x1="78" y1="52" x2="78" y2="84" stroke="${a}" stroke-width="2" opacity="0.5"/>
-  <line x1="100" y1="46" x2="100" y2="80" stroke="${a}" stroke-width="2" opacity="0.5"/>
-  <line x1="122" y1="52" x2="122" y2="82" stroke="${a}" stroke-width="2" opacity="0.5"/>
-`},
-
-{ id:'baseball', name:'Baseball', svg:(c,a)=>`
-  <circle cx="100" cy="88" r="60" fill="none" stroke="${c}" stroke-width="4"/>
-  <path d="M78 34 Q58 52 63 88 Q58 124 78 142" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <path d="M122 34 Q142 52 137 88 Q142 124 122 142" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <line x1="74" y1="48" x2="63" y2="54" stroke="${c}" stroke-width="2.2"/>
-  <line x1="67" y1="65" x2="56" y2="68" stroke="${c}" stroke-width="2.2"/>
-  <line x1="64" y1="83" x2="53" y2="84" stroke="${c}" stroke-width="2.2"/>
-  <line x1="67" y1="101" x2="56" y2="103" stroke="${c}" stroke-width="2.2"/>
-  <line x1="74" y1="117" x2="63" y2="123" stroke="${c}" stroke-width="2.2"/>
-  <line x1="126" y1="48" x2="137" y2="54" stroke="${c}" stroke-width="2.2"/>
-  <line x1="133" y1="65" x2="144" y2="68" stroke="${c}" stroke-width="2.2"/>
-  <line x1="136" y1="83" x2="147" y2="84" stroke="${c}" stroke-width="2.2"/>
-  <line x1="133" y1="101" x2="144" y2="103" stroke="${c}" stroke-width="2.2"/>
-  <line x1="126" y1="117" x2="137" y2="123" stroke="${c}" stroke-width="2.2"/>
-  <path d="M33 175 Q48 185 80 168 L165 142 L160 130 L70 158 Q45 170 36 162Z" fill="${c}"/>
-`},
-
-{ id:'rugby', name:'Rugby', svg:(c,a)=>`
-  <path d="M28 100 Q28 38 100 36 Q172 38 172 100 Q172 162 100 164 Q28 162 28 100Z" fill="none" stroke="${c}" stroke-width="5"/>
-  <line x1="28" y1="100" x2="172" y2="100" stroke="${c}" stroke-width="2.5"/>
-  <line x1="100" y1="36" x2="100" y2="164" stroke="${c}" stroke-width="2.5"/>
-  <line x1="86" y1="76" x2="114" y2="76" stroke="${c}" stroke-width="2.5"/>
-  <line x1="83" y1="88" x2="117" y2="88" stroke="${c}" stroke-width="2.5"/>
-  <line x1="83" y1="100" x2="117" y2="100" stroke="${c}" stroke-width="2.5"/>
-  <line x1="83" y1="112" x2="117" y2="112" stroke="${c}" stroke-width="2.5"/>
-  <line x1="86" y1="124" x2="114" y2="124" stroke="${c}" stroke-width="2.5"/>
-`},
-
-{ id:'cyclisme', name:'Cyclisme', svg:(c,a)=>`
-  <circle cx="100" cy="100" r="75" fill="none" stroke="${c}" stroke-width="5.5"/>
-  <circle cx="100" cy="100" r="60" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>
-  <circle cx="100" cy="100" r="11" fill="${c}"/>
-  <line x1="100" y1="89" x2="100" y2="25" stroke="${c}" stroke-width="2.2"/>
-  <line x1="100" y1="89" x2="165" y2="60" stroke="${c}" stroke-width="2.2"/>
-  <line x1="100" y1="89" x2="168" y2="138" stroke="${c}" stroke-width="2.2"/>
-  <line x1="100" y1="111" x2="122" y2="172" stroke="${c}" stroke-width="2.2"/>
-  <line x1="100" y1="111" x2="78" y2="172" stroke="${c}" stroke-width="2.2"/>
-  <line x1="100" y1="111" x2="32" y2="138" stroke="${c}" stroke-width="2.2"/>
-  <line x1="100" y1="89" x2="35" y2="60" stroke="${c}" stroke-width="2.2"/>
-  <line x1="100" y1="89" x2="138" y2="33" stroke="${c}" stroke-width="1.8" opacity="0.5"/>
-  <line x1="100" y1="111" x2="167" y2="100" stroke="${c}" stroke-width="1.8" opacity="0.5"/>
-  <line x1="100" y1="111" x2="148" y2="158" stroke="${c}" stroke-width="1.8" opacity="0.5"/>
-  <line x1="100" y1="111" x2="100" y2="175" stroke="${c}" stroke-width="1.8" opacity="0.5"/>
-  <line x1="100" y1="111" x2="52" y2="158" stroke="${c}" stroke-width="1.8" opacity="0.5"/>
-  <line x1="100" y1="89" x2="33" y2="100" stroke="${c}" stroke-width="1.8" opacity="0.5"/>
-  <line x1="100" y1="89" x2="62" y2="33" stroke="${c}" stroke-width="1.8" opacity="0.5"/>
-`},
-
-{ id:'badminton', name:'Badminton', svg:(c,a)=>`
-  <circle cx="100" cy="158" r="20" fill="none" stroke="${c}" stroke-width="4"/>
-  <circle cx="100" cy="158" r="9" fill="${c}"/>
-  <line x1="100" y1="138" x2="100" y2="36" stroke="${c}" stroke-width="2.5"/>
-  <line x1="100" y1="140" x2="63" y2="40" stroke="${c}" stroke-width="2"/>
-  <line x1="100" y1="144" x2="36" y2="60" stroke="${c}" stroke-width="2"/>
-  <line x1="100" y1="148" x2="28" y2="90" stroke="${c}" stroke-width="2"/>
-  <line x1="100" y1="140" x2="137" y2="40" stroke="${c}" stroke-width="2"/>
-  <line x1="100" y1="144" x2="164" y2="60" stroke="${c}" stroke-width="2"/>
-  <line x1="100" y1="148" x2="172" y2="90" stroke="${c}" stroke-width="2"/>
-  <path d="M28 90 Q50 32 100 36 Q150 32 172 90" fill="none" stroke="${c}" stroke-width="2" opacity="0.6"/>
-  <path d="M38 122 Q62 72 100 75 Q138 72 162 122" fill="none" stroke="${a}" stroke-width="1.5" opacity="0.5"/>
-`},
-
-{ id:'volleyball', name:'Volleyball', svg:(c,a)=>`
-  <circle cx="100" cy="96" r="67" fill="none" stroke="${c}" stroke-width="4"/>
-  <path d="M33 96 Q55 50 100 42 Q145 50 167 96" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <path d="M33 96 Q55 142 100 150 Q145 142 167 96" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <path d="M72 33 Q50 66 50 96 Q50 126 72 159" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <path d="M128 33 Q150 66 150 96 Q150 126 128 159" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <line x1="18" y1="183" x2="182" y2="183" stroke="${c}" stroke-width="4"/>
-  <line x1="18" y1="172" x2="182" y2="172" stroke="${c}" stroke-width="2"/>
-  <line x1="18" y1="194" x2="182" y2="194" stroke="${a}" stroke-width="1.5" opacity="0.5"/>
-  <line x1="45" y1="172" x2="45" y2="198" stroke="${a}" stroke-width="1.5" opacity="0.5"/>
-  <line x1="72" y1="172" x2="72" y2="198" stroke="${a}" stroke-width="1.5" opacity="0.5"/>
-  <line x1="100" y1="172" x2="100" y2="198" stroke="${a}" stroke-width="1.5" opacity="0.5"/>
-  <line x1="128" y1="172" x2="128" y2="198" stroke="${a}" stroke-width="1.5" opacity="0.5"/>
-  <line x1="155" y1="172" x2="155" y2="198" stroke="${a}" stroke-width="1.5" opacity="0.5"/>
-`},
-
-{ id:'archery', name:'Archery', svg:(c,a)=>`
-  <circle cx="100" cy="100" r="72" fill="none" stroke="${c}" stroke-width="3"/>
-  <circle cx="100" cy="100" r="57" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <circle cx="100" cy="100" r="42" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <circle cx="100" cy="100" r="27" fill="none" stroke="${c}" stroke-width="2.5"/>
-  <circle cx="100" cy="100" r="13" fill="${c}"/>
-  <line x1="172" y1="28" x2="100" y2="100" stroke="${c}" stroke-width="3.5"/>
-  <polygon points="172,28 159,31 163,18" fill="${c}"/>
-  <path d="M108 92 L120 80 L113 90" fill="${a}" opacity="0.8"/>
-  <path d="M113 87 L127 77 L118 87" fill="${a}" opacity="0.5"/>
-`},
-
-{ id:'ski', name:'Ski', svg:(c,a)=>`
-  <path d="M55 22 Q52 138 56 164 Q58 175 70 178 Q82 180 82 170 L84 28 Q82 18 70 16 Q58 16 55 22Z" fill="none" stroke="${c}" stroke-width="4"/>
-  <path d="M116 22 Q113 138 117 164 Q119 175 131 178 Q143 180 143 170 L145 28 Q143 18 131 16 Q119 16 116 22Z" fill="none" stroke="${c}" stroke-width="4"/>
-  <rect x="56" y="86" width="28" height="13" rx="2.5" fill="${c}"/>
-  <rect x="117" y="86" width="28" height="13" rx="2.5" fill="${c}"/>
-  <line x1="46" y1="36" x2="52" y2="170" stroke="${a}" stroke-width="2.5" opacity="0.6"/>
-  <circle cx="46" cy="36" r="5" fill="${a}" opacity="0.6"/>
-  <ellipse cx="50" cy="152" rx="10" ry="6" fill="none" stroke="${a}" stroke-width="1.5" opacity="0.5"/>
-  <line x1="154" y1="36" x2="148" y2="170" stroke="${a}" stroke-width="2.5" opacity="0.6"/>
-  <circle cx="154" cy="36" r="5" fill="${a}" opacity="0.6"/>
-  <ellipse cx="150" cy="152" rx="10" ry="6" fill="none" stroke="${a}" stroke-width="1.5" opacity="0.5"/>
-`},
-
-{ id:'surf', name:'Surf', svg:(c,a)=>`
-  <path d="M100 18 Q136 32 141 100 Q138 156 100 176 Q62 156 59 100 Q64 32 100 18Z" fill="none" stroke="${c}" stroke-width="4.5"/>
-  <path d="M94 172 Q86 192 100 197 Q114 192 106 172Z" fill="${c}"/>
-  <line x1="100" y1="20" x2="100" y2="174" stroke="${c}" stroke-width="1.5" opacity="0.4"/>
-  <path d="M70 68 Q82 48 100 44 Q118 48 130 68" fill="none" stroke="${a}" stroke-width="2" opacity="0.5"/>
-  <path d="M64 96 Q78 74 100 70 Q122 74 136 96" fill="none" stroke="${a}" stroke-width="1.5" opacity="0.35"/>
-  <path d="M14 214 Q36 198 58 214 Q80 230 102 214 Q124 198 146 214 Q168 230 190 214" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
-  <path d="M10 228 Q32 214 58 228 Q84 242 110 228 Q136 214 162 228 Q186 242 200 232" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.55" stroke-linecap="round"/>
-`},
-
-{ id:'escalade', name:'Escalade', svg:(c,a)=>`
-  <path d="M100 26 Q148 26 148 78 L148 126 Q148 176 100 176 Q52 176 52 126 L52 78 Q52 26 100 26Z" fill="none" stroke="${c}" stroke-width="6.5"/>
-  <path d="M148 73 Q160 73 163 86 Q166 102 158 114 Q151 124 148 126" fill="none" stroke="${c}" stroke-width="5.5"/>
-  <path d="M52 78 Q52 26 100 26 Q148 26 148 78" fill="none" stroke="${c}" stroke-width="10"/>
-  <path d="M28 182 Q50 150 82 157 Q102 162 102 180 Q102 200 80 204 Q55 208 54 186 Q54 166 76 166 Q92 166 98 182" fill="none" stroke="${a}" stroke-width="3.5" opacity="0.7"/>
-`},
-
-{ id:'pingpong', name:'Ping-Pong', svg:(c,a)=>`
-  <circle cx="93" cy="88" r="70" fill="none" stroke="${c}" stroke-width="5"/>
-  <circle cx="93" cy="88" r="56" fill="none" stroke="${c}" stroke-width="2" opacity="0.4"/>
-  <path d="M138 145 L162 186 Q166 194 158 199 Q150 204 144 197 L118 155Z" fill="${c}"/>
-  <line x1="138" y1="152" x2="158" y2="185" stroke="${a}" stroke-width="1.5" opacity="0.45"/>
-  <circle cx="158" cy="44" r="24" fill="none" stroke="${c}" stroke-width="3.5"/>
-  <path d="M134 44 Q158 33 182 44" fill="none" stroke="${c}" stroke-width="2"/>
-  <path d="M134 44 Q158 55 182 44" fill="none" stroke="${c}" stroke-width="2"/>
-`},
-
-{ id:'gym', name:'Gymnase', svg:(c,a)=>`
-  <line x1="28" y1="26" x2="172" y2="26" stroke="${c}" stroke-width="6" stroke-linecap="round"/>
-  <line x1="65" y1="26" x2="65" y2="80" stroke="${c}" stroke-width="4.5" stroke-linecap="round"/>
-  <line x1="135" y1="26" x2="135" y2="80" stroke="${c}" stroke-width="4.5" stroke-linecap="round"/>
-  <circle cx="65" cy="115" r="37" fill="none" stroke="${c}" stroke-width="6.5"/>
-  <circle cx="135" cy="115" r="37" fill="none" stroke="${c}" stroke-width="6.5"/>
-  <circle cx="65" cy="115" r="28" fill="none" stroke="${a}" stroke-width="1.5" opacity="0.35"/>
-  <circle cx="135" cy="115" r="28" fill="none" stroke="${a}" stroke-width="1.5" opacity="0.35"/>
-  <circle cx="65" cy="26" r="6" fill="${c}"/>
-  <circle cx="135" cy="26" r="6" fill="${c}"/>
-`},
-
-{ id:'hockey', name:'Hockey', svg:(c,a)=>`
-  <path d="M48 22 L126 132" stroke="${c}" stroke-width="8" stroke-linecap="round"/>
-  <path d="M126 132 Q157 152 168 142 Q179 130 168 120 L132 118Z" fill="${c}" stroke="${c}" stroke-width="3" stroke-linejoin="round"/>
-  <ellipse cx="148" cy="172" rx="40" ry="13" fill="none" stroke="${c}" stroke-width="4"/>
-  <ellipse cx="148" cy="162" rx="40" ry="13" fill="none" stroke="${c}" stroke-width="4"/>
-  <line x1="108" y1="162" x2="108" y2="172" stroke="${c}" stroke-width="3"/>
-  <line x1="188" y1="162" x2="188" y2="172" stroke="${c}" stroke-width="3"/>
-  <line x1="78" y1="60" x2="90" y2="76" stroke="${a}" stroke-width="3" opacity="0.6"/>
-  <line x1="87" y1="51" x2="99" y2="67" stroke="${a}" stroke-width="3" opacity="0.6"/>
-  <line x1="96" y1="43" x2="108" y2="59" stroke="${a}" stroke-width="3" opacity="0.6"/>
-`},
-
-{ id:'escrime', name:'Escrime', svg:(c,a)=>`
-  <line x1="28" y1="172" x2="178" y2="22" stroke="${c}" stroke-width="4.5" stroke-linecap="round"/>
-  <circle cx="78" cy="122" r="34" fill="none" stroke="${c}" stroke-width="5.5"/>
-  <circle cx="78" cy="122" r="24" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>
-  <path d="M52 146 L34 164 Q28 172 35 178 Q42 184 50 177 L70 158 L80 152Z" fill="${c}"/>
-  <circle cx="32" cy="170" r="9" fill="${c}"/>
-  <line x1="178" y1="22" x2="185" y2="16" stroke="${c}" stroke-width="2.5" opacity="0.5"/>
-  <line x1="175" y1="20" x2="182" y2="24" stroke="${c}" stroke-width="2" opacity="0.3"/>
-`},
-
-];
-
-// ─── GENERATE 100 POSTERS (20 sports × 5 palettes) ────────────────
-const ALL = [];
-SPORTS.forEach((s,si) => PAL.forEach((p,pi) => ALL.push({s,p,n:si*5+pi+1})));
-
-// ─── RENDER POSTER SVG ─────────────────────────────────────────────
-function poster({s, p, n}){
-  const {bg,fg,acc} = p;
-  return `<div class="poster-wrap" data-sport="${s.id}" data-pal="${p.id}">
-    <svg viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
-      <rect width="210" height="297" fill="${bg}"/>
-      <!-- subtle corner marks -->
-      <line x1="8" y1="8" x2="22" y2="8" stroke="${fg}" stroke-width="0.6" opacity="0.25"/>
-      <line x1="8" y1="8" x2="8" y2="22" stroke="${fg}" stroke-width="0.6" opacity="0.25"/>
-      <line x1="202" y1="8" x2="188" y2="8" stroke="${fg}" stroke-width="0.6" opacity="0.25"/>
-      <line x1="202" y1="8" x2="202" y2="22" stroke="${fg}" stroke-width="0.6" opacity="0.25"/>
-      <line x1="8" y1="289" x2="22" y2="289" stroke="${fg}" stroke-width="0.6" opacity="0.25"/>
-      <line x1="8" y1="289" x2="8" y2="275" stroke="${fg}" stroke-width="0.6" opacity="0.25"/>
-      <line x1="202" y1="289" x2="188" y2="289" stroke="${fg}" stroke-width="0.6" opacity="0.25"/>
-      <line x1="202" y1="289" x2="202" y2="275" stroke="${fg}" stroke-width="0.6" opacity="0.25"/>
-      <!-- FOCUS top -->
-      <text x="105" y="22" font-family="'Bebas Neue',sans-serif" font-size="10" letter-spacing="7" text-anchor="middle" fill="${fg}" opacity="0.35">FOCUS</text>
-      <!-- Illustration -->
-      <g transform="translate(5,38)">${s.svg(fg,acc)}</g>
-      <!-- Divider -->
-      <line x1="30" y1="252" x2="180" y2="252" stroke="${fg}" stroke-width="0.6" opacity="0.3"/>
-      <!-- Sport name -->
-      <text x="105" y="268" font-family="'Bebas Neue',sans-serif" font-size="26" letter-spacing="7" text-anchor="middle" fill="${fg}">${s.name.toUpperCase()}</text>
-      <!-- Palette name -->
-      <text x="105" y="282" font-family="'Inter',sans-serif" font-size="6" letter-spacing="3" text-anchor="middle" fill="${fg}" opacity="0.3">${p.name.toUpperCase()}</text>
-      <!-- Number -->
-      <text x="196" y="292" font-family="'Inter',sans-serif" font-size="5.5" letter-spacing="1" text-anchor="end" fill="${fg}" opacity="0.2">${String(n).padStart(3,'0')}</text>
-    </svg>
-  </div>`;
+function illus_tennis(bg,fg,ac){
+  return `
+  <rect x="35" y="55" width="140" height="200" fill="none" stroke="${fg}" stroke-width="2.5"/>
+  <line x1="35" y1="155" x2="175" y2="155" stroke="${fg}" stroke-width="2"/>
+  <line x1="105" y1="55" x2="105" y2="255" stroke="${fg}" stroke-width="1.2"/>
+  <rect x="58" y="95" width="94" height="120" fill="none" stroke="${fg}" stroke-width="1.5"/>
+  <line x1="58" y1="95" x2="153" y2="95" stroke="${fg}" stroke-width="1.5"/>
+  <line x1="58" y1="215" x2="153" y2="215" stroke="${fg}" stroke-width="1.5"/>
+  <line x1="35" y1="155" x2="175" y2="155" stroke="${ac}" stroke-width="4"/>
+  <circle cx="80" cy="130" r="10" fill="${ac}"/>
+  <circle cx="80" cy="130" r="10" fill="none" stroke="${fg}" stroke-width="1" opacity=".5"/>`;
 }
 
-// ─── BUILD FILTERS ─────────────────────────────────────────────────
-const fDiv = document.getElementById('filters');
-// Sports buttons
-const sep1 = document.createElement('div'); sep1.className='sep'; fDiv.appendChild(sep1);
-SPORTS.forEach(s=>{
-  const b = document.createElement('button');
-  b.className='fbtn'; b.textContent=s.name; b.dataset.f='sport'; b.dataset.v=s.id;
-  b.onclick=()=>filter('sport',s.id,b);
-  fDiv.appendChild(b);
-});
-const sep2 = document.createElement('div'); sep2.className='sep'; fDiv.appendChild(sep2);
-// Palette buttons
-PAL.forEach(p=>{
-  const b = document.createElement('button');
-  b.className='fbtn'; b.textContent=p.name; b.dataset.f='pal'; b.dataset.v=p.id;
-  b.onclick=()=>filter('pal',p.id,b);
-  fDiv.appendChild(b);
-});
+function illus_golf(bg,fg,ac){
+  return `
+  <rect x="0" y="0" width="35" height="297" fill="${fg}" opacity=".05"/>
+  <rect x="70" y="0" width="35" height="297" fill="${fg}" opacity=".05"/>
+  <rect x="140" y="0" width="35" height="297" fill="${fg}" opacity=".05"/>
+  <circle cx="105" cy="185" r="70" fill="${ac}" opacity=".12"/>
+  <circle cx="105" cy="185" r="70" fill="none" stroke="${ac}" stroke-width="2"/>
+  <circle cx="105" cy="185" r="7" fill="${fg}" opacity=".4"/>
+  <line x1="105" y1="100" x2="105" y2="185" stroke="${fg}" stroke-width="2.5"/>
+  <polygon points="105,100 105,138 152,119" fill="${ac}"/>
+  <circle cx="88" cy="148" r="8" fill="none" stroke="${fg}" stroke-width="1.5" opacity=".6"/>`;
+}
 
-// ─── RENDER GALLERY ────────────────────────────────────────────────
-document.getElementById('gallery').innerHTML = ALL.map(poster).join('');
+function illus_basket(bg,fg,ac){
+  return `
+  <rect x="20" y="75" width="170" height="205" fill="none" stroke="${fg}" stroke-width="2"/>
+  <rect x="57" y="75" width="96" height="115" fill="none" stroke="${fg}" stroke-width="2"/>
+  <path d="M20,265 Q20,110 105,110 Q190,110 190,265" fill="none" stroke="${fg}" stroke-width="2"/>
+  <ellipse cx="105" cy="190" rx="48" ry="48" fill="none" stroke="${fg}" stroke-width="2"/>
+  <ellipse cx="105" cy="75" rx="15" ry="5" fill="none" stroke="${ac}" stroke-width="3"/>
+  <line x1="105" y1="58" x2="105" y2="80" stroke="${fg}" stroke-width="3"/>
+  <circle cx="105" cy="168" r="17" fill="none" stroke="${fg}" stroke-width="2.5"/>
+  <path d="M89,161 Q105,173 121,161" fill="none" stroke="${fg}" stroke-width="1.5"/>
+  <path d="M89,175 Q105,163 121,175" fill="none" stroke="${fg}" stroke-width="1.5"/>
+  <line x1="105" y1="151" x2="105" y2="185" stroke="${fg}" stroke-width="1.5"/>`;
+}
 
-// ─── FILTER LOGIC ─────────────────────────────────────────────────
-let activeSport = 'all', activePal = 'all';
-function filter(type, val, btn){
-  if(type==='sport'){ activeSport=val; }
-  else { activePal=val; }
-  // Update button states
-  document.querySelectorAll(`.fbtn[data-f="${type}"]`).forEach(b=>b.classList.remove('on'));
-  if(btn) btn.classList.add('on');
-  document.querySelectorAll('.fbtn[data-v="all"][data-f="'+type+'"]').forEach(b=>{ if(val==='all') b.classList.add('on'); else b.classList.remove('on'); });
-  // Show/hide posters
-  document.querySelectorAll('.poster-wrap').forEach(el=>{
-    const showS = activeSport==='all' || el.dataset.sport===activeSport;
-    const showP = activePal==='all' || el.dataset.pal===activePal;
-    el.classList.toggle('hidden', !(showS && showP));
+function illus_football(bg,fg,ac){
+  return `
+  <rect x="20" y="58" width="170" height="200" fill="none" stroke="${fg}" stroke-width="2"/>
+  <line x1="20" y1="158" x2="190" y2="158" stroke="${fg}" stroke-width="2"/>
+  <circle cx="105" cy="158" r="34" fill="none" stroke="${fg}" stroke-width="2"/>
+  <circle cx="105" cy="158" r="3" fill="${fg}"/>
+  <rect x="62" y="58" width="86" height="32" fill="none" stroke="${fg}" stroke-width="2"/>
+  <rect x="80" y="58" width="50" height="18" fill="none" stroke="${fg}" stroke-width="2"/>
+  <circle cx="105" cy="104" r="3" fill="${ac}"/>
+  <rect x="62" y="228" width="86" height="30" fill="none" stroke="${fg}" stroke-width="2"/>
+  <circle cx="105" cy="158" r="13" fill="${ac}"/>
+  <circle cx="105" cy="158" r="13" fill="none" stroke="${bg}" stroke-width="1.5"/>`;
+}
+
+function illus_natation(bg,fg,ac){
+  const lns = [0,1,2,3,4,5,6,7].map(i=>{
+    const y=55+i*26;
+    return `<line x1="15" y1="${y}" x2="195" y2="${y}" stroke="${i%2===0?fg:ac}" stroke-width="${i%2===0?2.5:1}" opacity="${i%2===0?1:.45}"/>`;
+  }).join('');
+  const blks = [0,1,2,3,4,5,6,7].map(i=>{
+    return `<rect x="186" y="${47+i*26}" width="20" height="16" fill="${ac}" rx="1"/>`;
+  }).join('');
+  const nums = [1,2,3,4,5,6,7,8].map((n,i)=>`<text x="24" y="${${0:64,1:90,2:116,3:142,4:168,5:194,6:220,7:246}[i]+3}" fill="${fg}" font-family="Arial Black" font-size="13" font-weight="900" opacity=".25">${n}</text>`).join('');
+  return `${lns}${blks}${nums}
+  <path d="M15,255 Q57,243 99,255 Q141,267 183,255" fill="none" stroke="${fg}" stroke-width="2.5"/>
+  <path d="M15,268 Q57,256 99,268 Q141,280 183,268" fill="none" stroke="${fg}" stroke-width="1" opacity=".4"/>`;
+}
+
+function illus_athletisme(bg,fg,ac){
+  const rings = [0,1,2,3,4,5,6,7].map(i=>{
+    const rx=45+i*13, ry=(45+i*13)*0.52;
+    return `<ellipse cx="105" cy="185" rx="${rx}" ry="${ry}" fill="none" stroke="${fg}" stroke-width="${i===0?2.5:1.5}" opacity="${i===0?1:.55}"/>`;
+  }).join('');
+  return `${rings}
+  <line x1="105" y1="70" x2="105" y2="95" stroke="${ac}" stroke-width="5"/>
+  <line x1="85" y1="70" x2="125" y2="70" stroke="${ac}" stroke-width="3"/>
+  <rect x="88" y="255" width="12" height="8" fill="${ac}" rx="1"/>
+  <rect x="104" y="260" width="12" height="8" fill="${ac}" rx="1"/>`;
+}
+
+function illus_boxe(bg,fg,ac){
+  return `
+  <rect x="22" y="55" width="166" height="195" fill="none" stroke="${fg}" stroke-width="3.5"/>
+  <rect x="38" y="70" width="134" height="165" fill="none" stroke="${fg}" stroke-width="2"/>
+  <rect x="54" y="85" width="102" height="135" fill="none" stroke="${fg}" stroke-width="1.5"/>
+  <circle cx="22" cy="55" r="5" fill="${ac}"/>
+  <circle cx="188" cy="55" r="5" fill="${ac}"/>
+  <circle cx="22" cy="250" r="5" fill="${ac}"/>
+  <circle cx="188" cy="250" r="5" fill="${ac}"/>
+  <line x1="22" y1="152" x2="188" y2="152" stroke="${fg}" stroke-width="1" opacity=".18"/>
+  <line x1="105" y1="55" x2="105" y2="250" stroke="${fg}" stroke-width="1" opacity=".18"/>
+  <circle cx="78" cy="145" r="20" fill="none" stroke="${ac}" stroke-width="3"/>
+  <circle cx="132" cy="157" r="20" fill="none" stroke="${fg}" stroke-width="2.5"/>`;
+}
+
+function illus_cyclisme(bg,fg,ac){
+  const cx=105,cy=158,r=88,sp=16;
+  let spokes='';
+  for(let i=0;i<sp;i++){
+    const a=i*Math.PI*2/sp;
+    spokes+=`<line x1="${cx}" y1="${cy}" x2="${(cx+r*Math.sin(a)).toFixed(1)}" y2="${(cy-r*Math.cos(a)).toFixed(1)}" stroke="${fg}" stroke-width="1" opacity=".55"/>`;
+  }
+  const tyre=Array.from({length:28},(_,i)=>{
+    const a=i*Math.PI*2/28;
+    return `<line x1="${(cx+(r-5)*Math.sin(a)).toFixed(1)}" y1="${(cy-(r-5)*Math.cos(a)).toFixed(1)}" x2="${(cx+(r+5)*Math.sin(a)).toFixed(1)}" y2="${(cy-(r+5)*Math.cos(a)).toFixed(1)}" stroke="${ac}" stroke-width="1.5"/>`;
+  }).join('');
+  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${fg}" stroke-width="4"/>
+  <circle cx="${cx}" cy="${cy}" r="${r-9}" fill="none" stroke="${fg}" stroke-width="1" opacity=".25"/>
+  ${spokes}${tyre}
+  <circle cx="${cx}" cy="${cy}" r="9" fill="${ac}"/>
+  <circle cx="${cx}" cy="${cy}" r="3.5" fill="${bg}"/>`;
+}
+
+function illus_ski(bg,fg,ac){
+  const slope = [0,1,2,3,4,5,6].map(i=>`<line x1="${i*35}" y1="0" x2="${i*35+55}" y2="297" stroke="${fg}" stroke-width="1" opacity=".07"/>`).join('');
+  const gates=[
+    {x1:42,x2:72,y:78,c:ac},
+    {x1:128,x2:158,y:118,c:fg},
+    {x1:48,x2:78,y:162,c:ac},
+    {x1:122,x2:152,y:205,c:fg},
+    {x1:52,x2:82,y:248,c:ac}
+  ];
+  const gSvg=gates.map(g=>`
+    <line x1="${g.x1+8}" y1="${g.y-28}" x2="${g.x1+8}" y2="${g.y+8}" stroke="${g.c}" stroke-width="3"/>
+    <line x1="${g.x2+8}" y1="${g.y-28}" x2="${g.x2+8}" y2="${g.y+8}" stroke="${g.c}" stroke-width="3"/>
+    <line x1="${g.x1+8}" y1="${g.y-28}" x2="${g.x2+8}" y2="${g.y-28}" stroke="${g.c}" stroke-width="4.5"/>
+    <circle cx="${g.x1+8}" cy="${g.y+8}" r="4" fill="${g.c}"/>
+    <circle cx="${g.x2+8}" cy="${g.y+8}" r="4" fill="${g.c}"/>
+  `).join('');
+  return `${slope}${gSvg}
+  <path d="M85,58 Q138,98 72,162 Q115,205 153,247 Q122,266 95,280" fill="none" stroke="${ac}" stroke-width="2.5" stroke-dasharray="7,4"/>`;
+}
+
+function illus_surf(bg,fg,ac){
+  return `
+  <path d="M0,178 Q52,115 105,158 Q158,200 210,138" fill="none" stroke="${fg}" stroke-width="4"/>
+  <path d="M0,198 Q52,135 105,178 Q158,220 210,158" fill="none" stroke="${fg}" stroke-width="2" opacity=".5"/>
+  <path d="M0,216 Q52,153 105,196 Q158,238 210,176" fill="none" stroke="${fg}" stroke-width="1" opacity=".2"/>
+  <path d="M0,178 Q52,115 105,158 Q158,200 210,138 L210,297 L0,297 Z" fill="${fg}" opacity=".06"/>
+  <path d="M14,173 Q52,128 96,156" fill="none" stroke="${ac}" stroke-width="4"/>
+  <ellipse cx="108" cy="152" rx="11" ry="34" fill="none" stroke="${ac}" stroke-width="2.5" transform="rotate(-22,108,152)"/>
+  <ellipse cx="108" cy="152" rx="4" ry="15" fill="${ac}" opacity=".45" transform="rotate(-22,108,152)"/>`;
+}
+
+function illus_rugby(bg,fg,ac){
+  return `
+  <line x1="88" y1="52" x2="88" y2="148" stroke="${fg}" stroke-width="5"/>
+  <line x1="122" y1="52" x2="122" y2="148" stroke="${fg}" stroke-width="5"/>
+  <line x1="88" y1="98" x2="122" y2="98" stroke="${fg}" stroke-width="5"/>
+  <line x1="78" y1="52" x2="88" y2="52" stroke="${fg}" stroke-width="3.5"/>
+  <line x1="122" y1="52" x2="132" y2="52" stroke="${fg}" stroke-width="3.5"/>
+  <line x1="20" y1="185" x2="190" y2="185" stroke="${fg}" stroke-width="2.5"/>
+  <line x1="20" y1="215" x2="190" y2="215" stroke="${fg}" stroke-width="1.5"/>
+  <line x1="20" y1="244" x2="190" y2="244" stroke="${fg}" stroke-width="1.5" opacity=".4"/>
+  <ellipse cx="105" cy="200" rx="24" ry="15" fill="none" stroke="${ac}" stroke-width="3.5"/>
+  <line x1="81" y1="200" x2="129" y2="200" stroke="${ac}" stroke-width="1.5"/>
+  <path d="M93,187 Q105,181 117,187" fill="none" stroke="${ac}" stroke-width="1.5"/>
+  <path d="M93,213 Q105,219 117,213" fill="none" stroke="${ac}" stroke-width="1.5"/>`;
+}
+
+function illus_volley(bg,fg,ac){
+  const netGrid=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(i=>`<line x1="${20+i*14}" y1="160" x2="${20+i*14}" y2="170" stroke="${ac}" stroke-width=".8" opacity=".6"/>`).join('');
+  return `
+  <rect x="20" y="88" width="170" height="152" fill="none" stroke="${fg}" stroke-width="2"/>
+  <line x1="20" y1="164" x2="190" y2="164" stroke="${ac}" stroke-width="5"/>
+  <line x1="20" y1="159" x2="190" y2="159" stroke="${ac}" stroke-width="1.5" opacity=".5"/>
+  <line x1="20" y1="169" x2="190" y2="169" stroke="${ac}" stroke-width="1.5" opacity=".5"/>
+  ${netGrid}
+  <line x1="20" y1="128" x2="190" y2="128" stroke="${fg}" stroke-width="1.5" opacity=".45"/>
+  <line x1="20" y1="200" x2="190" y2="200" stroke="${fg}" stroke-width="1.5" opacity=".45"/>
+  <circle cx="105" cy="108" r="16" fill="none" stroke="${fg}" stroke-width="2.5"/>
+  <path d="M91,101 Q105,113 119,101" fill="none" stroke="${fg}" stroke-width="1.5"/>
+  <path d="M91,115 Q105,103 119,115" fill="none" stroke="${fg}" stroke-width="1.5"/>
+  <line x1="105" y1="92" x2="105" y2="124" stroke="${fg}" stroke-width="1.5"/>`;
+}
+
+function illus_baseball(bg,fg,ac){
+  return `
+  <polygon points="105,68 178,165 105,262 32,165" fill="none" stroke="${fg}" stroke-width="2.5"/>
+  <rect x="98" y="61" width="14" height="14" fill="${ac}" transform="rotate(45,105,68)"/>
+  <rect x="171" y="158" width="14" height="14" fill="${fg}" opacity=".7" transform="rotate(45,178,165)"/>
+  <rect x="98" y="255" width="14" height="14" fill="${fg}" opacity=".7" transform="rotate(45,105,262)"/>
+  <rect x="25" y="158" width="14" height="14" fill="${fg}" opacity=".7" transform="rotate(45,32,165)"/>
+  <circle cx="105" cy="165" r="13" fill="none" stroke="${fg}" stroke-width="2"/>
+  <circle cx="105" cy="165" r="3" fill="${ac}"/>
+  <path d="M32,165 Q105,78 178,165" fill="none" stroke="${fg}" stroke-width="1.5" opacity=".35"/>
+  <line x1="105" y1="262" x2="8" y2="297" stroke="${fg}" stroke-width="1.5" opacity=".35"/>
+  <line x1="105" y1="262" x2="202" y2="297" stroke="${fg}" stroke-width="1.5" opacity=".35"/>`;
+}
+
+function illus_badminton(bg,fg,ac){
+  const feathers=Array.from({length:8},(_,i)=>{
+    const a=i*Math.PI*2/8;
+    return `<line x1="105" y1="72" x2="${(105+22*Math.sin(a)).toFixed(1)}" y2="${(52+22*Math.cos(a)).toFixed(1)}" stroke="${fg}" stroke-width="1.5" opacity=".65"/>`;
+  }).join('');
+  return `
+  <rect x="35" y="55" width="140" height="210" fill="none" stroke="${fg}" stroke-width="2"/>
+  <line x1="35" y1="160" x2="175" y2="160" stroke="${ac}" stroke-width="3.5"/>
+  <line x1="35" y1="92" x2="175" y2="92" stroke="${fg}" stroke-width="1.5"/>
+  <line x1="35" y1="228" x2="175" y2="228" stroke="${fg}" stroke-width="1.5"/>
+  <line x1="105" y1="92" x2="105" y2="160" stroke="${fg}" stroke-width="1.5"/>
+  <line x1="105" y1="160" x2="105" y2="228" stroke="${fg}" stroke-width="1.5"/>
+  <circle cx="105" cy="72" r="8" fill="${ac}"/>
+  ${feathers}
+  <ellipse cx="105" cy="252" rx="21" ry="25" fill="none" stroke="${fg}" stroke-width="2"/>
+  <line x1="105" y1="277" x2="105" y2="295" stroke="${fg}" stroke-width="3.5"/>`;
+}
+
+function illus_tir(bg,fg,ac){
+  const rings=[80,66,52,38,24,12];
+  const opas=[.1,.18,.28,.42,.6,1];
+  return `
+  ${rings.map((r,i)=>`<circle cx="105" cy="168" r="${r}" fill="${i%2===0?fg:ac}" opacity="${opas[i]}"/>`).join('')}
+  ${rings.map(r=>`<circle cx="105" cy="168" r="${r}" fill="none" stroke="${bg}" stroke-width="1.2"/>`).join('')}
+  <line x1="105" y1="72" x2="105" y2="258" stroke="${bg}" stroke-width=".8" opacity=".35"/>
+  <line x1="15" y1="168" x2="195" y2="168" stroke="${bg}" stroke-width=".8" opacity=".35"/>
+  <line x1="105" y1="55" x2="105" y2="158" stroke="${fg}" stroke-width="2.5"/>
+  <polygon points="105,155 100,143 110,143" fill="${fg}"/>
+  <line x1="100" y1="60" x2="105" y2="70" stroke="${ac}" stroke-width="2.5"/>
+  <line x1="110" y1="60" x2="105" y2="70" stroke="${ac}" stroke-width="2.5"/>`;
+}
+
+function illus_escalade(bg,fg,ac){
+  const holds=[[62,82],[148,96],[88,132],[172,148],[52,178],[134,168],[82,218],[158,208],[107,258],[42,242],[178,248]];
+  const wall=[35,70,105,140,175].map(x=>`<line x1="${x}" y1="50" x2="${x}" y2="282" stroke="${fg}" stroke-width="1" opacity=".1"/>`).join('');
+  const cracks=[
+    `<path d="M20,112 Q65,107 92,115 Q132,122 192,110" fill="none" stroke="${fg}" stroke-width="1" opacity=".18"/>`,
+    `<path d="M20,192 Q78,187 112,195 Q152,202 192,190" fill="none" stroke="${fg}" stroke-width="1" opacity=".18"/>`
+  ].join('');
+  const holdsSvg=holds.map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${4+i%3*2}" fill="${i%3===0?ac:fg}" opacity="${i%3===0?1:.65}"/>`).join('');
+  return `${wall}${cracks}${holdsSvg}
+  <path d="M105,55 Q94,102 108,152 Q122,202 100,258 Q95,272 105,285" fill="none" stroke="${ac}" stroke-width="2.5"/>
+  <circle cx="105" cy="55" r="5" fill="${ac}"/>`;
+}
+
+function illus_pingpong(bg,fg,ac){
+  const netGrid=[0,1,2,3,4,5,6,7,8,9,10,11].map(i=>`<line x1="${25+i*14}" y1="152" x2="${25+i*14}" y2="162" stroke="${ac}" stroke-width=".8" opacity=".6"/>`).join('');
+  return `
+  <rect x="22" y="92" width="166" height="130" fill="none" stroke="${fg}" stroke-width="2.5" rx="3"/>
+  <line x1="105" y1="92" x2="105" y2="222" stroke="${fg}" stroke-width="1.2" opacity=".45"/>
+  <line x1="22" y1="157" x2="188" y2="157" stroke="${ac}" stroke-width="4.5"/>
+  <line x1="22" y1="153" x2="188" y2="153" stroke="${ac}" stroke-width="1" opacity=".5"/>
+  <line x1="22" y1="161" x2="188" y2="161" stroke="${ac}" stroke-width="1" opacity=".5"/>
+  ${netGrid}
+  <rect x="18" y="150" width="7" height="14" fill="${fg}"/>
+  <rect x="183" y="150" width="7" height="14" fill="${fg}"/>
+  <circle cx="70" cy="125" r="12" fill="none" stroke="${fg}" stroke-width="2.5"/>
+  <path d="M61,120 Q70,128 79,120" fill="none" stroke="${fg}" stroke-width="1.2"/>
+  <ellipse cx="150" cy="195" rx="24" ry="28" fill="${ac}" opacity=".12"/>
+  <ellipse cx="150" cy="195" rx="24" ry="28" fill="none" stroke="${ac}" stroke-width="2.5"/>
+  <line x1="150" y1="223" x2="150" y2="248" stroke="${ac}" stroke-width="5"/>`;
+}
+
+function illus_hockey(bg,fg,ac){
+  return `
+  <rect x="18" y="58" width="174" height="202" rx="22" fill="none" stroke="${fg}" stroke-width="2.5"/>
+  <line x1="18" y1="159" x2="192" y2="159" stroke="${ac}" stroke-width="3.5"/>
+  <circle cx="105" cy="159" r="28" fill="none" stroke="${fg}" stroke-width="2"/>
+  <circle cx="105" cy="159" r="3.5" fill="${ac}"/>
+  <path d="M73,58 Q73,82 105,82 Q137,82 137,58" fill="none" stroke="${fg}" stroke-width="2"/>
+  <path d="M73,260 Q73,236 105,236 Q137,236 137,260" fill="none" stroke="${fg}" stroke-width="2"/>
+  <circle cx="52" cy="113" r="20" fill="none" stroke="${fg}" stroke-width="1.5" opacity=".45"/>
+  <circle cx="158" cy="113" r="20" fill="none" stroke="${fg}" stroke-width="1.5" opacity=".45"/>
+  <circle cx="52" cy="205" r="20" fill="none" stroke="${fg}" stroke-width="1.5" opacity=".45"/>
+  <circle cx="158" cy="205" r="20" fill="none" stroke="${fg}" stroke-width="1.5" opacity=".45"/>
+  <line x1="62" y1="178" x2="88" y2="228" stroke="${fg}" stroke-width="3.5"/>
+  <path d="M62,178 Q52,225 86,228" fill="none" stroke="${fg}" stroke-width="3.5"/>`;
+}
+
+function illus_escrime(bg,fg,ac){
+  return `
+  <rect x="18" y="145" width="174" height="18" fill="${fg}" opacity=".08"/>
+  <rect x="18" y="145" width="174" height="18" fill="none" stroke="${fg}" stroke-width="2"/>
+  <line x1="52" y1="138" x2="52" y2="168" stroke="${fg}" stroke-width="2"/>
+  <line x1="105" y1="135" x2="105" y2="170" stroke="${fg}" stroke-width="2.5"/>
+  <line x1="158" y1="138" x2="158" y2="168" stroke="${fg}" stroke-width="2"/>
+  <line x1="28" y1="252" x2="188" y2="55" stroke="${fg}" stroke-width="2.5"/>
+  <ellipse cx="70" cy="215" rx="19" ry="12" fill="none" stroke="${ac}" stroke-width="3.5" transform="rotate(-55,70,215)"/>
+  <circle cx="188" cy="55" r="4.5" fill="${ac}"/>
+  <line x1="28" y1="252" x2="42" y2="237" stroke="${ac}" stroke-width="6"/>`;
+}
+
+function illus_gym(bg,fg,ac){
+  const springs=[0,1,2,3,4,5,6,7,8].map(i=>`<line x1="${20+i*21}" y1="268" x2="${10+i*21}" y2="282" stroke="${fg}" stroke-width="1.5"/>`).join('');
+  return `
+  <line x1="52" y1="55" x2="158" y2="55" stroke="${fg}" stroke-width="4.5"/>
+  <line x1="72" y1="55" x2="72" y2="162" stroke="${fg}" stroke-width="3.5"/>
+  <line x1="138" y1="55" x2="138" y2="162" stroke="${fg}" stroke-width="3.5"/>
+  <circle cx="72" cy="188" r="30" fill="none" stroke="${fg}" stroke-width="5.5"/>
+  <circle cx="138" cy="188" r="30" fill="none" stroke="${ac}" stroke-width="5.5"/>
+  <circle cx="72" cy="188" r="21" fill="none" stroke="${fg}" stroke-width="1.5" opacity=".25"/>
+  <circle cx="138" cy="188" r="21" fill="none" stroke="${ac}" stroke-width="1.5" opacity=".25"/>
+  <line x1="18" y1="268" x2="192" y2="268" stroke="${fg}" stroke-width="3"/>
+  ${springs}`;
+}
+
+const SPORTS=[
+  {id:'tennis',     name:'TENNIS',      fn:illus_tennis},
+  {id:'golf',       name:'GOLF',        fn:illus_golf},
+  {id:'basket',     name:'BASKETBALL',  fn:illus_basket},
+  {id:'football',   name:'FOOTBALL',    fn:illus_football},
+  {id:'natation',   name:'NATATION',    fn:illus_natation},
+  {id:'athletisme', name:'ATHLÉTISME',  fn:illus_athletisme},
+  {id:'boxe',       name:'BOXE',        fn:illus_boxe},
+  {id:'cyclisme',   name:'CYCLISME',    fn:illus_cyclisme},
+  {id:'ski',        name:'SKI',         fn:illus_ski},
+  {id:'surf',       name:'SURF',        fn:illus_surf},
+  {id:'rugby',      name:'RUGBY',       fn:illus_rugby},
+  {id:'volley',     name:'VOLLEY',      fn:illus_volley},
+  {id:'baseball',   name:'BASEBALL',    fn:illus_baseball},
+  {id:'badminton',  name:'BADMINTON',   fn:illus_badminton},
+  {id:'tir',        name:"TIR À L'ARC", fn:illus_tir},
+  {id:'escalade',   name:'ESCALADE',    fn:illus_escalade},
+  {id:'pingpong',   name:'PING-PONG',   fn:illus_pingpong},
+  {id:'hockey',     name:'HOCKEY',      fn:illus_hockey},
+  {id:'escrime',    name:'ESCRIME',     fn:illus_escrime},
+  {id:'gym',        name:'GYMNASE',     fn:illus_gym}
+];
+
+function buildPoster(sport,pal,num){
+  const {bg,fg,ac}=pal;
+  const gid=`g_${sport.id}_${pal.id}`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 297">
+<defs>
+  <filter id="${gid}" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.88" numOctaves="2" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.28 0"/>
+    <feComposite in2="SourceGraphic" operator="in"/>
+  </filter>
+</defs>
+<rect width="210" height="297" fill="${bg}"/>
+${sport.fn(bg,fg,ac)}
+<text x="14" y="22" fill="${fg}" font-family="'Bebas Neue',Arial Black,sans-serif" font-size="10" letter-spacing="3.5" opacity=".85">FOCUS</text>
+<line x1="14" y1="27" x2="196" y2="27" stroke="${fg}" stroke-width=".5" opacity=".25"/>
+<line x1="14" y1="268" x2="196" y2="268" stroke="${fg}" stroke-width=".5" opacity=".25"/>
+<text x="14" y="283" fill="${fg}" font-family="'Bebas Neue',Arial Black,sans-serif" font-size="30" letter-spacing="2">${sport.name}</text>
+<text x="196" y="292" text-anchor="end" fill="${fg}" font-family="'Bebas Neue',Arial Black,sans-serif" font-size="7.5" letter-spacing="1.5" opacity=".4">${pal.name.toUpperCase()} · ${String(num).padStart(3,'0')}</text>
+<line x1="5" y1="10" x2="13" y2="10" stroke="${fg}" stroke-width=".8" opacity=".4"/>
+<line x1="10" y1="5" x2="10" y2="13" stroke="${fg}" stroke-width=".8" opacity=".4"/>
+<line x1="197" y1="10" x2="205" y2="10" stroke="${fg}" stroke-width=".8" opacity=".4"/>
+<line x1="200" y1="5" x2="200" y2="13" stroke="${fg}" stroke-width=".8" opacity=".4"/>
+<line x1="5" y1="287" x2="13" y2="287" stroke="${fg}" stroke-width=".8" opacity=".4"/>
+<line x1="10" y1="284" x2="10" y2="292" stroke="${fg}" stroke-width=".8" opacity=".4"/>
+<line x1="197" y1="287" x2="205" y2="287" stroke="${fg}" stroke-width=".8" opacity=".4"/>
+<line x1="200" y1="284" x2="200" y2="292" stroke="${fg}" stroke-width=".8" opacity=".4"/>
+<rect width="210" height="297" fill="${bg}" filter="url(#${gid})"/>
+</svg>`;
+}
+
+const grid=document.getElementById('grid');
+let n=1;
+const palOrder=['navy','kaki','terra','noir','creme'];
+SPORTS.forEach(sport=>{
+  palOrder.forEach(pid=>{
+    const pal=PALETTES[pid];
+    const wrap=document.createElement('div');
+    wrap.className='poster-wrap';
+    wrap.dataset.sport=sport.id;
+    wrap.dataset.palette=pid;
+    wrap.innerHTML=buildPoster(sport,pal,n++);
+    const lbl=document.createElement('div');
+    lbl.className='poster-label';
+    lbl.textContent=sport.name+' · '+pal.name;
+    wrap.appendChild(lbl);
+    grid.appendChild(wrap);
   });
+});
+
+let activeSport='all',activePalette='all';
+function applyFilter(){
+  document.querySelectorAll('.poster-wrap').forEach(el=>{
+    const ok=(activeSport==='all'||el.dataset.sport===activeSport)&&(activePalette==='all'||el.dataset.palette===activePalette);
+    el.classList.toggle('hidden',!ok);
+  });
+}
+function filterSport(val,btn){
+  activeSport=val;
+  document.querySelectorAll('#sport-btns button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+}
+function filterPalette(val,btn){
+  activePalette=val;
+  document.querySelectorAll('#pal-btns button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
 }
 </script>
 </body>
