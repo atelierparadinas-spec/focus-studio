@@ -143,7 +143,8 @@ function illus_natation(bg,fg,ac){
   const blks = [0,1,2,3,4,5,6,7].map(i=>{
     return `<rect x="186" y="${47+i*26}" width="20" height="16" fill="${ac}" rx="1"/>`;
   }).join('');
-  const nums = [1,2,3,4,5,6,7,8].map((n,i)=>`<text x="24" y="${${0:64,1:90,2:116,3:142,4:168,5:194,6:220,7:246}[i]+3}" fill="${fg}" font-family="Arial Black" font-size="13" font-weight="900" opacity=".25">${n}</text>`).join('');
+  const yMap=[64,90,116,142,168,194,220,246];
+  const nums = [1,2,3,4,5,6,7,8].map((n,i)=>`<text x="24" y="${yMap[i]+3}" fill="${fg}" font-family="Arial Black" font-size="13" font-weight="900" opacity=".25">${n}</text>`).join('');
   return `${lns}${blks}${nums}
   <path d="M15,255 Q57,243 99,255 Q141,267 183,255" fill="none" stroke="${fg}" stroke-width="2.5"/>
   <path d="M15,268 Q57,256 99,268 Q141,280 183,268" fill="none" stroke="${fg}" stroke-width="1" opacity=".4"/>`;
