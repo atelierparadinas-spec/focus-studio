@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.18 0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+    <linearGradient id="trackGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C05A2A"/>
+      <stop offset="100%" stop-color="#A04520"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="900" fill="url(#trackGrad)"/>
+
+  <!-- Track surface texture -->
+  <rect width="1600" height="900" fill="#B8521E" opacity="0.3"/>
+
+  <!-- 6 lanes — horizontal lines (perspective: lines converge slightly) -->
+  <!-- Lane height = 900/6 = 150px each -->
+
+  <!-- Lane dividers (white) -->
+  <line x1="0" y1="150" x2="1600" y2="150" stroke="white" stroke-width="3" opacity="0.75"/>
+  <line x1="0" y1="300" x2="1600" y2="300" stroke="white" stroke-width="3" opacity="0.75"/>
+  <line x1="0" y1="450" x2="1600" y2="450" stroke="white" stroke-width="3" opacity="0.75"/>
+  <line x1="0" y1="600" x2="1600" y2="600" stroke="white" stroke-width="3" opacity="0.75"/>
+  <line x1="0" y1="750" x2="1600" y2="750" stroke="white" stroke-width="3" opacity="0.75"/>
+  <!-- Top and bottom borders -->
+  <line x1="0" y1="2" x2="1600" y2="2" stroke="white" stroke-width="4" opacity="0.85"/>
+  <line x1="0" y1="898" x2="1600" y2="898" stroke="white" stroke-width="4" opacity="0.85"/>
+
+  <!-- Dashed center lines per lane -->
+  <line x1="0" y1="75"  x2="1600" y2="75"  stroke="white" stroke-width="1.5" stroke-dasharray="40 20" opacity="0.25"/>
+  <line x1="0" y1="225" x2="1600" y2="225" stroke="white" stroke-width="1.5" stroke-dasharray="40 20" opacity="0.25"/>
+  <line x1="0" y1="375" x2="1600" y2="375" stroke="white" stroke-width="1.5" stroke-dasharray="40 20" opacity="0.25"/>
+  <line x1="0" y1="525" x2="1600" y2="525" stroke="white" stroke-width="1.5" stroke-dasharray="40 20" opacity="0.25"/>
+  <line x1="0" y1="675" x2="1600" y2="675" stroke="white" stroke-width="1.5" stroke-dasharray="40 20" opacity="0.25"/>
+  <line x1="0" y1="825" x2="1600" y2="825" stroke="white" stroke-width="1.5" stroke-dasharray="40 20" opacity="0.25"/>
+
+  <!-- Stagger start marks -->
+  <line x1="120" y1="0"   x2="120" y2="150"  stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="200" y1="150" x2="200" y2="300"  stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="280" y1="300" x2="280" y2="450"  stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="360" y1="450" x2="360" y2="600"  stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="440" y1="600" x2="440" y2="750"  stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="520" y1="750" x2="520" y2="900"  stroke="white" stroke-width="3" opacity="0.6"/>
+
+  <!-- Finish line (full width, bold) -->
+  <rect x="1400" y="0" width="8" height="900" fill="white" opacity="0.9"/>
+
+  <!-- Lane numbers — large, bold, centered in each lane -->
+  <text x="60" y="95"  font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.55" text-anchor="middle" dominant-baseline="middle">1</text>
+  <text x="60" y="245" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.55" text-anchor="middle" dominant-baseline="middle">2</text>
+  <text x="60" y="395" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.55" text-anchor="middle" dominant-baseline="middle">3</text>
+  <text x="60" y="545" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.55" text-anchor="middle" dominant-baseline="middle">4</text>
+  <text x="60" y="695" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.55" text-anchor="middle" dominant-baseline="middle">5</text>
+  <text x="60" y="845" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.55" text-anchor="middle" dominant-baseline="middle">6</text>
+
+  <!-- Second set of numbers (repeated right side) -->
+  <text x="1540" y="95"  font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.3" text-anchor="middle" dominant-baseline="middle">1</text>
+  <text x="1540" y="245" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.3" text-anchor="middle" dominant-baseline="middle">2</text>
+  <text x="1540" y="395" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.3" text-anchor="middle" dominant-baseline="middle">3</text>
+  <text x="1540" y="545" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.3" text-anchor="middle" dominant-baseline="middle">4</text>
+  <text x="1540" y="695" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.3" text-anchor="middle" dominant-baseline="middle">5</text>
+  <text x="1540" y="845" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="900" font-size="72" fill="white" opacity="0.3" text-anchor="middle" dominant-baseline="middle">6</text>
+
+  <!-- Subtle lane shading alternation -->
+  <rect x="0" y="0"   width="1600" height="150" fill="white" opacity="0.03"/>
+  <rect x="0" y="300" width="1600" height="150" fill="white" opacity="0.03"/>
+  <rect x="0" y="600" width="1600" height="150" fill="white" opacity="0.03"/>
+
+  <!-- Film grain overlay -->
+  <rect width="1600" height="900" filter="url(#grain)" opacity="1"/>
+</svg>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FOCUS — Catalogue Capsule 01</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --kaki:  #6a7558;
+      --navy:  #162035;
+      --beige: #C8B89A;
+      --cream: #F3EFE6;
+      --font-t:'Bebas Neue',sans-serif;
+      --font-b:'Inter',sans-serif;
+    }
+
+    html,body{
+      width:100%;height:100%;overflow:hidden;
+      background:#1a1a1a;
+      font-family:var(--font-b);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ── SCENE ── */
+    .scene{
+      width:100%;height:100vh;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      gap:24px;
+    }
+
+    /* ── FLIPBOOK ── */
+    #book{
+      box-shadow:0 40px 120px rgba(0,0,0,.7);
+    }
+
+    /* ── PAGES ── */
+    .page{
+      width:100%;height:100%;
+      overflow:hidden;
+      position:relative;
+      user-select:none;
+    }
+
+    /* ─ COVER ─ */
+    .page-cover-front{
+      background:var(--navy);
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      padding:52px 40px;
+      gap:0;
+    }
+    .cover-noise{
+      position:absolute;inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:180px;opacity:.04;pointer-events:none;
+    }
+    .cover-tag{
+      font-size:9px;letter-spacing:5px;text-transform:uppercase;
+      color:rgba(255,255,255,.35);margin-bottom:48px;
+      font-family:var(--font-b);font-weight:500;
+    }
+    .cover-logo{
+      width:78%;max-width:240px;height:auto;
+      filter:invert(1) brightness(2.5);
+      position:relative;z-index:1;
+    }
+    .cover-sub{
+      margin-top:40px;
+      font-family:var(--font-t);font-size:clamp(13px,2.2vw,17px);
+      letter-spacing:10px;color:rgba(255,255,255,.38);
+      text-transform:uppercase;position:relative;z-index:1;
+    }
+    .cover-edition{
+      position:absolute;bottom:44px;left:0;right:0;
+      text-align:center;
+      font-size:8px;letter-spacing:3px;text-transform:uppercase;
+      color:rgba(255,255,255,.18);font-family:var(--font-b);
+      padding:0 40px;
+    }
+    .cover-line{
+      width:32px;height:1px;background:rgba(255,255,255,.12);
+      margin:18px auto 0;
+    }
+
+    /* ─ COLORWAY PAGES ─ */
+    .page-color{
+      display:flex;flex-direction:column;
+      height:100%;
+    }
+    .page-color .top{
+      flex:1;
+      display:flex;align-items:center;justify-content:center;
+      position:relative;overflow:hidden;
+      padding:28px 24px;
+    }
+    .page-color .tee-bg{
+      position:absolute;inset:0;opacity:.12;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:120px;
+    }
+    /* T-shirt silhouette SVG */
+    .tee-shape{
+      width:58%;max-width:190px;
+      opacity:.22;
+      filter:brightness(10);
+      display:block;
+    }
+    .page-color .seri-logo{
+      position:absolute;
+      width:20%;
+      filter:brightness(10);
+      opacity:.7;
+    }
+    .page-color .info-strip{
+      padding:28px 32px 36px;
+      display:flex;flex-direction:column;gap:7px;
+      flex-shrink:0;
+    }
+    .color-name{
+      font-family:var(--font-t);
+      font-size:clamp(36px,5.5vw,52px);
+      letter-spacing:4px;
+      line-height:1;
+    }
+    .color-ref{
+      font-size:9px;letter-spacing:3px;text-transform:uppercase;
+      opacity:.5;font-weight:500;
+    }
+    .specs{
+      margin-top:14px;
+      display:flex;flex-direction:column;gap:7px;
+    }
+    .spec{
+      font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+      opacity:.5;font-weight:400;
+      display:flex;align-items:center;gap:8px;
+    }
+    .spec::before{content:'—';opacity:.4;}
+    .page-num{
+      position:absolute;bottom:14px;right:20px;
+      font-size:8px;letter-spacing:2px;
+      text-transform:uppercase;opacity:.3;
+      font-family:var(--font-b);
+    }
+
+    /* ─ KAKI ─ */
+    .page-kaki{ background:var(--kaki) }
+    .page-kaki .color-name{ color:#fff }
+    .page-kaki .color-ref{ color:#fff }
+    .page-kaki .spec{ color:#fff }
+    .page-kaki .page-num{ color:#fff }
+    .page-kaki .info-strip{ border-top:1px solid rgba(255,255,255,.15) }
+
+    /* ─ NAVY ─ */
+    .page-navy{ background:var(--navy) }
+    .page-navy .color-name{ color:#fff }
+    .page-navy .color-ref{ color:#fff }
+    .page-navy .spec{ color:#fff }
+    .page-navy .page-num{ color:#fff }
+    .page-navy .info-strip{ border-top:1px solid rgba(255,255,255,.1) }
+
+    /* ─ BEIGE ─ */
+    .page-beige{ background:var(--beige) }
+    .page-beige .color-name{ color:var(--navy) }
+    .page-beige .color-ref{ color:var(--navy) }
+    .page-beige .spec{ color:var(--navy) }
+    .page-beige .page-num{ color:var(--navy) }
+    .page-beige .info-strip{ border-top:1px solid rgba(22,32,53,.2) }
+    .page-beige .tee-shape{ filter:none;opacity:.15 }
+    .page-beige .seri-logo{ filter:none;opacity:.5 }
+
+    /* ─ BACK COVER ─ */
+    .page-cover-back{
+      background:#0e0e0e;
+      position:relative;
+    }
+    .back-inner{
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      display:flex;flex-direction:column;
+      align-items:center;
+      gap:18px;
+      width:80%;
+    }
+    .back-logo{
+      width:100%;max-width:200px;height:auto;
+      filter:invert(1) brightness(1.5);opacity:.28;
+    }
+    .back-city{
+      font-size:9px;letter-spacing:5px;text-transform:uppercase;
+      color:rgba(255,255,255,.2);font-family:var(--font-b);
+    }
+    .back-line{width:30px;height:1px;background:rgba(255,255,255,.1)}
+
+    /* ── NAV ── */
+    .nav{
+      display:flex;align-items:center;gap:20px;
+    }
+    .nav-btn{
+      background:none;border:1px solid rgba(255,255,255,.15);
+      color:rgba(255,255,255,.5);
+      width:40px;height:40px;border-radius:50%;
+      font-size:16px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:all .25s;
+    }
+    .nav-btn:hover{
+      border-color:rgba(255,255,255,.5);
+      color:rgba(255,255,255,.9);
+      transform:scale(1.05);
+    }
+    .nav-info{
+      font-size:9px;letter-spacing:3px;text-transform:uppercase;
+      color:rgba(255,255,255,.25);font-family:var(--font-b);
+      min-width:80px;text-align:center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="scene">
+
+  <div id="book">
+
+    <!-- ① COUVERTURE -->
+    <div class="page page-cover-front">
+      <div class="cover-noise"></div>
+      <div class="cover-tag">Made in Toulouse</div>
+      <img class="cover-logo" src="focus-logo-clean.svg" alt="FOCUS">
+      <div class="cover-sub">Capsule &nbsp;01</div>
+      <div class="cover-edition">
+        T-shirt Pro Club · 3 Coloris · Édition limitée
+        <div class="cover-line"></div>
+      </div>
+    </div>
+
+    <!-- ② KAKI -->
+    <div class="page page-color page-kaki">
+      <div class="top">
+        <div class="tee-bg"></div>
+        <!-- T-shirt silhouette -->
+        <svg class="tee-shape" viewBox="0 0 220 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M75 10 C75 10 85 32 110 32 C135 32 145 10 145 10 L190 35 L210 80 L175 90 L175 250 L45 250 L45 90 L10 80 L30 35 Z" fill="white"/>
+        </svg>
+        <img class="seri-logo" src="focus-logo-clean.svg" alt="FOCUS" style="top:38%;left:50%;transform:translate(-50%,-50%)">
+      </div>
+      <div class="info-strip">
+        <div class="color-name">Kaki</div>
+        <div class="color-ref">Réf. FCS-01-KK &nbsp;·&nbsp; Olive Field</div>
+        <div class="specs">
+          <div class="spec">T-shirt Pro Club · Made in USA</div>
+          <div class="spec">203 g/m² · Coton heavyweight</div>
+          <div class="spec">Sérigraphie monochrome blanc</div>
+        </div>
+      </div>
+      <div class="page-num">01 / 03</div>
+    </div>
+
+    <!-- ③ NAVY -->
+    <div class="page page-color page-navy">
+      <div class="top">
+        <div class="tee-bg"></div>
+        <svg class="tee-shape" viewBox="0 0 220 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M75 10 C75 10 85 32 110 32 C135 32 145 10 145 10 L190 35 L210 80 L175 90 L175 250 L45 250 L45 90 L10 80 L30 35 Z" fill="white"/>
+        </svg>
+        <img class="seri-logo" src="focus-logo-clean.svg" alt="FOCUS" style="top:38%;left:50%;transform:translate(-50%,-50%)">
+      </div>
+      <div class="info-strip">
+        <div class="color-name">Navy</div>
+        <div class="color-ref">Réf. FCS-01-NV &nbsp;·&nbsp; Deep Navy</div>
+        <div class="specs">
+          <div class="spec">T-shirt Pro Club · Made in USA</div>
+          <div class="spec">203 g/m² · Coton heavyweight</div>
+          <div class="spec">Sérigraphie monochrome blanc</div>
+        </div>
+      </div>
+      <div class="page-num">02 / 03</div>
+    </div>
+
+    <!-- ④ BEIGE -->
+    <div class="page page-color page-beige">
+      <div class="top">
+        <div class="tee-bg"></div>
+        <svg class="tee-shape" viewBox="0 0 220 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M75 10 C75 10 85 32 110 32 C135 32 145 10 145 10 L190 35 L210 80 L175 90 L175 250 L45 250 L45 90 L10 80 L30 35 Z" fill="#162035"/>
+        </svg>
+        <img class="seri-logo" src="focus-logo-clean.svg" alt="FOCUS" style="top:38%;left:50%;transform:translate(-50%,-50%);filter:none;opacity:.45">
+      </div>
+      <div class="info-strip">
+        <div class="color-name">Beige</div>
+        <div class="color-ref">Réf. FCS-01-BG &nbsp;·&nbsp; Sand Wash</div>
+        <div class="specs">
+          <div class="spec">T-shirt Pro Club · Made in USA</div>
+          <div class="spec">203 g/m² · Coton heavyweight</div>
+          <div class="spec">Sérigraphie monochrome navy</div>
+        </div>
+      </div>
+      <div class="page-num">03 / 03</div>
+    </div>
+
+    <!-- ⑤ 4E DE COUVERTURE -->
+    <div class="page page-cover-back">
+      <div class="back-inner">
+        <div class="back-line"></div>
+        <img class="back-logo" src="focus-logo-clean.svg" alt="FOCUS">
+        <div class="back-city">Toulouse &nbsp;·&nbsp; 2025</div>
+        <div class="back-line"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="nav">
+    <button class="nav-btn" id="prev">←</button>
+    <div class="nav-info" id="nav-label">Couverture</div>
+    <button class="nav-btn" id="next">→</button>
+  </div>
+
+</div>
+
+<script>
+  const labels = ['Couverture','Kaki','Navy','Beige','4e de couv.'];
+
+  const pageFlip = new St.PageFlip(
+    document.getElementById('book'),
+    {
+      width:  360,
+      height: 500,
+      showCover:    true,
+      drawShadow:   true,
+      flippingTime: 700,
+      usePortrait:  true,
+      startPage:    0,
+      mobileScrollSupport: false,
+      clickEventForward: false,
+      useMouseEvents: false,
+    }
+  );
+
+  pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+
+  function updateLabel(idx) {
+    document.getElementById('nav-label').textContent = labels[idx] || '';
+  }
+
+  pageFlip.on('flip', e => updateLabel(e.data));
+  pageFlip.on('changeState', () => updateLabel(pageFlip.getCurrentPageIndex()));
+
+  document.getElementById('prev').onclick = () => pageFlip.flipPrev('top');
+  document.getElementById('next').onclick = () => pageFlip.flipNext('top');
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') pageFlip.flipNext('top');
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   pageFlip.flipPrev('top');
+  });
+</script>
+</body>
+</html>

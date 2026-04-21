@@ -1,0 +1,3043 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FOCUS — Dashboard Interne</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F3EFE6;--bg-alt:#EDE8DE;--bg-card:#E8E3D8;--border:#D4CEBE;
+  --navy:#162035;--navy2:#2A3D5C;--muted:#7A7E8A;
+  --kaki:#6B7A52;--kaki-lt:#8A9A6A;--kaki-bg:#E8EDE0;
+  --beige:#C8B89A;--white:#FAF8F3;
+  --red:#C0452A;--red-bg:#FAE8E4;
+  --green:#4A8C5F;--green-bg:#E4F0E8;
+  --orange:#C07A2A;--orange-bg:#FAF0E0;
+  --font-title:'DM Sans',sans-serif;
+  --font:'DM Sans',sans-serif;
+  --r:4px;--tr:0.18s ease;
+  --tab-h:48px;--font-sz:14px;--kpi-sz:30px;
+}
+[data-theme="dark"]{
+  --bg:#111318;--bg-alt:#191d26;--bg-card:#1e2230;--border:#282f3e;
+  --navy:#dde3ed;--navy2:#a8b4c8;--muted:#5e6a7e;
+  --kaki:#8fa070;--kaki-lt:#a0b282;--kaki-bg:rgba(107,122,82,0.13);
+  --beige:#9a8870;--white:#191d26;
+  --red:#e06855;--red-bg:rgba(192,69,42,0.15);
+  --green:#5aad78;--green-bg:rgba(74,140,95,0.15);
+  --orange:#d48a40;--orange-bg:rgba(192,122,42,0.15);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--navy);font-family:var(--font);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background var(--tr),color var(--tr)}
+img{display:block;max-width:100%}
+
+/* ── HEADER ─────────────────────────── */
+header{
+  position:sticky;top:0;z-index:200;
+  background:var(--bg);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  transition:background var(--tr),border-color var(--tr);
+}
+.h-row1{
+  display:flex;align-items:center;gap:20px;
+  padding:0 24px;height:66px;
+}
+.h-brand{display:flex;align-items:center;gap:20px}
+.h-badge{background:var(--kaki-bg);color:var(--kaki);border:1px solid var(--kaki);
+  font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:4px 10px;border-radius:2px;white-space:nowrap;align-self:center}
+.h-users{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.avatar{width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff}
+.av-v{background:var(--navy)}
+.av-r{background:var(--kaki)}
+
+/* ── NAV TABS (intégré dans le header) ── */
+nav{
+  background:var(--bg-alt);border-top:1px solid var(--border);
+  display:flex;padding:0 24px;gap:2px;overflow-x:auto;
+}
+.tab{
+  display:flex;align-items:center;gap:7px;
+  padding:0 18px;height:var(--tab-h);font-size:12px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+  cursor:pointer;border-bottom:2px solid transparent;
+  transition:all var(--tr);white-space:nowrap;user-select:none;
+}
+.tab:hover{color:var(--navy)}
+.tab.active{color:var(--navy);border-bottom-color:var(--kaki)}
+.tab[draggable]{cursor:grab}
+.tab.drag-over{border-bottom-color:var(--kaki);background:var(--kaki-bg);opacity:0.85}
+.tab.dragging{opacity:0.35}
+.tab-icon{font-size:14px}
+.tab-count{
+  background:var(--navy);color:var(--bg);
+  font-size:9px;font-weight:700;
+  padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;
+}
+
+/* ── MAIN ───────────────────────────── */
+main{padding:28px;max-width:1400px;margin:0 auto}
+.section{display:none}
+.section.active{display:block}
+
+/* ── OVERVIEW CARDS ─────────────────── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px}
+.kpi{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--r);padding:20px 22px;
+}
+.kpi-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.kpi-value{font-family:var(--font-title);font-size:var(--kpi-sz);font-weight:700;letter-spacing:-0.5px;color:var(--navy);line-height:1}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.kpi-green .kpi-value{color:var(--green)}
+.kpi-orange .kpi-value{color:var(--orange)}
+.kpi-kaki .kpi-value{color:var(--kaki)}
+
+/* ── SECTION HEADER ─────────────────── */
+.sec-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.sec-title{font-family:var(--font-title);font-size:22px;font-weight:700;letter-spacing:0.02em;color:var(--navy)}
+.sec-actions{display:flex;gap:10px;align-items:center}
+
+/* ── BUTTONS ────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;font-family:var(--font);font-size:11px;
+  font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  border:none;border-radius:var(--r);cursor:pointer;transition:all var(--tr);
+}
+.btn-primary{background:var(--navy);color:var(--bg)}
+.btn-primary:hover{background:var(--navy2)}
+.btn-kaki{background:var(--kaki);color:#fff}
+.btn-kaki:hover{background:var(--kaki-lt)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--navy);color:var(--navy)}
+.btn-danger{background:transparent;border:1px solid var(--border);color:var(--red)}
+.btn-danger:hover{background:var(--red-bg);border-color:var(--red)}
+.btn-sm{padding:5px 12px;font-size:10px}
+.btn-icon{padding:7px 10px}
+
+/* ── TABLE ──────────────────────────── */
+.table-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead tr{background:var(--bg-alt)}
+th{padding:12px 16px;text-align:left;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--bg-alt)}
+.empty-row td{text-align:center;padding:40px;color:var(--muted);font-style:italic}
+
+/* ── BADGE / TAG ────────────────────── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.badge-orange{background:var(--orange-bg);color:var(--orange)}
+.badge-red{background:var(--red-bg);color:var(--red)}
+.badge-navy{background:rgba(22,32,53,0.1);color:var(--navy)}
+.badge-kaki{background:var(--kaki-bg);color:var(--kaki)}
+
+/* ── COLOR SWATCH ───────────────────── */
+.color-dot{width:14px;height:14px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:6px;border:1px solid rgba(0,0,0,0.1)}
+.dot-olive{background:#5C6B4E}.dot-navy{background:#1B2A44}.dot-beige{background:#D8C8AA}
+
+/* ── STOCK PROGRESS ─────────────────── */
+.progress-wrap{display:flex;align-items:center;gap:10px}
+.progress-bar{flex:1;height:5px;background:var(--border);border-radius:3px;min-width:60px}
+.progress-fill{height:100%;border-radius:3px;background:var(--kaki);transition:width 0.4s}
+.progress-fill.warn{background:var(--orange)}
+.progress-fill.danger{background:var(--red)}
+.progress-label{font-size:11px;font-weight:600;color:var(--navy);min-width:30px;text-align:right}
+
+/* ── STOCK PIVOT ────────────────────── */
+.stock-kpi-row{display:flex;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.stock-kpi{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:14px 22px;flex:1;min-width:110px;text-align:center}
+.stock-kpi-main{border-color:var(--navy);background:var(--navy)}
+.stock-kpi-main .stock-kpi-val{color:var(--white)}
+.stock-kpi-main .stock-kpi-label{color:rgba(255,255,255,0.6)}
+.stock-kpi-val{font-family:var(--font-title);font-size:26px;font-weight:700;letter-spacing:-0.3px;color:var(--navy)}
+.stock-kpi-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.stock-cap-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.stock-cap-header{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--border);background:var(--bg);flex-wrap:wrap;gap:8px}
+.stock-cap-name{font-family:var(--font-title);font-size:13px;font-weight:700;letter-spacing:0.12em;color:var(--navy);text-transform:uppercase}
+.stock-cap-kpi{font-size:12px;font-weight:600;color:var(--navy)}
+.stock-pivot{border-collapse:collapse;width:100%}
+.stock-pivot th,.stock-pivot td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:13px;text-align:center;vertical-align:middle}
+.stock-pivot th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);background:var(--bg)}
+.stock-pivot td:first-child{text-align:left}
+.stock-pivot tbody tr:last-child td{border-bottom:none}
+.stock-pivot tbody tr:hover{background:rgba(22,32,53,0.03)}
+.stock-cell{display:inline-block;min-width:26px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;text-align:center}
+.stock-cell-out{background:#FFE5E5;color:#C62828}
+.stock-cell-low{background:#FFF3CD;color:#B36A00}
+.stock-cell-ok{background:#E3F0E8;color:#2E7D32}
+
+/* ── CAPSULE CARDS ──────────────────── */
+.capsule-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.capsule-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;cursor:pointer;
+  transition:border-color var(--tr),transform var(--tr),box-shadow var(--tr);
+}
+.capsule-card:hover{border-color:var(--navy);transform:translateY(-3px);box-shadow:0 8px 28px rgba(22,32,53,0.12)}
+.capsule-body{padding:20px}
+.capsule-name{font-family:var(--font-title);font-size:17px;font-weight:700;letter-spacing:0.06em;color:var(--navy);margin-bottom:10px}
+.capsule-colors{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.capsule-color-dot{
+  width:20px;height:20px;border-radius:50%;
+  border:2px solid rgba(255,255,255,0.8);
+  box-shadow:0 1px 3px rgba(0,0,0,0.18);
+  display:inline-block;
+}
+.capsule-stats{display:flex;gap:20px;margin-bottom:12px}
+.capsule-stat{display:flex;flex-direction:column;gap:2px}
+.capsule-stat-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.capsule-stat-val{font-family:var(--font-title);font-size:18px;font-weight:700;letter-spacing:-0.2px;color:var(--navy)}
+.capsule-desc{
+  font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:12px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.capsule-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* Color toggle buttons (dans les modals) */
+.color-btn-group{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.color-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 12px;border:1.5px solid var(--border);border-radius:20px;
+  background:var(--bg-alt);cursor:pointer;font-size:11px;font-weight:600;
+  color:var(--muted);transition:all var(--tr);user-select:none;
+}
+.color-btn:hover{border-color:var(--navy);color:var(--navy)}
+.color-btn.selected{border-color:var(--navy);background:var(--navy);color:#fff}
+.color-btn.selected .cbdot{border-color:rgba(255,255,255,0.5)}
+.cbdot{width:12px;height:12px;border-radius:50%;border:1.5px solid rgba(0,0,0,0.15);flex-shrink:0;display:inline-block}
+
+/* ── CAPSULE DETAIL MODAL ───────────── */
+.capsule-detail-modal{max-width:780px;width:96%}
+.cd-tabs{
+  display:flex;border-bottom:1px solid var(--border);
+  padding:0 24px;gap:0;
+}
+.cd-tab{
+  padding:12px 18px;font-size:11px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;cursor:pointer;color:var(--muted);
+  border-bottom:2px solid transparent;transition:all var(--tr);
+}
+.cd-tab:hover{color:var(--navy)}
+.cd-tab.active{color:var(--navy);border-bottom-color:var(--kaki)}
+.cd-pane{display:none;padding:24px}
+.cd-pane.active{display:block}
+
+/* info pane */
+.cd-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cd-info-field{display:flex;flex-direction:column;gap:5px}
+.cd-info-field.full{grid-column:1/-1}
+.cd-info-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.cd-info-val{font-size:13px;color:var(--navy)}
+
+/* media pane */
+.media-drop{
+  border:2px dashed var(--border);border-radius:6px;
+  padding:24px;text-align:center;cursor:pointer;
+  transition:border-color var(--tr),background var(--tr);margin-bottom:18px;
+}
+.media-drop:hover,.media-drop.drag-over{border-color:var(--kaki);background:var(--kaki-bg)}
+.media-drop p{font-size:12px;color:var(--muted);margin:4px 0 0;line-height:1.6}
+.media-drop strong{color:var(--navy)}
+.media-gallery{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:10px;max-height:380px;overflow-y:auto;padding-right:4px;
+}
+.media-item{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:4px;overflow:hidden;position:relative;
+}
+.media-item-thumb{
+  aspect-ratio:1;overflow:hidden;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;background:#fff;
+}
+.media-item-thumb img{width:100%;height:100%;object-fit:cover;transition:transform 0.2s}
+.media-item-thumb:hover img{transform:scale(1.06)}
+.media-item-thumb::after{
+  content:'';position:absolute;inset:0;background:rgba(22,32,53,0);
+  transition:background 0.2s;pointer-events:none;
+}
+.media-item-thumb:hover::after{background:rgba(22,32,53,0.25)}
+.media-item-info{padding:7px 8px}
+.media-item-select{
+  width:100%;font-size:10px;font-weight:700;letter-spacing:.5px;
+  border:1px solid var(--border);border-radius:3px;
+  padding:3px 5px;background:var(--bg-alt);font-family:var(--font);
+  color:var(--navy);outline:none;margin-bottom:4px;
+}
+.media-item-label-inp{
+  width:100%;font-size:11px;border:1px solid transparent;border-radius:3px;
+  padding:3px 5px;background:transparent;font-family:var(--font);
+  color:var(--muted);outline:none;
+}
+.media-item-label-inp:focus{border-color:var(--border);background:var(--bg-alt);color:var(--navy)}
+.media-item-del{
+  position:absolute;top:5px;right:5px;
+  background:rgba(192,69,42,0.9);color:#fff;border:none;border-radius:3px;
+  width:22px;height:22px;font-size:12px;cursor:pointer;
+  display:none;align-items:center;justify-content:center;line-height:1;
+}
+.media-item:hover .media-item-del{display:flex}
+.media-set-cover{
+  position:absolute;top:5px;left:5px;
+  background:rgba(22,32,53,0.8);color:#fff;border:none;border-radius:3px;
+  font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  padding:3px 6px;cursor:pointer;display:none;
+}
+.media-item:hover .media-set-cover{display:block}
+.media-item.is-cover{border-color:var(--kaki);border-width:2px}
+.media-item.is-cover .media-set-cover{display:block;background:var(--kaki)}
+
+/* ── LIGHTBOX ───────────────────────── */
+#lightbox{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);
+  z-index:2000;align-items:center;justify-content:center;flex-direction:column;
+}
+#lightbox.open{display:flex}
+#lightbox img{max-width:88vw;max-height:78vh;object-fit:contain;border-radius:4px;background:#fff;padding:16px;box-shadow:0 4px 32px rgba(0,0,0,0.4)}
+#lightbox-caption{color:#bbb;font-size:11px;margin-top:10px;letter-spacing:1px;text-align:center}
+#lightbox-close{
+  position:fixed;top:16px;right:22px;color:#fff;font-size:30px;
+  cursor:pointer;background:none;border:none;opacity:0.65;line-height:1;
+}
+#lightbox-close:hover{opacity:1}
+#lightbox-prev,#lightbox-next{
+  position:fixed;top:50%;transform:translateY(-50%);
+  color:#fff;font-size:36px;cursor:pointer;background:none;border:none;
+  opacity:0.5;padding:0 18px;user-select:none;
+}
+#lightbox-prev{left:0}#lightbox-next{right:0}
+#lightbox-prev:hover,#lightbox-next:hover{opacity:1}
+
+/* ── SUPPLIER GRID ──────────────────── */
+.supplier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.supplier-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r);padding:20px;
+  transition:border-color var(--tr);
+}
+.supplier-card:hover{border-color:var(--navy)}
+.supplier-name{font-weight:700;font-size:15px;margin-bottom:4px}
+.supplier-product{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--kaki);margin-bottom:12px}
+.supplier-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12.5px}
+.supplier-row:last-of-type{border-bottom:none}
+.supplier-row-label{color:var(--muted)}
+.supplier-actions{display:flex;gap:8px;margin-top:14px}
+
+/* ── MODAL ──────────────────────────── */
+.overlay{
+  position:fixed;inset:0;background:rgba(22,32,53,0.5);
+  z-index:500;display:none;align-items:center;justify-content:center;padding:20px;
+}
+.overlay.open{display:flex}
+.modal{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r);width:100%;max-width:540px;
+  max-height:90vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(22,32,53,0.2);
+}
+.modal-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 24px;border-bottom:1px solid var(--border);
+}
+.modal-title{font-family:var(--font-title);font-size:18px;font-weight:700;letter-spacing:0.02em;color:var(--navy)}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);line-height:1}
+.modal-close:hover{color:var(--navy)}
+.modal-body{padding:24px}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
+
+/* ── FORM ───────────────────────────── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+input,select,textarea{
+  background:var(--white);border:1px solid var(--border);
+  color:var(--navy);padding:10px 13px;
+  font-family:var(--font);font-size:13px;border-radius:var(--r);
+  transition:border-color var(--tr);width:100%;
+  -webkit-appearance:none;appearance:none;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--kaki)}
+textarea{resize:vertical;min-height:80px}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%237A7E8A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
+}
+
+/* ── TOAST ──────────────────────────── */
+#toast{
+  position:fixed;bottom:24px;right:24px;z-index:999;
+  background:var(--navy);color:var(--bg);
+  padding:12px 20px;border-radius:var(--r);
+  font-size:12px;font-weight:600;letter-spacing:1px;
+  transform:translateY(80px);opacity:0;
+  transition:all 0.3s ease;pointer-events:none;
+}
+#toast.show{transform:translateY(0);opacity:1}
+
+/* ── MEETING ────────────────────────── */
+.meeting-tabs{
+  display:flex;gap:0;border-bottom:1px solid var(--border);
+  margin-bottom:24px;
+}
+.meeting-tab{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 22px;font-size:12px;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;cursor:pointer;color:var(--muted);
+  border-bottom:2px solid transparent;transition:all var(--tr);
+}
+.meeting-tab:hover{color:var(--navy)}
+.meeting-tab.active{color:var(--navy);border-bottom-color:var(--kaki)}
+
+.note-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r);padding:20px 22px;margin-bottom:14px;
+  transition:border-color var(--tr);
+}
+.note-card:hover{border-color:var(--navy)}
+.note-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.note-card-title{font-family:var(--font-title);font-size:15px;font-weight:700;letter-spacing:0.04em;color:var(--navy)}
+.note-card-date{font-size:11px;color:var(--muted);white-space:nowrap;margin-top:3px}
+.note-card-content{
+  font-size:13px;color:var(--navy);line-height:1.75;
+  white-space:pre-wrap;border-left:3px solid var(--border);
+  padding-left:14px;margin-bottom:14px;
+}
+.note-card-actions{display:flex;gap:8px}
+
+/* ── CUSTOMIZER PANEL ───────────────── */
+#customizer-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.35);
+  z-index:800;display:none;
+}
+#customizer-overlay.open{display:block}
+#customizer{
+  position:fixed;top:0;right:0;bottom:0;width:360px;
+  background:var(--bg-alt);border-left:1px solid var(--border);
+  z-index:801;display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:-8px 0 32px rgba(0,0,0,0.18);
+}
+#customizer.open{transform:translateX(0)}
+.cust-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 22px;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.cust-title{font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy)}
+.cust-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);line-height:1;padding:4px}
+.cust-close:hover{color:var(--navy)}
+.cust-body{overflow-y:auto;flex:1;padding:20px 22px}
+.cust-section{margin-bottom:28px}
+.cust-section-title{
+  font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:14px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+/* Palette swatches */
+.brand-palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.swatch{
+  width:36px;height:36px;border-radius:4px;cursor:pointer;
+  border:2px solid transparent;transition:transform 0.12s,border-color 0.12s;
+  position:relative;flex-shrink:0;
+}
+.swatch:hover{transform:scale(1.12)}
+.swatch.active{border-color:var(--navy)}
+.swatch-label{
+  font-size:9px;font-weight:600;letter-spacing:0.06em;color:var(--muted);
+  text-align:center;margin-top:4px;text-transform:uppercase;
+}
+.swatch-group{display:flex;flex-direction:column;align-items:center}
+/* Color rows */
+.cust-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid var(--border);gap:10px;
+}
+.cust-row:last-child{border-bottom:none}
+.cust-row-label{font-size:12px;color:var(--navy);font-weight:500;flex:1}
+.cust-row-sub{font-size:10px;color:var(--muted);display:block;font-weight:400}
+.cust-color-input{
+  width:36px;height:28px;padding:0;border:1px solid var(--border);
+  border-radius:3px;cursor:pointer;background:none;
+  -webkit-appearance:none;
+}
+.cust-color-input::-webkit-color-swatch-wrapper{padding:2px}
+.cust-color-input::-webkit-color-swatch{border-radius:2px;border:none}
+/* Range sliders */
+.cust-range-wrap{display:flex;align-items:center;gap:8px}
+.cust-range{
+  flex:1;-webkit-appearance:none;appearance:none;
+  height:3px;background:var(--border);border-radius:2px;outline:none;cursor:pointer;
+}
+.cust-range::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--kaki);cursor:pointer;
+}
+.cust-range-val{font-size:11px;font-weight:600;color:var(--navy);min-width:34px;text-align:right}
+/* Preset buttons */
+.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.preset-btn{
+  padding:9px 10px;border:1px solid var(--border);border-radius:var(--r);
+  background:var(--bg-card);cursor:pointer;font-family:var(--font);
+  font-size:11px;font-weight:600;letter-spacing:0.06em;color:var(--navy);
+  transition:all 0.15s;text-align:center;
+}
+.preset-btn:hover{border-color:var(--kaki);color:var(--kaki)}
+/* Footer buttons */
+.cust-footer{
+  padding:16px 22px;border-top:1px solid var(--border);flex-shrink:0;
+  display:flex;gap:10px;
+}
+.cust-footer .btn{flex:1;justify-content:center;font-size:11px}
+
+/* ── RESPONSIVE ─────────────────────── */
+@media(max-width:700px){
+  .h-row1{padding:0 16px}nav{padding:0 12px}main{padding:16px}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .form-group.full{grid-column:1}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="h-row1">
+  <div class="h-brand">
+    <svg height="36" viewBox="30 485 760 155" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0" aria-label="FOCUS">
+      <path fill="var(--navy)" d="m 58.81974,599.3663 c 0,-0.88872 5.242691,-22.00123 13.997965,-56.37032 4.378471,-17.18783 8.389618,-33.04216 8.91366,-35.23185 0.524041,-2.18969 1.235231,-4.40181 1.580421,-4.91582 0.508625,-0.75738 7.828616,-0.93703 38.608464,-0.94758 20.88946,-0.007 47.87645,0.09 59.97108,0.21601 l 21.99024,0.22902 -3.44235,2.78931 c -4.49468,3.642 -9.03433,9.96922 -11.27009,15.70789 l -1.79078,4.59651 -32.42914,0.0107 c -17.83603,0.006 -32.82512,0.24293 -33.30908,0.5267 -0.73907,0.43334 -4.07877,11.53891 -4.07877,13.5632 0,0.38376 12.754,0.64682 31.35962,0.64682 26.94726,0 31.30044,0.14195 30.93905,1.0089 -0.23132,0.5549 -1.54135,5.60772 -2.9112,11.2285 l -2.49062,10.21959 -31.30922,0.18324 -31.30922,0.18323 -4.19583,15.44973 -4.19583,15.44973 -2.28863,0.21542 c -2.375243,0.22357 -35.498298,4.73035 -39.860386,5.42347 -1.363645,0.21668 -2.479354,0.13458 -2.479354,-0.18245 z m 166.78107,-2.30417 c -21.87258,-1.12102 -30.63826,-3.51604 -36.90124,-10.08239 -3.24692,-3.40419 -4.27613,-7.27964 -3.75457,-14.13769 0.60884,-8.00578 10.52265,-46.26032 13.45362,-51.91363 5.71557,-11.0243 14.74048,-16.2223 33.21301,-19.12944 9.67169,-1.52209 54.28749,-1.74199 66.3704,-0.32711 15.54011,1.81971 22.61648,3.90192 27.7392,8.16225 6.66056,5.53928 7.34935,13.18933 2.87735,31.95734 -7.35028,30.8475 -9.99338,37.5192 -17.42709,43.98929 -6.7246,5.8529 -14.02524,8.6789 -26.78058,10.36647 -9.58061,1.26755 -43.32571,1.9075 -58.7901,1.11491 z m 48.34097,-25.98456 c 2.15304,-1.10973 4.03671,-2.80357 5.07627,-4.5647 0.9091,-1.54011 3.43867,-9.95573 5.62128,-18.70136 4.46256,-17.88142 4.43161,-18.73049 -0.77142,-21.16101 -2.37096,-1.10756 -4.67229,-1.22525 -20.59683,-1.05339 -19.61795,0.21173 -22.0592,0.66407 -24.86604,4.60746 -1.53685,2.15915 -8.52567,27.46628 -9.21316,33.36164 -0.68883,5.90693 0.76882,7.81916 6.99702,9.17907 0.83917,0.18323 8.90661,0.27996 17.92764,0.21496 15.98397,-0.11518 16.4891,-0.16315 19.82524,-1.88267 z m 217.12295,25.2603 c -16.71191,-1.06369 -26.66211,-4.21244 -30.5937,-9.6814 -2.33828,-3.25263 -3.63874,-9.20293 -3.01919,-13.81442 0.42879,-3.1916 8.64141,-35.55397 17.50944,-68.99709 l 0.41898,-1.58009 h 21.39746 c 20.01685,0 21.37258,0.0793 21.01185,1.22896 -0.68198,2.1735 -4.09888,14.84824 -8.47197,31.42615 -2.3434,8.8836 -5.16831,19.47017 -6.27757,23.52573 -3.78919,13.85352 -1.88175,15.12527 21.95389,14.63728 17.83861,-0.36521 18.73402,-1.11775 23.59616,-19.83149 1.73608,-6.68195 5.46352,-20.80846 8.2832,-31.39225 l 5.1267,-19.24325 20.8127,-0.18694 c 19.59185,-0.17598 20.78886,-0.11419 20.40619,1.05339 -0.22358,0.68218 -3.51427,12.93297 -7.31266,27.22397 -9.93778,37.38976 -11.60642,41.78005 -18.78733,49.43044 -7.37056,7.85246 -23.62606,13.64326 -43.40751,15.46334 -11.78683,1.08451 -31.7675,1.43012 -42.64664,0.73767 z m -131.28957,-0.69444 c -10.04807,-0.7766 -15.51012,-1.86131 -20.08043,-3.98777 -10.88372,-5.06394 -12.20999,-11.76344 -6.71345,-33.91221 8.10233,-32.64906 7.95472,-32.14767 11.17537,-37.95904 2.82947,-5.10552 9.38052,-10.84362 14.72251,-12.89553 10.80723,-4.15116 10.66996,-4.14112 60.66646,-4.43897 l 46.03865,-0.27428 -0.5225,2.8469 c -0.28738,1.5658 -1.60859,6.87917 -2.93604,11.80749 l -2.41354,8.96058 -35.09239,0.35113 c -23.95307,0.23967 -35.69779,0.60612 -36.99959,1.15444 -4.55138,1.91706 -5.35546,3.62458 -9.61379,20.41539 -2.23192,8.80061 -4.07153,16.99315 -4.08803,18.20565 -0.0448,3.29509 2.11067,5.25746 6.50393,5.92118 2.07072,0.31284 18.2757,0.58764 36.01107,0.61066 l 32.24614,0.0419 2.24872,0.0468 c -0.52259,-0.0109 -0.85536,12.60262 4.03183,16.89395 l 7.06696,6.20534 -57.66138,0.45884 c -20.74791,0.1651 -40.81423,-0.16007 -44.59048,-0.45194 z m 208.91886,-1.42038 c 8.49141,-3.21277 17.0811,-10.43774 20.64848,-17.36787 l 2.22966,-4.33143 44.17697,-0.19198 c 42.72254,-0.18566 44.21262,-0.23686 45.25951,-1.55516 1.54619,-1.94705 1.39183,-5.80876 -0.26481,-6.62492 -0.74104,-0.36508 -13.63285,-2.44753 -28.64847,-4.62767 -30.18375,-4.38244 -36.91613,-5.74021 -42.70847,-8.61339 -7.90796,-3.92258 -9.35842,-8.69868 -6.341,-20.87971 2.95245,-11.91878 4.64264,-15.54782 9.19146,-19.7352 4.47301,-4.11758 9.73833,-6.06266 19.74978,-7.29581 3.64526,-0.449 25.57136,-0.73504 56.34388,-0.73504 41.84146,0 50.30978,0.15975 49.98332,0.94289 -0.21617,0.51858 -1.64521,5.33784 -3.17563,10.70947 -1.53043,5.37162 -2.95931,10.3227 -3.1753,11.00239 -0.36912,1.1616 -2.90454,1.23032 -42.22146,1.14441 -23.00582,-0.0503 -42.22733,0.13535 -42.71446,0.4125 -1.25341,0.71309 -2.35658,3.66978 -1.83556,4.91964 0.62912,1.50918 3.56494,2.09522 26.60039,5.30993 35.86049,5.0045 42.93448,6.50498 48.24439,10.23324 4.23781,2.9755 5.53241,5.56399 5.53567,11.06831 0.003,5.61417 -2.44788,15.95923 -5.09567,21.50587 -3.39772,7.11762 -9.62562,11.57382 -19.88287,14.22662 -5.8381,1.50989 -6.7601,1.53214 -70.75982,1.7072 l -64.84464,0.17738 z"/>
+    </svg>
+    <div class="h-badge">Dashboard Interne</div>
+  </div>
+    <nav id="tabs">
+      <div class="tab active" onclick="switchTab('overview')" data-tab="overview">Vue globale</div>
+      <div class="tab" onclick="switchTab('capsules')" data-tab="capsules">Capsules</div>
+      <div class="tab" onclick="switchTab('suppliers')" data-tab="suppliers">Fournisseurs</div>
+      <div class="tab" onclick="switchTab('orders')" data-tab="orders">Commandes</div>
+      <div class="tab" onclick="switchTab('stock')" data-tab="stock">Stock</div>
+      <div class="tab" onclick="switchTab('events')" data-tab="events">Evenements</div>
+      <div class="tab" onclick="switchTab('meeting')" data-tab="meeting">CoWork</div>
+      <div class="tab" onclick="switchTab('clients')" data-tab="clients">Data Clients</div>
+    </nav>
+    <div class="h-users" style="flex-shrink:0">
+      <button class="btn btn-ghost btn-sm" id="btn-dark" onclick="toggleDark()" style="font-size:10px;letter-spacing:1px">Sombre</button>
+      <div style="width:1px;height:20px;background:var(--border);margin:0 4px"></div>
+      <button class="btn btn-sm" onclick="openCustomizer()" style="font-size:10px;letter-spacing:1px;background:var(--kaki);color:#fff;border:none">Personnaliser</button>
+      <div style="width:1px;height:20px;background:var(--border);margin:0 6px"></div>
+      <button class="btn btn-ghost btn-sm" onclick="notionSync(true)" title="Actualiser depuis Notion" style="font-size:10px;letter-spacing:1px;padding:0 10px">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:inline;vertical-align:middle;margin-right:4px"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933z"/></svg>Notion
+        <span id="notion-dot" style="margin-left:3px;font-size:10px;color:var(--muted)">…</span>
+      </button>
+      <button class="btn btn-ghost btn-sm" onclick="openSetup()" title="Configurer le cloud JSONBin" style="font-size:10px;letter-spacing:1px;padding:0 10px">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>Cloud
+      </button>
+      <div style="width:1px;height:20px;background:var(--border);margin:0 6px"></div>
+      <div class="avatar av-v" title="Victor">V</div>
+      <div class="avatar av-r" title="Rémi">R</div>
+      <span style="margin-left:6px;font-size:12px;font-weight:500;color:var(--navy)">Victor & Rémi</span>
+    </div>
+  </div><!-- /h-row1 -->
+</header>
+
+<main>
+
+  <!-- ── OVERVIEW ── -->
+  <div class="section active" id="sec-overview">
+    <div class="kpi-grid" id="kpi-grid"></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px" id="overview-grids">
+      <div>
+        <div class="sec-header" style="margin-bottom:12px">
+          <div class="sec-title" style="font-size:20px">Capsules en cours</div>
+        </div>
+        <div id="ov-capsules-list"></div>
+      </div>
+      <div>
+        <div class="sec-header" style="margin-bottom:12px">
+          <div class="sec-title" style="font-size:20px">Dernières commandes</div>
+        </div>
+        <div class="table-wrap" id="ov-orders-table"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STOCK ── -->
+  <div class="section" id="sec-stock">
+    <div class="sec-header">
+      <div class="sec-title">Stock tee-shirts</div>
+      <div class="sec-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-stock')">+ Ajouter une ligne</button>
+      </div>
+    </div>
+    <div id="stock-content" style="margin-bottom:40px"></div>
+
+    <!-- Packaging -->
+    <div class="sec-header">
+      <div class="sec-title">Stock packaging</div>
+      <div class="sec-actions">
+        <button class="btn btn-kaki btn-sm" onclick="openModal('modal-packaging')">+ Article</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="packaging-table">
+        <thead><tr>
+          <th>Article</th><th>Stock total</th><th>Utilisés</th>
+          <th>Restants</th><th>Avancement</th><th>Notes</th><th></th>
+        </tr></thead>
+        <tbody id="packaging-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── CAPSULES ── -->
+  <div class="section" id="sec-capsules">
+    <div class="sec-header">
+      <div class="sec-title">Capsules</div>
+      <div class="sec-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-capsule')">+ Nouvelle capsule</button>
+      </div>
+    </div>
+    <div class="capsule-grid" id="capsule-grid"></div>
+  </div>
+
+  <!-- ── SUPPLIERS ── -->
+  <div class="section" id="sec-suppliers">
+    <div class="sec-header">
+      <div class="sec-title">Fournisseurs</div>
+      <div class="sec-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-supplier')">+ Ajouter fournisseur</button>
+      </div>
+    </div>
+    <div class="supplier-grid" id="supplier-grid"></div>
+
+    <!-- Commandes fournisseurs -->
+    <div class="sec-header" style="margin-top:40px">
+      <div class="sec-title">Commandes fournisseurs</div>
+      <div class="sec-actions">
+        <button class="btn btn-kaki btn-sm" onclick="openModal('modal-suporder')">+ Nouvelle commande</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="suporders-table">
+        <thead><tr>
+          <th>#</th>
+          <th>Fournisseur</th>
+          <th>Article</th>
+          <th>Coloris</th>
+          <th>Qté</th>
+          <th>Prix unit.</th>
+          <th>Total</th>
+          <th>Statut</th>
+          <th>Date commande</th>
+          <th>Livraison prévue</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="suporders-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── ORDERS ── -->
+  <div class="section" id="sec-orders">
+    <div class="sec-header">
+      <div class="sec-title">Commandes</div>
+      <div class="sec-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-order')">+ Nouvelle commande</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="orders-table">
+        <thead><tr>
+          <th>#</th><th>Prénom / Nom</th><th>Produit</th><th>Coloris</th>
+          <th>Taille</th><th>Prix</th><th>Paiement</th><th>Statut</th><th>Date</th><th></th>
+        </tr></thead>
+        <tbody id="orders-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── ÉVÉNEMENTS ── -->
+  <div class="section" id="sec-events">
+    <div class="sec-header">
+      <div class="sec-title">Événements</div>
+      <div class="sec-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-event')">+ Nouvel événement</button>
+      </div>
+    </div>
+
+    <!-- Event cards -->
+    <div id="events-list" style="display:flex;flex-direction:column;gap:20px"></div>
+  </div>
+
+  <!-- ── MEETING ── -->
+  <div class="section" id="sec-meeting">
+    <div class="sec-header">
+      <div class="sec-title">CoWork</div>
+      <div class="sec-actions">
+        <button class="btn btn-primary" onclick="openMeetingModal()">+ Nouvelle note</button>
+      </div>
+    </div>
+
+    <!-- Sous-onglets Victor / Rémi -->
+    <div class="meeting-tabs">
+      <div class="meeting-tab active" data-who="victor" onclick="switchMeetingTab('victor')">
+        <span class="avatar av-v" style="width:22px;height:22px;font-size:10px">V</span> Victor
+      </div>
+      <div class="meeting-tab" data-who="remi" onclick="switchMeetingTab('remi')">
+        <span class="avatar av-r" style="width:22px;height:22px;font-size:10px">R</span> Rémi
+      </div>
+    </div>
+
+    <div id="meeting-notes-list"></div>
+  </div>
+
+  <!-- ── DATA CLIENTS ── -->
+  <div class="section" id="sec-clients">
+    <div class="sec-header">
+      <div class="sec-title">Data Clients</div>
+      <div class="sec-actions">
+        <button class="btn" onclick="exportClients()" style="background:var(--kaki);color:#fff">Exporter CSV</button>
+        <button class="btn btn-primary" onclick="generateForm()">Générer le formulaire</button>
+      </div>
+    </div>
+
+    <!-- KPIs clients -->
+    <div id="clients-kpi" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px;"></div>
+
+    <!-- Barre de recherche -->
+    <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center;">
+      <input id="client-search" type="text" placeholder="Rechercher nom, email, ville…"
+        oninput="renderClients()"
+        style="flex:1;padding:9px 14px;border:1px solid var(--border);border-radius:4px;background:var(--bg-alt);font-family:var(--font);font-size:13px;outline:none;"/>
+    </div>
+
+    <!-- Table clients -->
+    <div id="clients-table-wrap" style="overflow-x:auto;"></div>
+  </div>
+
+</main>
+
+<!-- ── MODALS ── -->
+
+<!-- Stock modal -->
+<div class="overlay" id="modal-stock">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="stock-modal-title">Ajouter stock</div>
+      <button class="modal-close" onclick="closeModal('modal-stock')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Capsule</label>
+          <select id="s-capsule">
+            <option value="">— Choisir une capsule —</option>
+          </select></div>
+        <div class="form-group"><label>Coloris</label>
+          <select id="s-color">
+            <option value="Kaki Olive">Kaki Olive</option>
+            <option value="Navy">Navy</option>
+            <option value="Beige">Beige</option>
+            <option value="Blanc / Off-White">Blanc / Off-White</option>
+            <option value="Noir">Noir</option>
+            <option value="Autre">Autre</option>
+          </select></div>
+        <div class="form-group"><label>Taille</label>
+          <select id="s-size">
+            <option>XS</option><option>S</option><option>M</option>
+            <option>L</option><option>XL</option><option>XXL</option>
+          </select></div>
+        <div class="form-group"><label>Total produit</label>
+          <input id="s-total" type="number" min="0" placeholder="0" /></div>
+        <div class="form-group"><label>Ventes manuelles <span style="font-weight:400;font-size:11px;color:var(--muted)">(hors commandes)</span></label>
+          <input id="s-sold" type="number" min="0" placeholder="0" /></div>
+        <div class="form-group full"><label>Notes</label>
+          <input id="s-notes" placeholder="Remarques..." /></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-stock')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveStock()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Capsule modal -->
+<div class="overlay" id="modal-capsule">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="capsule-modal-title">Nouvelle capsule</div>
+      <button class="modal-close" onclick="closeModal('modal-capsule')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Nom de la capsule</label>
+          <input id="c-name" placeholder="ex: Capsule 02" /></div>
+        <div class="form-group"><label>Statut</label>
+          <select id="c-status">
+            <option value="En cours">En cours</option>
+            <option value="Design">Design</option>
+            <option value="Production">Production</option>
+            <option value="Lancée">Lancée</option>
+            <option value="Sold out">Sold out</option>
+          </select></div>
+        <div class="form-group"><label>Date prévue</label>
+          <input id="c-date" type="date" /></div>
+        <div class="form-group"><label>Quantité</label>
+          <input id="c-qty" type="number" min="0" placeholder="ex: 24" /></div>
+        <div class="form-group"><label>Prix unitaire (€)</label>
+          <input id="c-price" type="number" min="0" step="0.01" placeholder="ex: 55" /></div>
+        <div class="form-group full"><label>Couleurs</label>
+          <div class="color-btn-group" id="c-colors-group">
+            <div class="color-btn" data-color="Noir" onclick="toggleColorBtn(this)">
+              <span class="cbdot" style="background:#1A1A1A"></span>Noir</div>
+            <div class="color-btn" data-color="Blanc / Off-White" onclick="toggleColorBtn(this)">
+              <span class="cbdot" style="background:#F3EFE6;border-color:#ccc"></span>Blanc / Off-White</div>
+            <div class="color-btn" data-color="Beige" onclick="toggleColorBtn(this)">
+              <span class="cbdot" style="background:#C8B89A"></span>Beige</div>
+            <div class="color-btn" data-color="Navy" onclick="toggleColorBtn(this)">
+              <span class="cbdot" style="background:#162035"></span>Navy</div>
+            <div class="color-btn" data-color="Kaki Olive" onclick="toggleColorBtn(this)">
+              <span class="cbdot" style="background:#6B7A52"></span>Kaki Olive</div>
+            <div class="color-btn" data-color="Autre" onclick="toggleColorBtn(this)">
+              <span class="cbdot" style="background:#9E9E9E"></span>Autre</div>
+          </div>
+        </div>
+        <div class="form-group full"><label>Description</label>
+          <textarea id="c-desc" placeholder="Concept, pièces, notes..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-capsule')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveCapsule()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Supplier modal -->
+<div class="overlay" id="modal-supplier">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="supplier-modal-title">Ajouter fournisseur</div>
+      <button class="modal-close" onclick="closeModal('modal-supplier')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Nom</label>
+          <input id="sup-name" placeholder="ex: TissuMarket Toulouse" /></div>
+        <div class="form-group full"><label>Produit / Service</label>
+          <input id="sup-product" placeholder="ex: Sérigraphie, Broderie, Tee-shirts..." /></div>
+        <div class="form-group"><label>Contact</label>
+          <input id="sup-contact" placeholder="Nom du contact" /></div>
+        <div class="form-group"><label>Téléphone / Email</label>
+          <input id="sup-phone" placeholder="06... ou email@..." /></div>
+        <div class="form-group"><label>Devis (€)</label>
+          <input id="sup-quote" placeholder="ex: 6.50€/pièce" /></div>
+        <div class="form-group"><label>Statut</label>
+          <select id="sup-status">
+            <option value="À contacter">À contacter</option>
+            <option value="Devis demandé">Devis demandé</option>
+            <option value="Devis reçu">Devis reçu</option>
+            <option value="Validé">Validé</option>
+            <option value="En cours">En cours</option>
+          </select></div>
+        <div class="form-group full"><label>Notes</label>
+          <textarea id="sup-notes" placeholder="Délais, conditions, remarques..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-supplier')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveSupplier()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Supplier Order modal -->
+<div class="overlay" id="modal-suporder">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="suporder-modal-title">Nouvelle commande fournisseur</div>
+      <button class="modal-close" onclick="closeModal('modal-suporder')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Fournisseur</label>
+          <select id="so-supplier"><option value="">— Choisir un fournisseur —</option></select></div>
+        <div class="form-group full"><label>Article / Description</label>
+          <input id="so-article" placeholder="ex: T-shirts Pro Club USA, Cadres sérigraphie..."/></div>
+        <div class="form-group"><label>Coloris</label>
+          <input id="so-color" placeholder="ex: Navy, Kaki Olive, Blanc..."/></div>
+        <div class="form-group"><label>Quantité</label>
+          <input id="so-qty" type="number" min="0" placeholder="0"/></div>
+        <div class="form-group"><label>Prix unitaire (€)</label>
+          <input id="so-price" type="number" min="0" step="0.01" placeholder="0.00"/></div>
+        <div class="form-group"><label>Statut</label>
+          <select id="so-status">
+            <option value="À commander">À commander</option>
+            <option value="Commandé">Commandé</option>
+            <option value="En production">En production</option>
+            <option value="Expédié">Expédié</option>
+            <option value="Livré">Livré</option>
+            <option value="Annulé">Annulé</option>
+          </select></div>
+        <div class="form-group"><label>Date commande</label>
+          <input id="so-date" type="date"/></div>
+        <div class="form-group"><label>Livraison prévue</label>
+          <input id="so-delivery" type="date"/></div>
+        <div class="form-group full"><label>Notes</label>
+          <textarea id="so-notes" placeholder="Référence commande, conditions, remarques..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-suporder')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveSupplierOrder()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Order modal -->
+<div class="overlay" id="modal-order">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="order-modal-title">Nouvelle commande</div>
+      <button class="modal-close" onclick="closeModal('modal-order')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Capsule</label>
+          <select id="o-capsule">
+            <option value="">— Choisir une capsule —</option>
+          </select></div>
+        <div class="form-group"><label>Prénom</label>
+          <input id="o-first" placeholder="Victor" /></div>
+        <div class="form-group"><label>Nom</label>
+          <input id="o-last" placeholder="Dupont" /></div>
+        <div class="form-group"><label>Produit</label>
+          <select id="o-product">
+            <option>T-shirt</option><option>Tote bag</option><option>Sweat</option>
+          </select></div>
+        <div class="form-group"><label>Coloris</label>
+          <select id="o-color">
+            <option>Kaki Olive</option><option>Navy</option><option>Beige</option>
+            <option>Blanc / Off-White</option><option>Noir</option><option>Autre</option>
+          </select></div>
+        <div class="form-group"><label>Taille</label>
+          <select id="o-size">
+            <option>XS</option><option>S</option><option>M</option>
+            <option>L</option><option>XL</option><option>XXL</option>
+          </select></div>
+        <div class="form-group"><label>Prix (€)</label>
+          <input id="o-price" type="number" placeholder="55" /></div>
+        <div class="form-group"><label>Paiement</label>
+          <select id="o-payment">
+            <option value="En attente">En attente</option>
+            <option value="Reçu">Reçu</option>
+            <option value="Remboursé">Remboursé</option>
+          </select></div>
+        <div class="form-group"><label>Statut</label>
+          <select id="o-status">
+            <option value="Commandé">Commandé</option>
+            <option value="Payé">Payé</option>
+            <option value="Préparé">Préparé</option>
+            <option value="Livré">Livré</option>
+            <option value="Annulé">Annulé</option>
+          </select></div>
+        <div class="form-group full"><label>Instagram / contact</label>
+          <input id="o-contact" placeholder="@pseudo ou email" /></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-order')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveOrder()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Packaging modal -->
+<div class="overlay" id="modal-packaging">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Article packaging</div>
+      <button class="modal-close" onclick="closeModal('modal-packaging')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Article</label>
+          <input id="p-item" placeholder="ex: Pochette coton, Porte-clés 3D..." /></div>
+        <div class="form-group"><label>Stock total</label>
+          <input id="p-total" type="number" min="0" placeholder="0" /></div>
+        <div class="form-group"><label>Utilisés</label>
+          <input id="p-used" type="number" min="0" placeholder="0" /></div>
+        <div class="form-group full"><label>Notes</label>
+          <input id="p-notes" placeholder="Fournisseur, prix unitaire..." /></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-packaging')">Annuler</button>
+      <button class="btn btn-primary" onclick="savePackaging()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Event modal -->
+<div class="overlay" id="modal-event">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Événement</div>
+      <button class="modal-close" onclick="closeModal('modal-event')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Nom de l'événement</label>
+          <input id="ev-name" type="text" placeholder="Ex : FOCUS × Grabuge"/>
+        </div>
+        <div class="form-group full">
+          <label>Lieu</label>
+          <input id="ev-lieu" type="text" placeholder="Ex : Grabuge — Cave & Sandwicherie, Toulouse"/>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input id="ev-date" type="date"/>
+        </div>
+        <div class="form-group">
+          <label>Heure</label>
+          <input id="ev-heure" type="time" placeholder="19:00"/>
+        </div>
+        <div class="form-group">
+          <label>Capacité max</label>
+          <input id="ev-capa" type="number" placeholder="Ex : 60" min="0"/>
+        </div>
+        <div class="form-group">
+          <label>Statut</label>
+          <select id="ev-statut">
+            <option value="En préparation">🟡 En préparation</option>
+            <option value="Confirmé">🟢 Confirmé</option>
+            <option value="Terminé">⚫ Terminé</option>
+            <option value="Annulé">🔴 Annulé</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Produits FOCUS proposés</label>
+          <textarea id="ev-produits" rows="3" placeholder="Ex : T-shirts Capsule 01 (2 coloris), Porte-clés 3D, Canette collab FOCUS × Grabuge, Formules bundles..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Produits partenaire proposés</label>
+          <textarea id="ev-produits-partner" rows="2" placeholder="Ex : Vins sélection Grabuge, Sandwichs maison..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Notes / Organisation</label>
+          <textarea id="ev-notes" rows="3" placeholder="Checklist, formules, budget, contacts..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-event')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveEvent()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Hidden file input for image upload -->
+<input type="file" id="img-upload" accept="image/*" style="display:none" onchange="handleImageUpload(event)"/>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button id="lightbox-prev" onclick="event.stopPropagation();lbNav(-1)">‹</button>
+  <img id="lightbox-img" src="" alt=""/>
+  <div id="lightbox-caption"></div>
+  <button id="lightbox-next" onclick="event.stopPropagation();lbNav(1)">›</button>
+</div>
+
+<!-- CAPSULE DETAIL MODAL -->
+<div class="overlay" id="modal-capsule-detail">
+  <div class="modal capsule-detail-modal">
+    <div class="modal-header">
+      <div class="modal-title" id="cd-title">Capsule 01</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-ghost btn-sm" onclick="editCapsuleFromDetail()" title="Modifier">Modifier</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCapsuleFromDetail()" title="Supprimer">Suppr.</button>
+        <button class="modal-close" onclick="closeModal('modal-capsule-detail')" style="margin-left:4px">✕</button>
+      </div>
+    </div>
+
+    <!-- Infos directes (plus d'onglets) -->
+    <div style="padding:24px">
+      <div class="cd-info-grid">
+        <div class="cd-info-field">
+          <div class="cd-info-label">Statut</div>
+          <div class="cd-info-val" id="cd-status"></div>
+        </div>
+        <div class="cd-info-field">
+          <div class="cd-info-label">Date prévue</div>
+          <div class="cd-info-val" id="cd-date"></div>
+        </div>
+        <div class="cd-info-field">
+          <div class="cd-info-label">Quantité</div>
+          <div class="cd-info-val" id="cd-qty"></div>
+        </div>
+        <div class="cd-info-field">
+          <div class="cd-info-label">Prix unitaire</div>
+          <div class="cd-info-val" id="cd-price"></div>
+        </div>
+        <div class="cd-info-field full">
+          <div class="cd-info-label">Couleurs</div>
+          <div class="cd-info-val" id="cd-colors" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px"></div>
+        </div>
+        <div class="cd-info-field full">
+          <div class="cd-info-label">Description</div>
+          <div class="cd-info-val" id="cd-desc" style="line-height:1.7;white-space:pre-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="closeModal('modal-capsule-detail')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Meeting note modal -->
+<div class="overlay" id="modal-meeting">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <div class="modal-title" id="meeting-modal-title">Nouvelle note</div>
+      <button class="modal-close" onclick="closeModal('modal-meeting')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Titre / Sujet</label>
+          <input id="mn-title" placeholder="ex: Brief capsule 02, Point hebdo…"/></div>
+        <div class="form-group"><label>Date</label>
+          <input id="mn-date" type="date"/></div>
+        <div class="form-group"><label>Notes de</label>
+          <select id="mn-who">
+            <option value="victor">Victor</option>
+            <option value="remi">Rémi</option>
+          </select></div>
+        <div class="form-group full"><label>Notes</label>
+          <textarea id="mn-content" placeholder="Points abordés, décisions, actions à faire…" style="min-height:180px"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-meeting')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveMeetingNote()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLOUD SETUP MODAL -->
+<div id="modal-setup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:999;align-items:center;justify-content:center">
+  <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:36px;max-width:480px;width:92%;position:relative">
+    <button onclick="closeSetup()" style="position:absolute;top:14px;right:18px;background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted)">✕</button>
+    <div style="font-family:var(--font-title);font-size:22px;letter-spacing:4px;margin-bottom:6px">⚙ SYNC CLOUD</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.7">Connecte le dashboard à JSONBin.io pour partager les données avec Rémi en temps réel. <strong>3 minutes, c'est gratuit.</strong></p>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:20px;font-size:12px;line-height:2">
+      <strong style="font-size:11px;letter-spacing:2px;text-transform:uppercase">Comment faire :</strong><br>
+      1. Va sur <a href="https://jsonbin.io" target="_blank" style="color:var(--kaki);font-weight:600">jsonbin.io</a> → crée un compte gratuit<br>
+      2. Dans le dashboard JSONBin → <strong>API Keys</strong> → copie ta <strong>Master Key</strong><br>
+      3. Colle-la ci-dessous et clique <strong>Connecter</strong>
+    </div>
+
+    <div id="setup-step-1">
+      <label style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Master Key JSONBin</label>
+      <input id="inp-apikey" type="password" placeholder="$2a$10$..." style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:4px;background:var(--bg-alt);font-family:var(--font);font-size:13px;outline:none;margin-bottom:12px"/>
+      <button class="btn btn-primary" onclick="connectCloud()" style="width:100%">Connecter et créer le bin partagé</button>
+      <div id="setup-error" style="color:var(--red);font-size:11px;margin-top:8px;display:none"></div>
+    </div>
+
+    <div id="setup-step-2" style="display:none;text-align:center">
+      <div style="font-size:32px;margin-bottom:12px">✅</div>
+      <div style="font-family:var(--font-title);font-size:18px;letter-spacing:3px;margin-bottom:8px">CONNECTÉ !</div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.7">Tes données sont maintenant synchronisées sur le cloud.<br>Partage l'URL du dashboard à Rémi — il verra les mêmes données.</p>
+      <button class="btn btn-primary" onclick="closeSetup()" style="margin-top:16px">Fermer</button>
+    </div>
+
+    <div id="setup-step-already" style="display:none;text-align:center">
+      <div style="font-size:28px;margin-bottom:10px">☁️</div>
+      <div style="font-family:var(--font-title);font-size:16px;letter-spacing:3px;margin-bottom:8px">DÉJÀ CONNECTÉ</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:16px">La sync cloud est active.</p>
+      <button class="btn btn-ghost btn-sm" onclick="disconnectCloud()" style="display:block;margin:0 auto;color:var(--red)">Déconnecter</button>
+      <button class="btn btn-primary" onclick="closeSetup()" style="margin-top:10px">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA STORE ────────────────────────────────────────────────
+const DB = {
+  load(key, def){ try{ return JSON.parse(localStorage.getItem('focus_'+key)) || def }catch(e){ return def } },
+  save(key, val){ localStorage.setItem('focus_'+key, JSON.stringify(val)) }
+};
+
+// ── CLOUD CONFIG ──────────────────────────────────────────────
+const CFG = {
+  get(){ try{ return JSON.parse(localStorage.getItem('focus_cloud_cfg')) || {} }catch(e){ return {} } },
+  set(v){ localStorage.setItem('focus_cloud_cfg', JSON.stringify(v)) },
+  clear(){ localStorage.removeItem('focus_cloud_cfg') }
+};
+
+// ── CLOUD SYNC (JSONBin.io) ───────────────────────────────────
+const CLOUD = {
+  API: 'https://api.jsonbin.io/v3',
+
+  // Prépare les données sans les base64 (images trop lourdes pour le cloud)
+  _stripMedia(data){
+    return {
+      ...data,
+      capsules: (data.capsules||[]).map(c=>({
+        ...c,
+        img: '', // legacy
+        media: (c.media||[]).map(m=>({id:m.id, label:m.label, type:m.type, cover:m.cover}))
+        // ↑ on garde id/label/type/cover mais PAS le champ data (base64)
+      }))
+    };
+  },
+
+  async push(){
+    const cfg = CFG.get();
+    if(!cfg.apiKey || !cfg.binId) return;
+    setSyncStatus('syncing');
+    try {
+      const payload = this._stripMedia({ stock, capsules, suppliers, orders, packaging, events, supplierOrders, meetingNotes, clients, updatedAt: new Date().toISOString() });
+      const r = await fetch(`${this.API}/b/${cfg.binId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type':'application/json', 'X-Master-Key': cfg.apiKey },
+        body: JSON.stringify(payload)
+      });
+      if(!r.ok) throw new Error();
+      setSyncStatus('ok');
+    } catch(e) { setSyncStatus('err'); }
+  },
+
+  async pull(){
+    const cfg = CFG.get();
+    if(!cfg.apiKey || !cfg.binId) return null;
+    setSyncStatus('syncing');
+    try {
+      const r = await fetch(`${this.API}/b/${cfg.binId}/latest`, {
+        headers: { 'X-Master-Key': cfg.apiKey }
+      });
+      if(!r.ok) throw new Error();
+      const json = await r.json();
+      setSyncStatus('ok');
+      return json.record;
+    } catch(e) { setSyncStatus('err'); return null; }
+  },
+
+  async createBin(apiKey){
+    const payload = this._stripMedia({ stock, capsules, suppliers, orders, packaging, events, supplierOrders, meetingNotes, clients, createdAt: new Date().toISOString() });
+    const r = await fetch(`${this.API}/b`, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'X-Master-Key': apiKey, 'X-Bin-Name': 'FOCUS Dashboard' },
+      body: JSON.stringify(payload)
+    });
+    if(!r.ok) throw new Error('Clé invalide ou erreur JSONBin');
+    const json = await r.json();
+    return json.metadata.id;
+  }
+};
+
+function setSyncStatus(state){
+  const el = document.getElementById('sync-status');
+  if(!el) return;
+  if(state==='ok')      { el.textContent='✓'; el.style.color='var(--green)'; }
+  else if(state==='err'){ el.textContent='✗'; el.style.color='var(--red)'; }
+  else if(state==='syncing'){ el.textContent='…'; el.style.color='var(--muted)'; }
+  else                  { el.textContent=''; }
+}
+
+async function syncFromCloud(showToast=false){
+  const data = await CLOUD.pull();
+  if(!data) { if(showToast) toast('Aucune sync configurée'); return; }
+  if(data.stock)          { stock          = data.stock;          DB.save('stock',stock); }
+  if(data.suppliers)      { suppliers      = data.suppliers;      DB.save('suppliers',suppliers); }
+  if(data.orders)         { orders         = data.orders;         DB.save('orders',orders); }
+  if(data.packaging)      { packaging      = data.packaging;      DB.save('packaging',packaging); }
+  if(data.events)         { events         = data.events;         DB.save('events',events); }
+  if(data.supplierOrders) { supplierOrders = data.supplierOrders; DB.save('supplierOrders',supplierOrders); }
+  if(data.meetingNotes)   { meetingNotes   = data.meetingNotes;   DB.save('meetingNotes',meetingNotes); }
+  if(data.clients)        { clients        = data.clients;        DB.save('clients',clients); }
+
+  // Capsules : on fusionne les métadonnées cloud avec les images locales
+  // Les images (base64) ne transitent pas par le cloud → on les conserve du localStorage
+  if(data.capsules){
+    const localCaps = DB.load('capsules', []);
+    capsules = data.capsules.map(cloudCap => {
+      const localCap = localCaps.find(l => l.id === cloudCap.id);
+      // Réinjecter les données base64 locales dans chaque média
+      const mergedMedia = (cloudCap.media||[]).map(cloudM => {
+        const localM = localCap ? (localCap.media||[]).find(m=>m.id===cloudM.id) : null;
+        return { ...cloudM, data: localM ? localM.data : '' };
+      });
+      return { ...cloudCap, media: mergedMedia };
+    });
+    DB.save('capsules', capsules);
+  }
+
+  renderAll();
+  if(showToast) toast('Données synchronisées ✓');
+}
+
+function openSetup(){
+  const modal = document.getElementById('modal-setup');
+  modal.style.display='flex';
+  const cfg = CFG.get();
+  document.getElementById('setup-step-1').style.display   = cfg.binId ? 'none' : 'block';
+  document.getElementById('setup-step-2').style.display   = 'none';
+  document.getElementById('setup-step-already').style.display = cfg.binId ? 'block' : 'none';
+}
+function closeSetup(){ document.getElementById('modal-setup').style.display='none'; }
+
+async function connectCloud(){
+  const key = document.getElementById('inp-apikey').value.trim();
+  const errEl = document.getElementById('setup-error');
+  errEl.style.display='none';
+  if(!key){ errEl.textContent='Entre ta Master Key JSONBin.'; errEl.style.display='block'; return; }
+  const btn = document.querySelector('#setup-step-1 .btn-primary');
+  btn.textContent='Connexion…'; btn.disabled=true;
+  try {
+    const binId = await CLOUD.createBin(key);
+    CFG.set({ apiKey: key, binId });
+    document.getElementById('setup-step-1').style.display='none';
+    document.getElementById('setup-step-2').style.display='block';
+    setSyncStatus('ok');
+  } catch(e) {
+    errEl.textContent='Clé invalide ou connexion impossible. Vérifie ta Master Key.';
+    errEl.style.display='block';
+  }
+  btn.textContent='Connecter et créer le bin partagé'; btn.disabled=false;
+}
+
+function disconnectCloud(){
+  if(!confirm('Déconnecter le cloud sync ? Les données locales sont conservées.')) return;
+  CFG.clear(); setSyncStatus('');
+  closeSetup(); toast('Sync cloud désactivée');
+}
+let stock          = DB.load('stock', []);
+let capsules       = DB.load('capsules', []);
+let suppliers      = DB.load('suppliers', []);
+let orders         = DB.load('orders', []);
+let packaging      = DB.load('packaging', []);
+let clients        = DB.load('clients', []);
+let events         = DB.load('events', []);
+let supplierOrders = DB.load('supplierOrders', []);
+let meetingNotes   = DB.load('meetingNotes', []);
+let editingId = null;
+let uploadingCapsuleId = null;
+let activeMeetingTab = 'victor';
+
+// Default data if empty
+if(!stock.length) stock = [
+  {id:uid(),capsule:'Capsule 01',color:'Kaki Olive',size:'M',total:1,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Kaki Olive',size:'L',total:3,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Kaki Olive',size:'XL',total:3,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Kaki Olive',size:'XXL',total:1,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Navy',size:'M',total:1,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Navy',size:'L',total:3,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Navy',size:'XL',total:3,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Navy',size:'XXL',total:1,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Beige Off-White',size:'M',total:1,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Beige Off-White',size:'L',total:3,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Beige Off-White',size:'XL',total:3,sold:0,notes:''},
+  {id:uid(),capsule:'Capsule 01',color:'Beige Off-White',size:'XXL',total:1,sold:0,notes:''},
+];
+if(!capsules.length) capsules = [
+  {id:uid(),name:'Capsule 01',status:'Lancée',date:'2026-04-01',qty:'24',price:'55',colors:['Kaki Olive','Navy','Blanc / Off-White'],desc:'24 tee-shirts Pro Club USA. Kaki Olive, Navy, Blanc / Off-White. Sérigraphie monochrome.',img:'',media:[]}
+];
+if(!suppliers.length) suppliers = [
+  {id:uid(),name:'TissuMarket Toulouse',product:'Sérigraphie',contact:'',phone:'',quote:'6.50€/pièce',status:'Validé',notes:'Cadres sérigraphie 60€ les 2'},
+  {id:uid(),name:'Brodeur Toulouse',product:'Broderie griffe',contact:'',phone:'',quote:'3€/pièce',status:'Validé',notes:'Griffe latérale FOCUS'},
+];
+if(!packaging.length) packaging = [
+  {id:uid(),item:'Pochette tissu coton',total:24,used:0,notes:''},
+  {id:uid(),item:'Porte-clés 3D',total:48,used:0,notes:'2 par commande'},
+  {id:uid(),item:'Tote bag recyclé',total:24,used:0,notes:'73% coton recyclé'},
+];
+if(!events.length) events = [
+  {
+    id:uid(),
+    name:'FOCUS × Grabuge',
+    lieu:'Grabuge — Cave & Sandwicherie, Toulouse',
+    date:'',
+    heure:'',
+    capa:'',
+    statut:'En préparation',
+    produits:'T-shirts Capsule 01 (2 coloris)\nPorte-clés 3D FOCUS\nCanette collab FOCUS × Grabuge\nFormule bundle : T-shirt + Canette',
+    produitsPartner:'Sélection vins & boissons Grabuge\nSandwichs maison\nProduits catalogue boutique',
+    notes:'— Fixer la date avec Grabuge\n— Définir capacité max de l\'espace\n— Commander les canettes personnalisées\n— Créer les visuels soirée (flyer, stories)\n— Confirmer les formules et prix'
+  }
+];
+saveAll();
+
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6) }
+
+// ── DARK MODE ──────────────────────────────────────────────────
+// Le toggle passe désormais par le système de presets pour éviter les conflits de cascade CSS
+function toggleDark(){
+  const isDark = localStorage.getItem('focus-is-dark') !== 'false';
+  applyPreset(isDark ? 'Clair' : 'Sombre');
+}
+// Init au chargement (avant DOMContentLoaded pour éviter le flash)
+(function(){
+  const savedVars = JSON.parse(localStorage.getItem('focus-custom-vars')||'{}');
+  const root = document.documentElement;
+  Object.entries(savedVars).forEach(([v,val]) => root.style.setProperty(v, val));
+  const isDark = localStorage.getItem('focus-is-dark') !== 'false';
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('btn-dark');
+    if(btn) btn.textContent = isDark ? 'Clair' : 'Sombre';
+  });
+})();
+
+function resetAllData(){
+  if(!confirm('⚠️ Réinitialiser TOUTES les données ?\n\nCommandes, stock, capsules, fournisseurs, packaging, événements et notes CoWork seront effacés.\n\nCette action est irréversible.')) return;
+  ['stock','capsules','suppliers','orders','packaging','events','supplierOrders','meetingNotes','clients','focus_tab_order'].forEach(k=>{
+    localStorage.removeItem('focus_'+k);
+    localStorage.removeItem(k); // fallback
+  });
+  localStorage.removeItem('focus_tab_order');
+  location.reload();
+}
+
+function resetStockSold(){
+  if(!confirm('Remettre à zéro les "Ventes manuelles" dans toutes les lignes de stock ?\n(Les commandes dashboard sont calculées automatiquement — ceci ne les efface pas.)')) return;
+  stock.forEach(r=>{ r.sold=0; });
+  saveAll(); renderAll(); toast('Ventes manuelles remises à zéro ✓');
+}
+
+// ── STOCK SOLD HELPER (source unique de vérité) ───────────────
+// Compte les commandes actives (non Annulé) pour un coloris+taille+capsule donnés
+// La capsule est optionnelle : si une commande n'a pas de capsule renseignée, elle compte quand même
+function stockSoldFor(cap, col, sz){
+  const n = s=>(s||'').trim().toLowerCase();
+  return orders.filter(o=>(!o.capsule||n(o.capsule)===n(cap)) && n(o.color)===n(col) && n(o.size)===n(sz) && o.status!=='Annulé').length;
+}
+// Vendus totaux du stock = commandes + ventes manuelles (row.sold = ventes hors-dashboard)
+function stockEffectiveSold(cap, col, sz, manualSold){
+  return stockSoldFor(cap, col, sz) + (+manualSold||0);
+}
+
+function resetAllData(){
+  if(!confirm('⚠️ Réinitialiser TOUTES les données ?\n\nCommandes, stock, capsules, fournisseurs, packaging, événements et notes CoWork seront effacés.\n\nCette action est irréversible.')) return;
+  ['stock','capsules','suppliers','orders','packaging','events','supplierOrders','meetingNotes','focus_tab_order'].forEach(k=>{
+    localStorage.removeItem('focus_'+k);
+    localStorage.removeItem(k); // fallback
+  });
+  localStorage.removeItem('focus_tab_order');
+  location.reload();
+}
+
+function resetStockSold(){
+  if(!confirm('Remettre à zéro les "Ventes manuelles" dans toutes les lignes de stock ?\n(Les commandes dashboard sont calculées automatiquement — ceci ne les efface pas.)')) return;
+  stock.forEach(r=>{ r.sold=0; });
+  saveAll(); renderAll(); toast('Ventes manuelles remises à zéro ✓');
+}
+
+// ── STOCK SOLD HELPER (source unique de vérité) ───────────────
+// Compte les commandes actives (non Annulé) pour un coloris+taille+capsule donnés
+// La capsule est optionnelle : si une commande n'a pas de capsule renseignée, elle compte quand même
+function stockSoldFor(cap, col, sz){
+  const n = s=>(s||'').trim().toLowerCase();
+  return orders.filter(o=>(!o.capsule||n(o.capsule)===n(cap)) && n(o.color)===n(col) && n(o.size)===n(sz) && o.status!=='Annulé').length;
+}
+// Vendus totaux du stock = commandes + ventes manuelles (row.sold = ventes hors-dashboard)
+function stockEffectiveSold(cap, col, sz, manualSold){
+  return stockSoldFor(cap, col, sz) + (+manualSold||0);
+}
+function saveAll(){
+  DB.save('clients',clients); DB.save('stock',stock); DB.save('capsules',capsules);
+  DB.save('suppliers',suppliers); DB.save('orders',orders);
+  DB.save('packaging',packaging); DB.save('events',events);
+  DB.save('supplierOrders',supplierOrders); DB.save('meetingNotes',meetingNotes);
+  CLOUD.push(); // sync cloud en arrière-plan
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id==='sec-'+name));
+  renderAll();
+  saveTabOrder();
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+function renderAll(){ renderOverview(); renderStock(); renderCapsules(); renderSuppliers(); renderSupplierOrders(); renderOrders(); renderPackaging(); renderEvents(); renderMeetingNotes(); renderClients(); updateCounts(); }
+
+function colorDot(c){
+  const cls = c==='Kaki Olive'?'dot-olive': c==='Navy'?'dot-navy': 'dot-beige';
+  return `<span class="color-dot ${cls}"></span>${c}`;
+}
+function progressBar(sold,total){
+  if(!total) return '—';
+  const pct = Math.round(sold/total*100);
+  const cls = pct>=100?'danger': pct>=70?'warn':'';
+  return `<div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill ${cls}" style="width:${pct}%"></div></div>
+    <span class="progress-label">${pct}%</span>
+  </div>`;
+}
+function statusBadge(s){
+  const map={
+    'Lancée':'badge-green','Sold out':'badge-red','Production':'badge-orange',
+    'Design':'badge-navy','En cours':'badge-kaki',
+    'Validé':'badge-green','Devis reçu':'badge-kaki','Devis demandé':'badge-orange','À contacter':'badge-navy',
+    'Livré':'badge-green','Payé':'badge-kaki','Préparé':'badge-orange','Commandé':'badge-navy','Annulé':'badge-red',
+    'Reçu':'badge-green','En attente':'badge-navy','Remboursé':'badge-red',
+  };
+  return `<span class="badge ${map[s]||'badge-navy'}">${s}</span>`;
+}
+
+function renderOverview(){
+  const totalStock = stock.reduce((a,r)=>a+(+r.total||0),0);
+  const totalSold  = stock.reduce((a,r)=>a+stockEffectiveSold(r.capsule,r.color,r.size,r.sold),0);
+  const totalLeft  = Math.max(0, totalStock - totalSold);
+  const totalCA    = orders.filter(o=>o.payment==='Reçu').reduce((a,o)=>a+(+o.price||0),0);
+  const openOrders = orders.filter(o=>!['Livré','Annulé'].includes(o.status)).length;
+
+  document.getElementById('kpi-grid').innerHTML = `
+    <div class="kpi"><div class="kpi-label">Stock total</div><div class="kpi-value">${totalStock}</div><div class="kpi-sub">pièces produites</div></div>
+    <div class="kpi kpi-green"><div class="kpi-label">Vendus</div><div class="kpi-value">${totalSold}</div><div class="kpi-sub">pièces écoulées</div></div>
+    <div class="kpi kpi-orange"><div class="kpi-label">Restants</div><div class="kpi-value">${totalLeft}</div><div class="kpi-sub">pièces disponibles</div></div>
+    <div class="kpi kpi-kaki"><div class="kpi-label">CA encaissé</div><div class="kpi-value">${totalCA}€</div><div class="kpi-sub">${orders.filter(o=>o.payment==='Reçu').length} commandes payées</div></div>
+    <div class="kpi"><div class="kpi-label">Commandes ouvertes</div><div class="kpi-value">${openOrders}</div><div class="kpi-sub">en cours de traitement</div></div>
+    <div class="kpi"><div class="kpi-label">Capsules</div><div class="kpi-value">${capsules.length}</div><div class="kpi-sub">dans le workspace</div></div>
+  `;
+
+  // Capsules en cours (toutes sauf Sold out)
+  const activeCaps = capsules.filter(c=>c.status!=='Sold out');
+  document.getElementById('ov-capsules-list').innerHTML = activeCaps.length ? activeCaps.map(c=>{
+    const colors = c.colors||[];
+    const dots = colors.map(col=>
+      `<span style="width:13px;height:13px;border-radius:50%;background:${CAP_COLOR_MAP[col]||'#9E9E9E'};border:1.5px solid rgba(0,0,0,0.1);display:inline-block" title="${col}"></span>`
+    ).join('');
+    return `<div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px">
+      <div>
+        <div style="font-family:var(--font-title);font-size:17px;letter-spacing:2px;color:var(--navy);margin-bottom:5px">${c.name}</div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          ${dots ? `<span style="display:flex;gap:4px">${dots}</span>` : ''}
+          ${c.qty ? `<span style="font-size:11px;color:var(--muted)">${c.qty} pièces</span>` : ''}
+          ${c.price ? `<span style="font-size:11px;color:var(--muted)">· ${c.price}€</span>` : ''}
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        ${statusBadge(c.status)}
+        ${c.date?`<div style="font-size:10px;color:var(--muted);margin-top:4px">${c.date}</div>`:''}
+      </div>
+    </div>`;
+  }).join('') : `<div style="color:var(--muted);padding:24px;text-align:center;font-style:italic;font-size:12px">Aucune capsule en cours.</div>`;
+
+  const last5orders = [...orders].slice(-5).reverse();
+  document.getElementById('ov-orders-table').innerHTML = `
+    <table><thead><tr><th>Client</th><th>Produit</th><th>Statut</th><th>Paiement</th></tr></thead>
+    <tbody>${last5orders.map(o=>`<tr>
+      <td>${o.first} ${o.last}</td>
+      <td>${o.product} ${o.color} ${o.size}</td>
+      <td>${statusBadge(o.status)}</td>
+      <td>${statusBadge(o.payment)}</td>
+    </tr>`).join('')||'<tr class="empty-row"><td colspan="4">Aucune commande</td></tr>'}
+    </tbody></table>`;
+}
+
+function renderStock(){
+  const SIZES = ['XS','S','M','L','XL','XXL'];
+  const container = document.getElementById('stock-content');
+  if(!stock.length){
+    container.innerHTML = `<div style="color:var(--muted);padding:40px;text-align:center;font-style:italic">Aucun stock — clique sur "+ Ajouter une ligne"</div>`;
+    return;
+  }
+
+  // KPIs globaux via le helper global stockEffectiveSold
+  const gTotal   = stock.reduce((a,r)=>a+(+r.total||0),0);
+  const gSoldDyn = stock.reduce((a,r)=>a+stockEffectiveSold(r.capsule,r.color,r.size,r.sold),0);
+  const gLeft    = Math.max(0, gTotal - gSoldDyn);
+
+  // Group by capsule name
+  const byCap = {};
+  stock.forEach(r=>{
+    const key = r.capsule||'Sans capsule';
+    if(!byCap[key]) byCap[key]=[];
+    byCap[key].push(r);
+  });
+
+  const cards = Object.entries(byCap).map(([capName, rows])=>{
+    const colors    = [...new Set(rows.map(r=>r.color).filter(Boolean))];
+    const usedSizes = SIZES.filter(s=>rows.some(r=>r.size===s));
+
+    const capTotal   = rows.reduce((a,r)=>a+(+r.total||0),0);
+    const capSoldDyn = rows.reduce((a,r)=>a+stockEffectiveSold(capName,r.color,r.size,r.sold),0);
+    const capLeft    = Math.max(0, capTotal - capSoldDyn);
+
+    const thead = `<tr>
+      <th style="text-align:left;min-width:150px">Coloris</th>
+      ${usedSizes.map(s=>`<th>${s}</th>`).join('')}
+      <th>Restants</th>
+    </tr>`;
+
+    const tbody = colors.map(col=>{
+      const dot = `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${CAP_COLOR_MAP[col]||'#9E9E9E'};margin-right:8px;flex-shrink:0;vertical-align:middle"></span>`;
+      const cells = usedSizes.map(sz=>{
+        const row = rows.find(r=>r.color===col && r.size===sz);
+        if(!row) return `<td style="color:var(--muted);opacity:0.3">—</td>`;
+        const sold = stockEffectiveSold(capName, col, sz, row.sold);
+        const left = (+row.total||0) - sold;
+        const cls  = left<=0?'stock-cell-out':left<=2?'stock-cell-low':'stock-cell-ok';
+        const tip  = `${stockSoldFor(capName,col,sz)} commande(s) — ${Math.max(0,left)} restant(s)`;
+        return `<td style="cursor:pointer" onclick="editStock('${row.id}')" title="${tip}"><span class="stock-cell ${cls}">${Math.max(0,left)}</span></td>`;
+      }).join('');
+      const colLeft = rows.filter(r=>r.color===col).reduce((a,r)=>{
+        return a + Math.max(0, (+r.total||0) - stockEffectiveSold(capName,col,r.size,r.sold));
+      }, 0);
+      return `<tr>
+        <td><div style="display:flex;align-items:center">${dot}${col}</div></td>
+        ${cells}
+        <td><strong>${colLeft}</strong></td>
+      </tr>`;
+    }).join('');
+
+    // Flat detail list (for the "Gérer" panel)
+    const flatList = rows.map(r=>{
+      const auto = stockSoldFor(capName, r.color, r.size);
+      const sold = auto + (+r.sold||0);
+      const left = Math.max(0, (+r.total||0) - sold);
+      return `<tr>
+        <td>${r.color||'—'}</td>
+        <td><strong>${r.size||'—'}</strong></td>
+        <td>${r.total}</td>
+        <td>${auto}${r.sold ? ` <span style="color:var(--muted);font-size:11px">(+${r.sold} manuel)</span>` : ''}</td>
+        <td><strong>${left}</strong></td>
+        <td style="color:var(--muted);font-size:12px">${r.notes||'—'}</td>
+        <td>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-ghost btn-sm btn-icon" onclick="editStock('${r.id}')" title="Modifier">✏️</button>
+            <button class="btn btn-danger btn-sm btn-icon" onclick="deleteItem('stock','${r.id}')" title="Supprimer">🗑</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+
+    const manageId = 'smg_'+capName.replace(/[^a-zA-Z0-9]/g,'_');
+    return `<div class="stock-cap-card">
+      <div class="stock-cap-header">
+        <span class="stock-cap-name">${capName}</span>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+          <span class="stock-cap-kpi">${Math.max(0,capLeft)} restants <span style="color:var(--muted);font-weight:400">/ ${capSoldDyn} vendus / ${capTotal} total</span></span>
+          <button class="btn btn-ghost btn-sm" onclick="toggleStockManage('${manageId}',this)" style="font-size:11px;letter-spacing:0.5px">⚙ Gérer</button>
+        </div>
+      </div>
+      <div class="table-wrap" style="margin:0">
+        <table class="stock-pivot">
+          <thead>${thead}</thead>
+          <tbody>${tbody}</tbody>
+        </table>
+      </div>
+      <div id="${manageId}" style="display:none">
+        <div style="padding:8px 18px;background:var(--bg);border-top:1px solid var(--border);font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1.5px;text-transform:uppercase">Détail — modifier / supprimer</div>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr>
+              <th>Coloris</th><th>Taille</th>
+              <th>Total</th><th>Vendus (commandes)</th><th>Restants</th>
+              <th>Notes</th><th></th>
+            </tr></thead>
+            <tbody>${flatList}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="stock-kpi-row">
+      <div class="stock-kpi"><div class="stock-kpi-val">${gTotal}</div><div class="stock-kpi-label">Total produit</div></div>
+      <div class="stock-kpi"><div class="stock-kpi-val">${gSoldDyn}</div><div class="stock-kpi-label">Vendus</div></div>
+      <div class="stock-kpi stock-kpi-main"><div class="stock-kpi-val">${Math.max(0,gLeft)}</div><div class="stock-kpi-label">Restants</div></div>
+    </div>
+    ${cards}`;
+}
+
+function toggleStockManage(id, btn){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const visible = el.style.display !== 'none';
+  el.style.display = visible ? 'none' : 'block';
+  btn.textContent = visible ? '⚙ Gérer' : '✕ Fermer';
+}
+
+// ── CAPSULE CARDS ─────────────────────────────────────────────
+const CAP_COLOR_MAP = {
+  'Noir':'#1A1A1A','Blanc / Off-White':'#F3EFE6','Beige':'#C8B89A',
+  'Navy':'#162035','Kaki Olive':'#6B7A52','Autre':'#9E9E9E'
+};
+function renderCapsules(){
+  document.getElementById('capsule-grid').innerHTML = capsules.length ? capsules.map(c=>{
+    const colors = c.colors||[];
+    const dots = colors.map(col=>
+      `<span class="capsule-color-dot" style="background:${CAP_COLOR_MAP[col]||'#9E9E9E'}" title="${col}"></span>`
+    ).join('');
+    const desc = c.desc ? (c.desc.length>90 ? c.desc.slice(0,90)+'…' : c.desc) : '';
+    return `<div class="capsule-card" onclick="openCapsuleDetail('${c.id}')">
+      <div class="capsule-body">
+        <div class="capsule-name">${c.name}</div>
+        ${dots ? `<div class="capsule-colors">${dots}</div>` : ''}
+        <div class="capsule-stats">
+          ${c.qty  ? `<div class="capsule-stat"><div class="capsule-stat-label">Quantité</div><div class="capsule-stat-val">${c.qty}</div></div>` : ''}
+          ${c.price ? `<div class="capsule-stat"><div class="capsule-stat-label">Prix</div><div class="capsule-stat-val">${c.price}€</div></div>` : ''}
+        </div>
+        ${desc ? `<div class="capsule-desc">${desc}</div>` : ''}
+        <div class="capsule-meta">
+          ${statusBadge(c.status)}
+          ${c.date?`<span style="font-size:11px;color:var(--muted)">${c.date}</span>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('') : `<div style="color:var(--muted);padding:40px;text-align:center;font-style:italic">Aucune capsule — clique sur "+ Nouvelle capsule" !</div>`;
+}
+
+// ── CAPSULE DETAIL MODAL ──────────────────────────────────────
+let mediaCapsuleId = null;
+let lbMediaList = [];
+let lbIndex = 0;
+
+function openCapsuleDetail(cid){
+  mediaCapsuleId = cid;
+  const c = capsules.find(x=>x.id===cid); if(!c) return;
+
+  document.getElementById('cd-title').textContent = c.name;
+  document.getElementById('cd-status').innerHTML = statusBadge(c.status);
+  document.getElementById('cd-date').textContent = c.date || '—';
+  document.getElementById('cd-qty').textContent = c.qty ? c.qty+' pièces' : '—';
+  document.getElementById('cd-price').textContent = c.price ? c.price+'€ / pièce' : '—';
+
+  const colors = c.colors||[];
+  document.getElementById('cd-colors').innerHTML = colors.length
+    ? colors.map(col=>`<span style="display:inline-flex;align-items:center;gap:5px">
+        <span style="width:14px;height:14px;border-radius:50%;background:${CAP_COLOR_MAP[col]||'#9E9E9E'};border:1.5px solid rgba(0,0,0,0.12);display:inline-block;flex-shrink:0"></span>
+        <span style="font-size:13px">${col}</span>
+      </span>`).join('')
+    : '<span style="color:var(--muted)">—</span>';
+
+  document.getElementById('cd-desc').textContent = c.desc || '—';
+  openModal('modal-capsule-detail');
+}
+
+function editCapsuleFromDetail(){
+  closeModal('modal-capsule-detail');
+  editCapsule(mediaCapsuleId);
+}
+function deleteCapsuleFromDetail(){
+  closeModal('modal-capsule-detail');
+  deleteItem('capsules', mediaCapsuleId);
+}
+
+// ── MEDIA GALLERY ─────────────────────────────────────────────
+function filterMediaType(type){
+  activeMediaType = type;
+  document.querySelectorAll('.media-type-btn').forEach(b=>b.classList.toggle('active', b.dataset.type===type));
+  renderMediaGallery();
+}
+
+function renderMediaGallery(){
+  const c = capsules.find(x=>x.id===mediaCapsuleId); if(!c) return;
+  const list = activeMediaType ? c.media.filter(m=>m.type===activeMediaType) : c.media;
+  const gallery = document.getElementById('media-gallery');
+  const empty = document.getElementById('media-empty');
+
+  if(!list.length){ gallery.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+
+  gallery.innerHTML = list.map(m=>`
+    <div class="media-item${m.cover?' is-cover':''}" data-mid="${m.id}">
+      <div class="media-item-thumb" onclick="openLightbox('${mediaCapsuleId}','${m.id}')">
+        <img src="${m.data}" alt="${m.label||''}"/>
+      </div>
+      <button class="media-set-cover" onclick="event.stopPropagation();setCover('${m.id}')" title="Définir comme photo de couverture">
+        ${m.cover ? '★ Couverture' : '☆ Couverture'}
+      </button>
+      <button class="media-item-del" onclick="event.stopPropagation();deleteMedia('${m.id}')" title="Supprimer">✕</button>
+      <div class="media-item-info">
+        <select class="media-item-select" onchange="updateMediaType('${m.id}',this.value)">
+          ${['Logo','Mockup','Flat lay','Lookbook','Visuel comm','Autre'].map(t=>`<option value="${t}" ${m.type===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+        <input class="media-item-label-inp" type="text" value="${m.label||''}" placeholder="Label..." onblur="updateMediaLabel('${m.id}',this.value)"/>
+      </div>
+    </div>`).join('');
+}
+
+function triggerMediaUpload(){ document.getElementById('media-upload-input').click(); }
+
+// Compression image via canvas — max 1400px, qualité 0.82 JPEG
+function compressImage(dataUrl, maxPx=1400, quality=0.82){
+  return new Promise(resolve=>{
+    const img = new Image();
+    img.onload = ()=>{
+      let w=img.width, h=img.height;
+      if(w>maxPx||h>maxPx){
+        if(w>h){ h=Math.round(h*maxPx/w); w=maxPx; }
+        else   { w=Math.round(w*maxPx/h); h=maxPx; }
+      }
+      const canvas=document.createElement('canvas');
+      canvas.width=w; canvas.height=h;
+      const ctx=canvas.getContext('2d');
+      ctx.fillStyle='#ffffff'; // fond blanc pour les PNG transparents
+      ctx.fillRect(0,0,w,h);
+      ctx.drawImage(img,0,0,w,h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src=dataUrl;
+  });
+}
+
+function addMediaFiles(files, onDone){
+  const c = capsules.find(x=>x.id===mediaCapsuleId); if(!c) return;
+  let loaded=0;
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=async ev=>{
+      const compressed = await compressImage(ev.target.result);
+      const isFirst = !c.media.length;
+      c.media.push({id:uid(), label:'', type:'Autre', data:compressed, cover:isFirst});
+      if(++loaded===files.length){
+        saveAll(); renderAll(); renderMediaGallery(); updateCdMediaCount(c);
+        onDone(files.length);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleMediaUpload(e){
+  const files=Array.from(e.target.files); if(!files.length) return;
+  addMediaFiles(files, n=>toast(`${n} média${n>1?'s':''} ajouté${n>1?'s':''} ✓`));
+  e.target.value='';
+}
+
+function handleMediaDrop(e){
+  e.preventDefault();
+  document.getElementById('media-drop-zone').classList.remove('drag-over');
+  const files=Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/')); if(!files.length) return;
+  addMediaFiles(files, n=>toast(`${n} fichier${n>1?'s':''} ajouté${n>1?'s':''} ✓`));
+}
+
+function setCover(mid){
+  const c = capsules.find(x=>x.id===mediaCapsuleId); if(!c) return;
+  c.media.forEach(m=>m.cover = m.id===mid);
+  saveAll(); renderAll(); renderMediaGallery();
+}
+
+function updateMediaLabel(mid, val){
+  const c = capsules.find(x=>x.id===mediaCapsuleId); if(!c) return;
+  const m = c.media.find(x=>x.id===mid); if(!m) return;
+  m.label=val; saveAll();
+}
+
+function updateMediaType(mid, val){
+  const c = capsules.find(x=>x.id===mediaCapsuleId); if(!c) return;
+  const m = c.media.find(x=>x.id===mid); if(!m) return;
+  m.type=val; saveAll(); renderMediaGallery();
+}
+
+function deleteMedia(mid){
+  const c = capsules.find(x=>x.id===mediaCapsuleId); if(!c) return;
+  c.media = c.media.filter(x=>x.id!==mid);
+  if(c.media.length && !c.media.find(m=>m.cover)) c.media[0].cover=true;
+  saveAll(); renderAll(); renderMediaGallery(); updateCdMediaCount(c); toast('Média supprimé');
+}
+
+// ── LIGHTBOX ──────────────────────────────────────────────────
+function openLightbox(cid, mid){
+  const c = capsules.find(x=>x.id===cid); if(!c) return;
+  lbMediaList = c.media;
+  lbIndex = c.media.findIndex(x=>x.id===mid);
+  showLbItem();
+  document.getElementById('lightbox').classList.add('open');
+}
+function showLbItem(){
+  const m = lbMediaList[lbIndex]; if(!m) return;
+  document.getElementById('lightbox-img').src = m.data;
+  document.getElementById('lightbox-caption').textContent =
+    [m.type, m.label].filter(Boolean).join(' — ') + `  (${lbIndex+1}/${lbMediaList.length})`;
+}
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+function lbNav(dir){
+  lbIndex = (lbIndex+dir+lbMediaList.length) % lbMediaList.length;
+  showLbItem();
+}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lightbox').classList.contains('open')) return;
+  if(e.key==='ArrowRight') lbNav(1);
+  if(e.key==='ArrowLeft')  lbNav(-1);
+  if(e.key==='Escape')     closeLightbox();
+});
+
+function renderSuppliers(){
+  document.getElementById('supplier-grid').innerHTML = suppliers.length ? suppliers.map(s=>`
+    <div class="supplier-card">
+      <div class="supplier-name">${s.name}</div>
+      <div class="supplier-product">${s.product}</div>
+      ${s.contact?`<div class="supplier-row"><span class="supplier-row-label">Contact</span><span>${s.contact}</span></div>`:''}
+      ${s.phone?`<div class="supplier-row"><span class="supplier-row-label">Tél / Email</span><span>${s.phone}</span></div>`:''}
+      ${s.quote?`<div class="supplier-row"><span class="supplier-row-label">Devis</span><strong>${s.quote}</strong></div>`:''}
+      <div class="supplier-row"><span class="supplier-row-label">Statut</span>${statusBadge(s.status)}</div>
+      ${s.notes?`<div style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6">${s.notes}</div>`:''}
+      <div class="supplier-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editSupplier('${s.id}')">✏️ Modifier</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('suppliers','${s.id}')">🗑 Supprimer</button>
+      </div>
+    </div>`).join('') : `<div style="color:var(--muted);padding:40px;font-style:italic">Aucun fournisseur.</div>`;
+}
+
+function renderSupplierOrders(){
+  const SO_STATUS = {
+    'À commander':'badge-navy','Commandé':'badge-kaki','En production':'badge-orange',
+    'Expédié':'badge-kaki','Livré':'badge-green','Annulé':'badge-red'
+  };
+  const tbody = document.getElementById('suporders-body');
+  if(!tbody) return;
+  tbody.innerHTML = supplierOrders.length ? supplierOrders.map((o,i)=>{
+    const total = (+o.qty||0) * (+o.price||0);
+    return `<tr>
+      <td style="font-weight:700;color:var(--muted)">${String(i+1).padStart(2,'0')}</td>
+      <td><strong>${o.supplier||'—'}</strong></td>
+      <td>${o.article||'—'}</td>
+      <td>${o.color ? `<span style="font-size:12px">${o.color}</span>` : '—'}</td>
+      <td style="font-weight:700">${o.qty||'—'}</td>
+      <td style="color:var(--muted)">${o.price ? o.price+'€' : '—'}</td>
+      <td><strong>${total ? total.toFixed(2)+'€' : '—'}</strong></td>
+      <td><span class="badge ${SO_STATUS[o.status]||'badge-navy'}">${o.status}</span></td>
+      <td style="font-size:11px;color:var(--muted)">${o.date||'—'}</td>
+      <td style="font-size:11px;color:var(--muted)">${o.delivery||'—'}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost btn-sm btn-icon" onclick="editSupplierOrder('${o.id}')">✏️</button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteItem('supplierOrders','${o.id}')">🗑</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('') : `<tr class="empty-row"><td colspan="11">Aucune commande fournisseur pour l'instant.</td></tr>`;
+}
+
+// ── CAPSULE SELECT (order + stock modals) ─────────────────────
+function _buildCapsuleOptions(sel){
+  if(!sel) return;
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Choisir une capsule —</option>' +
+    capsules.map(c=>`<option value="${c.name}">${c.name}</option>`).join('') +
+    '<option value="Autre">Autre</option>';
+  if(cur) sel.value = cur;
+}
+function populateOrderCapsules(){ _buildCapsuleOptions(document.getElementById('o-capsule')); }
+function populateStockCapsules(){ _buildCapsuleOptions(document.getElementById('s-capsule')); }
+
+// ── STOCK SYNC ─────────────────────────────────────────────────
+// delta = +1 (vente) ou -1 (annulation / modif)
+// Retourne true si une ligne stock correspondante a été trouvée
+function syncStockForOrder(capsule, color, size, delta){
+  if(!capsule || !color || !size) return false;
+  const row = stock.find(r => r.capsule===capsule && r.color===color && r.size===size);
+  if(!row) return false;
+  row.sold = Math.max(0, (+row.sold||0) + delta);
+  return true;
+}
+
+// ── CAPSULE SELECT (order + stock modals) ─────────────────────
+function _buildCapsuleOptions(sel){
+  if(!sel) return;
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Choisir une capsule —</option>' +
+    capsules.map(c=>`<option value="${c.name}">${c.name}</option>`).join('') +
+    '<option value="Autre">Autre</option>';
+  if(cur) sel.value = cur;
+}
+function populateOrderCapsules(){ _buildCapsuleOptions(document.getElementById('o-capsule')); }
+function populateStockCapsules(){ _buildCapsuleOptions(document.getElementById('s-capsule')); }
+
+// ── STOCK SYNC ─────────────────────────────────────────────────
+// delta = +1 (vente) ou -1 (annulation / modif)
+// Retourne true si une ligne stock correspondante a été trouvée
+function syncStockForOrder(capsule, color, size, delta){
+  if(!capsule || !color || !size) return false;
+  const row = stock.find(r => r.capsule===capsule && r.color===color && r.size===size);
+  if(!row) return false;
+  row.sold = Math.max(0, (+row.sold||0) + delta);
+  return true;
+}
+
+function populateSupplierSelect(){
+  const sel = document.getElementById('so-supplier');
+  if(!sel) return;
+  const current = sel.value;
+  sel.innerHTML = '<option value="">— Choisir un fournisseur —</option>' +
+    suppliers.map(s=>`<option value="${s.name}" ${s.name===current?'selected':''}>${s.name}${s.product?' · '+s.product:''}</option>`).join('');
+}
+
+function saveSupplierOrder(){
+  const item = {
+    id:       editingId || uid(),
+    supplier: document.getElementById('so-supplier').value,
+    article:  document.getElementById('so-article').value,
+    color:    document.getElementById('so-color').value,
+    qty:      document.getElementById('so-qty').value,
+    price:    document.getElementById('so-price').value,
+    status:   document.getElementById('so-status').value,
+    date:     document.getElementById('so-date').value,
+    delivery: document.getElementById('so-delivery').value,
+    notes:    document.getElementById('so-notes').value,
+  };
+  if(editingId){ const i=supplierOrders.findIndex(x=>x.id===editingId); if(i>-1) supplierOrders[i]=item; }
+  else supplierOrders.push(item);
+  saveAll(); renderAll(); closeModal('modal-suporder'); toast('Commande enregistrée ✓');
+}
+
+function editSupplierOrder(id){
+  const o = supplierOrders.find(x=>x.id===id); if(!o) return;
+  editingId = id;
+  populateSupplierSelect();
+  document.getElementById('so-supplier').value = o.supplier||'';
+  document.getElementById('so-article').value  = o.article||'';
+  document.getElementById('so-color').value    = o.color||'';
+  document.getElementById('so-qty').value      = o.qty||'';
+  document.getElementById('so-price').value    = o.price||'';
+  document.getElementById('so-status').value   = o.status||'Commandé';
+  document.getElementById('so-date').value     = o.date||'';
+  document.getElementById('so-delivery').value = o.delivery||'';
+  document.getElementById('so-notes').value    = o.notes||'';
+  document.getElementById('suporder-modal-title').textContent = 'Modifier la commande';
+  openModal('modal-suporder');
+}
+
+function renderOrders(){
+  document.getElementById('orders-body').innerHTML = orders.length ? orders.map((o,i)=>`
+    <tr>
+      <td style="font-weight:700;color:var(--muted)">${String(i+1).padStart(2,'0')}</td>
+      <td><strong>${o.first} ${o.last}</strong>${o.contact?`<br><span style="font-size:11px;color:var(--muted)">${o.contact}</span>`:''}</td>
+      <td>${o.product}</td>
+      <td>${colorDot(o.color)}</td>
+      <td>${o.size}</td>
+      <td><strong>${o.price}€</strong></td>
+      <td>${statusBadge(o.payment)}</td>
+      <td>${statusBadge(o.status)}</td>
+      <td style="font-size:11px;color:var(--muted)">${o.date||'—'}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost btn-sm btn-icon" onclick="editOrder('${o.id}')">✏️</button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteItem('orders','${o.id}')">🗑</button>
+        </div>
+      </td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="10">Aucune commande pour l'instant.</td></tr>`;
+}
+
+function renderPackaging(){
+  document.getElementById('packaging-body').innerHTML = packaging.length ? packaging.map(p=>`
+    <tr>
+      <td><strong>${p.item}</strong></td>
+      <td>${p.total}</td>
+      <td>${p.used}</td>
+      <td><strong>${p.total-p.used}</strong></td>
+      <td style="min-width:130px">${progressBar(p.used,p.total)}</td>
+      <td style="font-size:12px;color:var(--muted)">${p.notes||'—'}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost btn-sm btn-icon" onclick="editPackaging('${p.id}')">✏️</button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteItem('packaging','${p.id}')">🗑</button>
+        </div>
+      </td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="7">Aucun article de packaging.</td></tr>`;
+}
+
+function updateCounts(){
+  document.getElementById('cnt-stock').textContent = stock.length;
+  document.getElementById('cnt-capsules').textContent = capsules.length;
+  document.getElementById('cnt-suppliers').textContent = suppliers.length;
+  document.getElementById('cnt-orders').textContent = orders.length;
+  document.getElementById('cnt-events').textContent = events.length;
+  document.getElementById('cnt-meeting').textContent = meetingNotes.length;
+  document.getElementById('cnt-clients').textContent = clients.length;
+}
+
+// ── DATA CLIENTS ──────────────────────────────────────────────
+function renderClients(){
+  // KPIs
+  const total = clients.length;
+  const avecTel   = clients.filter(c=>c.tel).length;
+  const avecVille = clients.filter(c=>c.ville).length;
+
+  document.getElementById('clients-kpi').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${total}</div><div class="stat-label">Inscrits</div></div>
+    <div class="stat-card"><div class="stat-value">${total}</div><div class="stat-label">Emails collectés</div></div>
+    <div class="stat-card"><div class="stat-value">${avecTel}</div><div class="stat-label">Avec téléphone</div></div>
+    <div class="stat-card"><div class="stat-value">${avecVille}</div><div class="stat-label">Avec ville</div></div>
+  `;
+
+  // Recherche
+  const search = (document.getElementById('client-search')?.value||'').toLowerCase();
+
+  let list = clients.filter(c=>{
+    if(search){
+      const hay = `${c.prenom} ${c.nom} ${c.email} ${c.tel} ${c.ville} ${c.adresse}`.toLowerCase();
+      if(!hay.includes(search)) return false;
+    }
+    return true;
+  });
+
+  // Tri : plus récent en premier
+  list = list.slice().sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+
+  const wrap = document.getElementById('clients-table-wrap');
+  if(!list.length){
+    wrap.innerHTML = `<div class="empty-state" style="padding:40px;text-align:center;color:var(--muted)">
+      ${total===0 ? 'Aucun inscrit pour l\'instant. Partagez le formulaire !' : 'Aucun résultat.'}
+    </div>`;
+    return;
+  }
+
+  wrap.innerHTML = `
+  <table style="width:100%;border-collapse:collapse;font-size:13px;">
+    <thead>
+      <tr style="border-bottom:2px solid var(--border);">
+        <th style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600">Prénom</th>
+        <th style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600">Nom</th>
+        <th style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600">Email</th>
+        <th style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600">Téléphone</th>
+        <th style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600">Âge</th>
+        <th style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600">Ville</th>
+        <th style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600">Adresse</th>
+        <th style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600">Date</th>
+        <th style="padding:10px 12px;"></th>
+      </tr>
+    </thead>
+    <tbody>
+      ${list.map((c,i)=>`
+      <tr style="border-bottom:1px solid var(--border);background:${i%2===0?'var(--bg-card)':'transparent'}">
+        <td style="padding:10px 12px;font-weight:500">${c.prenom||'—'}</td>
+        <td style="padding:10px 12px">${c.nom||'—'}</td>
+        <td style="padding:10px 12px;color:var(--kaki);font-weight:500">${c.email||'—'}</td>
+        <td style="padding:10px 12px;color:var(--muted)">${c.tel||'—'}</td>
+        <td style="padding:10px 12px;color:var(--muted)">${c.age||'—'}</td>
+        <td style="padding:10px 12px;color:var(--muted)">${c.ville||'—'}</td>
+        <td style="padding:10px 12px;color:var(--muted);font-size:12px">${c.adresse||'—'}</td>
+        <td style="padding:10px 12px;color:var(--muted);font-size:11px">${c.date?new Date(c.date).toLocaleDateString('fr-FR'):'—'}</td>
+        <td style="padding:10px 12px">
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteClient('${c.id}')">🗑</button>
+        </td>
+      </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function deleteClient(id){
+  if(!confirm('Supprimer ce client ?')) return;
+  clients = clients.filter(c=>c.id!==id);
+  saveAll(); renderAll();
+  toast('Client supprimé ✓');
+}
+
+// ── EXPORT CSV ────────────────────────────────────────────────
+function exportClients(){
+  if(!clients.length){ toast('Aucun client à exporter.'); return; }
+  const cols = ['date','prenom','nom','email','tel','age','ville','adresse','source'];
+  const headers = ['Date','Prénom','Nom','Email','Téléphone','Âge','Ville','Adresse','Source'];
+  const rows = clients.map(c=> cols.map(k=>`"${(c[k]||'').toString().replace(/"/g,'""')}"`).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `focus-clients-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+// ── GÉNÉRER LE FORMULAIRE ─────────────────────────────────────
+async function generateForm(){
+  const cfg = DB.getCloudCfg ? DB.getCloudCfg() : JSON.parse(localStorage.getItem('focus-cloud-cfg')||'{}');
+
+  if(!cfg || !cfg.apiKey || !cfg.binId){
+    alert('⚠ Configure d\'abord la sync cloud (JSONBin) dans les paramètres du dashboard.\nLe formulaire a quand même été généré mais ne pourra pas sauvegarder en ligne sans configuration.');
+  }
+
+  // Lire le fichier HTML du formulaire template
+  let formHtml;
+  try {
+    const res = await fetch('focus-form.html');
+    formHtml = await res.text();
+  } catch(e) {
+    alert('Impossible de lire focus-form.html — assurez-vous qu\'il est dans le même dossier que dashboard.html.');
+    return;
+  }
+
+  // Injecter la config JSONBin dans le formulaire
+  const configScript = `<script>window.__FOCUS_FORM_CFG__ = ${JSON.stringify({apiKey: cfg.apiKey||'', binId: cfg.binId||''})};<\/script>`;
+  const injected = formHtml.replace('</head>', configScript + '\n</head>');
+
+  // Télécharger le formulaire configuré
+  const blob = new Blob([injected], {type:'text/html;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'focus-formulaire-clients.html';
+  a.click();
+
+  toast('Formulaire généré ✓ — partagez ce fichier HTML ou hébergez-le en ligne !');
+}
+
+// ── MODAL HELPERS ─────────────────────────────────────────────
+// Pour ouvrir un modal en mode "création" (reset editingId explicite)
+function openNewModal(id){ editingId=null; openModal(id); }
+function openModal(id){
+  // NE PAS réinitialiser editingId ici — les fonctions edit le positionnent avant d'appeler openModal
+  document.getElementById(id).classList.add('open');
+  if(id==='modal-suporder'){ populateSupplierSelect(); document.getElementById('suporder-modal-title').textContent='Nouvelle commande fournisseur'; document.getElementById('so-date').value=new Date().toISOString().slice(0,10); }
+  if(id==='modal-capsule'){ setSelectedColors([]); document.getElementById('c-qty').value=''; document.getElementById('c-price').value=''; }
+  if(id==='modal-order'){ populateOrderCapsules(); }
+  if(id==='modal-stock'){ populateStockCapsules(); }
+  if(id==='modal-stock'){ populateStockCapsules(); }
+}
+function closeModal(id){ document.getElementById(id).classList.remove('open'); editingId=null; }
+// Reset editingId quand on ferme via clic sur l'overlay
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o){ o.classList.remove('open'); editingId=null; } }));
+
+// ── SAVE FUNCTIONS ────────────────────────────────────────────
+function saveStock(){
+  const item = {
+    id: editingId||uid(),
+    capsule: document.getElementById('s-capsule').value,
+    color:   document.getElementById('s-color').value,
+    size:    document.getElementById('s-size').value,
+    total:   +document.getElementById('s-total').value||0,
+    sold:    +document.getElementById('s-sold').value||0,
+    notes:   document.getElementById('s-notes').value,
+  };
+  if(editingId) { const i=stock.findIndex(x=>x.id===editingId); if(i>-1) stock[i]=item; }
+  else stock.push(item);
+  saveAll(); renderAll(); closeModal('modal-stock'); toast('Ligne ajoutée ✓');
+}
+
+// Helpers boutons couleurs
+function toggleColorBtn(btn){ btn.classList.toggle('selected'); }
+function getSelectedColors(){
+  return Array.from(document.querySelectorAll('#c-colors-group .color-btn.selected')).map(b=>b.dataset.color);
+}
+function setSelectedColors(colors){
+  document.querySelectorAll('#c-colors-group .color-btn').forEach(btn=>{
+    btn.classList.toggle('selected', (colors||[]).includes(btn.dataset.color));
+  });
+}
+
+function saveCapsule(){
+  const existing = editingId ? capsules.find(x=>x.id===editingId) : null;
+  const item = {
+    id:     editingId||uid(),
+    name:   document.getElementById('c-name').value,
+    status: document.getElementById('c-status').value,
+    date:   document.getElementById('c-date').value,
+    qty:    document.getElementById('c-qty').value,
+    price:  document.getElementById('c-price').value,
+    colors: getSelectedColors(),
+    desc:   document.getElementById('c-desc').value,
+    img:    existing ? existing.img||'' : '',
+    media:  existing ? existing.media||[] : [],
+  };
+  if(editingId){ const i=capsules.findIndex(x=>x.id===editingId); if(i>-1) capsules[i]=item; }
+  else capsules.push(item);
+  saveAll(); renderAll(); closeModal('modal-capsule'); toast('Capsule enregistrée ✓');
+}
+
+function saveSupplier(){
+  const item = {
+    id: editingId||uid(),
+    name:    document.getElementById('sup-name').value,
+    product: document.getElementById('sup-product').value,
+    contact: document.getElementById('sup-contact').value,
+    phone:   document.getElementById('sup-phone').value,
+    quote:   document.getElementById('sup-quote').value,
+    status:  document.getElementById('sup-status').value,
+    notes:   document.getElementById('sup-notes').value,
+  };
+  if(editingId){ const i=suppliers.findIndex(x=>x.id===editingId); if(i>-1) suppliers[i]=item; }
+  else suppliers.push(item);
+  saveAll(); renderAll(); closeModal('modal-supplier'); toast('Fournisseur enregistré ✓');
+}
+
+function saveOrder(){
+  const prevOrder = editingId ? orders.find(x=>x.id===editingId) : null;
+  const item = {
+    id:      editingId||uid(),
+    capsule: document.getElementById('o-capsule').value,
+    first:   document.getElementById('o-first').value,
+    last:    document.getElementById('o-last').value,
+    product: document.getElementById('o-product').value,
+    color:   document.getElementById('o-color').value,
+    size:    document.getElementById('o-size').value,
+    price:   document.getElementById('o-price').value||55,
+    payment: document.getElementById('o-payment').value,
+    status:  document.getElementById('o-status').value,
+    contact: document.getElementById('o-contact').value,
+    date:    prevOrder ? (prevOrder.date||new Date().toLocaleDateString('fr-FR')) : new Date().toLocaleDateString('fr-FR'),
+  };
+
+  if(editingId){ const i=orders.findIndex(x=>x.id===editingId); if(i>-1) orders[i]=item; }
+  else orders.push(item);
+
+  // Le stock se met à jour automatiquement via renderStock() qui recalcule depuis orders[]
+  saveAll(); renderAll(); closeModal('modal-order');
+  toast(editingId ? 'Commande modifiée — stock mis à jour ✓' : 'Commande enregistrée — stock mis à jour ✓');
+}
+
+function savePackaging(){
+  const item = {
+    id: editingId||uid(),
+    item:  document.getElementById('p-item').value,
+    total: +document.getElementById('p-total').value||0,
+    used:  +document.getElementById('p-used').value||0,
+    notes: document.getElementById('p-notes').value,
+  };
+  if(editingId){ const i=packaging.findIndex(x=>x.id===editingId); if(i>-1) packaging[i]=item; }
+  else packaging.push(item);
+  saveAll(); renderAll(); closeModal('modal-packaging'); toast('Article enregistré ✓');
+}
+
+// ── EDIT FUNCTIONS ────────────────────────────────────────────
+function editStock(id){
+  const r=stock.find(x=>x.id===id); if(!r) return;
+  editingId=id;
+  document.getElementById('stock-modal-title').textContent='Modifier stock';
+  populateStockCapsules();
+  document.getElementById('s-capsule').value=r.capsule||'';
+  document.getElementById('s-color').value=r.color;
+  document.getElementById('s-size').value=r.size;
+  document.getElementById('s-total').value=r.total;
+  document.getElementById('s-sold').value=r.sold||0;
+  document.getElementById('s-notes').value=r.notes||'';
+  openModal('modal-stock');
+}
+function editCapsule(id){
+  const c=capsules.find(x=>x.id===id); if(!c) return;
+  editingId=id;
+  document.getElementById('capsule-modal-title').textContent='Modifier capsule';
+  document.getElementById('c-name').value=c.name;
+  document.getElementById('c-status').value=c.status;
+  document.getElementById('c-date').value=c.date||'';
+  document.getElementById('c-qty').value=c.qty||'';
+  document.getElementById('c-price').value=c.price||'';
+  setSelectedColors(c.colors||[]);
+  document.getElementById('c-desc').value=c.desc||'';
+  openModal('modal-capsule');
+}
+function editSupplier(id){
+  const s=suppliers.find(x=>x.id===id); if(!s) return;
+  editingId=id;
+  document.getElementById('supplier-modal-title').textContent='Modifier fournisseur';
+  ['name','product','contact','phone','quote','status','notes'].forEach(k=>
+    document.getElementById('sup-'+k).value=s[k]||'');
+  openModal('modal-supplier');
+}
+function editOrder(id){
+  const o=orders.find(x=>x.id===id); if(!o) return;
+  editingId=id;
+  document.getElementById('order-modal-title').textContent='Modifier commande';
+  populateOrderCapsules();
+  document.getElementById('o-capsule').value=o.capsule||'';
+  document.getElementById('o-first').value=o.first;
+  document.getElementById('o-last').value=o.last;
+  document.getElementById('o-product').value=o.product;
+  document.getElementById('o-color').value=o.color;
+  document.getElementById('o-size').value=o.size;
+  document.getElementById('o-price').value=o.price;
+  document.getElementById('o-payment').value=o.payment;
+  document.getElementById('o-status').value=o.status;
+  document.getElementById('o-contact').value=o.contact||'';
+  openModal('modal-order');
+}
+function editPackaging(id){
+  const p=packaging.find(x=>x.id===id); if(!p) return;
+  editingId=id;
+  document.getElementById('p-item').value=p.item;
+  document.getElementById('p-total').value=p.total;
+  document.getElementById('p-used').value=p.used;
+  document.getElementById('p-notes').value=p.notes;
+  openModal('modal-packaging');
+}
+
+// ── RENDER EVENTS ─────────────────────────────────────────────
+function renderEvents(){
+  const el = document.getElementById('events-list');
+  if(!el) return;
+  if(!events.length){ el.innerHTML=`<div style="color:var(--muted);padding:40px;font-style:italic;text-align:center">Aucun événement. Cliquez sur "+ Nouvel événement" pour commencer.</div>`; return; }
+  const statusColor = {'Confirmé':'var(--green)','En préparation':'var(--orange)','Terminé':'var(--muted)','Annulé':'var(--red)'};
+  el.innerHTML = events.map(ev=>`
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+      <div style="background:var(--navy);padding:18px 24px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-family:var(--font-title);font-size:24px;letter-spacing:3px;color:var(--bg)">${ev.name}</div>
+          <div style="font-size:12px;color:var(--beige);margin-top:4px">📍 ${ev.lieu||'Lieu à définir'}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,0.1);color:${statusColor[ev.statut]||'var(--beige)'}">${ev.statut}</span>
+          <button class="btn btn-ghost btn-sm" style="color:var(--bg);border-color:rgba(255,255,255,0.3)" onclick="editEvent('${ev.id}')">Modifier</button>
+          <button class="btn btn-ghost btn-sm" style="color:var(--red);border-color:rgba(255,255,255,0.2)" onclick="deleteItem('events','${ev.id}')">✕</button>
+        </div>
+      </div>
+      <div style="padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Infos</div>
+          <div style="font-size:13px;display:flex;flex-direction:column;gap:6px">
+            <div>📅 <b>Date :</b> ${ev.date ? new Date(ev.date+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}) : '<span style="color:var(--orange)">À définir</span>'}</div>
+            <div>🕐 <b>Heure :</b> ${ev.heure||'<span style="color:var(--orange)">À définir</span>'}</div>
+            <div>👥 <b>Capacité max :</b> ${ev.capa||'<span style="color:var(--orange)">À définir</span>'} personnes</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Produits FOCUS</div>
+          <div style="font-size:12px;line-height:1.8;white-space:pre-line;color:var(--navy)">${ev.produits||'—'}</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Produits partenaire</div>
+          <div style="font-size:12px;line-height:1.8;white-space:pre-line;color:var(--navy)">${ev.produitsPartner||'—'}</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Checklist / Notes</div>
+          <div style="font-size:12px;line-height:1.8;white-space:pre-line;color:var(--navy)">${ev.notes||'—'}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function saveEvent(){
+  const item = {
+    id: editingId||uid(),
+    name:            document.getElementById('ev-name').value||'Nouvel événement',
+    lieu:            document.getElementById('ev-lieu').value,
+    date:            document.getElementById('ev-date').value,
+    heure:           document.getElementById('ev-heure').value,
+    capa:            document.getElementById('ev-capa').value,
+    statut:          document.getElementById('ev-statut').value,
+    produits:        document.getElementById('ev-produits').value,
+    produitsPartner: document.getElementById('ev-produits-partner').value,
+    notes:           document.getElementById('ev-notes').value,
+  };
+  if(editingId){ const i=events.findIndex(x=>x.id===editingId); if(i>-1) events[i]=item; }
+  else events.push(item);
+  saveAll(); renderAll(); closeModal('modal-event'); toast('Événement enregistré ✓');
+}
+
+function editEvent(id){
+  const ev=events.find(x=>x.id===id); if(!ev) return;
+  editingId=id;
+  document.getElementById('ev-name').value=ev.name;
+  document.getElementById('ev-lieu').value=ev.lieu;
+  document.getElementById('ev-date').value=ev.date;
+  document.getElementById('ev-heure').value=ev.heure;
+  document.getElementById('ev-capa').value=ev.capa;
+  document.getElementById('ev-statut').value=ev.statut;
+  document.getElementById('ev-produits').value=ev.produits;
+  document.getElementById('ev-produits-partner').value=ev.produitsPartner;
+  document.getElementById('ev-notes').value=ev.notes;
+  openModal('modal-event');
+}
+
+// ── MEETING NOTES ─────────────────────────────────────────────
+function switchMeetingTab(who){
+  activeMeetingTab = who;
+  document.querySelectorAll('.meeting-tab').forEach(t=>t.classList.toggle('active', t.dataset.who===who));
+  renderMeetingNotes();
+}
+
+function renderMeetingNotes(){
+  const el = document.getElementById('meeting-notes-list');
+  if(!el) return;
+  const notes = [...meetingNotes].filter(n=>n.who===activeMeetingTab).reverse();
+  el.innerHTML = notes.length ? notes.map(n=>`
+    <div class="note-card">
+      <div class="note-card-header">
+        <div>
+          <div class="note-card-title">${n.title||'Sans titre'}</div>
+          <div class="note-card-date">${n.date||''}</div>
+        </div>
+        <div class="note-card-actions">
+          <button class="btn btn-ghost btn-sm btn-icon" onclick="editMeetingNote('${n.id}')" title="Modifier">✏️</button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteMeetingNote('${n.id}')" title="Supprimer">🗑</button>
+        </div>
+      </div>
+      <div class="note-card-content">${n.content||''}</div>
+    </div>`).join('')
+  : `<div style="color:var(--muted);padding:40px;text-align:center;font-style:italic;font-size:13px">Aucune note pour l'instant — clique sur "+ Nouvelle note" !</div>`;
+}
+
+function openMeetingModal(){
+  document.getElementById('meeting-modal-title').textContent = 'Nouvelle note';
+  document.getElementById('mn-title').value = '';
+  document.getElementById('mn-date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('mn-who').value = activeMeetingTab;
+  document.getElementById('mn-content').value = '';
+  openModal('modal-meeting');
+}
+
+function saveMeetingNote(){
+  const item = {
+    id:      editingId||uid(),
+    who:     document.getElementById('mn-who').value,
+    title:   document.getElementById('mn-title').value,
+    date:    document.getElementById('mn-date').value,
+    content: document.getElementById('mn-content').value,
+  };
+  if(editingId){ const i=meetingNotes.findIndex(x=>x.id===editingId); if(i>-1) meetingNotes[i]=item; }
+  else meetingNotes.push(item);
+  activeMeetingTab = item.who;
+  saveAll(); renderAll(); closeModal('modal-meeting'); toast('Note enregistrée ✓');
+}
+
+function editMeetingNote(id){
+  const n=meetingNotes.find(x=>x.id===id); if(!n) return;
+  editingId=id;
+  document.getElementById('meeting-modal-title').textContent = 'Modifier la note';
+  document.getElementById('mn-title').value   = n.title||'';
+  document.getElementById('mn-date').value    = n.date||'';
+  document.getElementById('mn-who').value     = n.who||'victor';
+  document.getElementById('mn-content').value = n.content||'';
+  openModal('modal-meeting');
+}
+
+function deleteMeetingNote(id){
+  if(!confirm('Supprimer cette note ?')) return;
+  meetingNotes = meetingNotes.filter(x=>x.id!==id);
+  saveAll(); renderAll(); toast('Note supprimée ✓');
+}
+
+// ── DELETE ────────────────────────────────────────────────────
+function deleteItem(type, id){
+  if(!confirm('Supprimer cet élément ?')) return;
+  const map={stock,capsules,suppliers,orders,packaging,events,supplierOrders};
+  const arr=map[type];
+  const i=arr.findIndex(x=>x.id===id);
+  if(i>-1) arr.splice(i,1);
+  saveAll(); renderAll(); toast('Supprimé ✓');
+}
+
+// ── EXPORT / IMPORT ───────────────────────────────────────────
+function exportData(){
+  const data = { stock, capsules, suppliers, orders, packaging, events, supplierOrders, meetingNotes, exportedAt: new Date().toISOString(), version: '1' };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  const date = new Date().toISOString().slice(0,10);
+  a.href = URL.createObjectURL(blob);
+  a.download = `focus-dashboard-${date}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Export téléchargé ✓');
+}
+
+function importData(e){
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    try {
+      const data = JSON.parse(ev.target.result);
+      if(!confirm(`Importer les données du ${data.exportedAt ? new Date(data.exportedAt).toLocaleString('fr-FR') : 'fichier'} ?\n\nCela remplacera toutes tes données actuelles.`)){
+        e.target.value=''; return;
+      }
+      if(data.stock)     { stock     = data.stock;     DB.save('stock',stock); }
+      if(data.capsules)  { capsules  = data.capsules;  DB.save('capsules',capsules); }
+      if(data.suppliers) { suppliers = data.suppliers; DB.save('suppliers',suppliers); }
+      if(data.orders)    { orders    = data.orders;    DB.save('orders',orders); }
+      if(data.packaging) { packaging = data.packaging; DB.save('packaging',packaging); }
+      if(data.events)    { events    = data.events;    DB.save('events',events); }
+      renderAll();
+      toast('Données importées ✓');
+    } catch(err) {
+      alert('Fichier JSON invalide. Vérifie que tu utilises bien un export FOCUS.');
+    }
+    e.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+// (legacy img-upload input kept for compat but no longer used)
+
+// ── TOAST ─────────────────────────────────────────────────────
+function toast(msg, duration=2400){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), duration);
+}
+
+// ── DRAG & DROP TABS ──────────────────────────────────────────
+function initTabDrag(){
+  const nav = document.getElementById('tabs');
+  let dragSrc = null;
+
+  function applyOrder(order){
+    order.forEach(tabId=>{
+      const t = nav.querySelector(`.tab[data-tab="${tabId}"]`);
+      if(t) nav.appendChild(t);
+    });
+  }
+
+  function saveTabOrder(){
+    const order = [...nav.querySelectorAll('.tab')].map(t=>t.dataset.tab);
+    localStorage.setItem('focus_tab_order', JSON.stringify(order));
+  }
+
+  // Restore saved order
+  try {
+    const saved = JSON.parse(localStorage.getItem('focus_tab_order'));
+    if(saved && saved.length) applyOrder(saved);
+  } catch(e){}
+
+  nav.querySelectorAll('.tab').forEach(tab=>{
+    tab.setAttribute('draggable','true');
+
+    tab.addEventListener('dragstart', e=>{
+      dragSrc = tab;
+      tab.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    tab.addEventListener('dragend', ()=>{
+      tab.classList.remove('dragging');
+      nav.querySelectorAll('.tab').forEach(t=>t.classList.remove('drag-over'));
+      saveTabOrder();
+    });
+    tab.addEventListener('dragover', e=>{
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      nav.querySelectorAll('.tab').forEach(t=>t.classList.remove('drag-over'));
+      if(tab !== dragSrc) tab.classList.add('drag-over');
+    });
+    tab.addEventListener('dragleave', ()=>tab.classList.remove('drag-over'));
+    tab.addEventListener('drop', e=>{
+      e.preventDefault();
+      if(dragSrc && dragSrc !== tab){
+        // Insérer dragSrc avant tab (ou après si on glisse vers la gauche)
+        const tabs = [...nav.querySelectorAll('.tab')];
+        const srcIdx = tabs.indexOf(dragSrc);
+        const tgtIdx = tabs.indexOf(tab);
+        if(srcIdx < tgtIdx) tab.after(dragSrc);
+        else tab.before(dragSrc);
+      }
+      tab.classList.remove('drag-over');
+    });
+  });
+}
+
+function saveTabOrder(){
+  const order = [...document.querySelectorAll('#tabs .tab')].map(t=>t.dataset.tab);
+  localStorage.setItem('focus_tab_order', JSON.stringify(order));
+}
+
+// ── CUSTOMIZER ────────────────────────────────────────────────
+
+// Palette FOCUS officielle
+const FOCUS_PALETTE = [
+  { name:'Navy',     hex:'#162035' },
+  { name:'Kaki',     hex:'#6B7053' },
+  { name:'Beige',    hex:'#C4B49A' },
+  { name:'Creme',    hex:'#F2F0EB' },
+  { name:'Blanc',    hex:'#FFFFFF' },
+  { name:'Noir',     hex:'#0D0E10' },
+  { name:'Olive Lt', hex:'#8A9A6A' },
+  { name:'Navy Lt',  hex:'#2A3D5C' },
+];
+
+// Définition des variables CSS éditables
+const CUST_VARS = {
+  backgrounds: [
+    { var:'--bg',       label:'Fond principal',   sub:'Arrière-plan général' },
+    { var:'--bg-alt',   label:'Fond nav / thead', sub:'Barre onglets, en-têtes' },
+    { var:'--bg-card',  label:'Fond carte',        sub:'Cartes, cellules alt.' },
+    { var:'--white',    label:'Fond blanc',        sub:'Tableaux, modals' },
+    { var:'--border',   label:'Bordures',          sub:'Contours de cellules' },
+  ],
+  text: [
+    { var:'--navy',     label:'Texte principal',  sub:'Titres, valeurs' },
+    { var:'--muted',    label:'Texte secondaire', sub:'Labels, sous-titres' },
+  ],
+  accents: [
+    { var:'--kaki',     label:'Accent kaki',      sub:'Actif, bouton principal' },
+    { var:'--kaki-lt',  label:'Accent kaki clair',sub:'Hover, variante' },
+    { var:'--kaki-bg',  label:'Fond accent',      sub:'Background badges kaki' },
+    { var:'--beige',    label:'Beige',             sub:'Détails, swatch' },
+  ],
+  states: [
+    { var:'--red',      label:'Erreur / Danger',  sub:'Suppressions, alertes' },
+    { var:'--red-bg',   label:'Fond erreur',       sub:'' },
+    { var:'--green',    label:'Succès',            sub:'Statuts positifs' },
+    { var:'--green-bg', label:'Fond succès',       sub:'' },
+    { var:'--orange',   label:'Avertissement',     sub:'Stock bas, attention' },
+    { var:'--orange-bg',label:'Fond avertissement',sub:'' },
+  ],
+};
+
+// Présets de thèmes — minimalistes & modernes
+// dark: true = le bouton toggle affichera "Clair"
+const PRESETS = {
+  'Sombre': {
+    dark: true,
+    '--bg':'#121212','--bg-alt':'#1a1a1a','--bg-card':'#202020','--border':'#2e2e2e',
+    '--navy':'#e8e8e8','--navy2':'#aaaaaa','--muted':'#555',
+    '--kaki':'#8fa070','--kaki-lt':'#a0b282','--kaki-bg':'rgba(143,160,112,0.1)',
+    '--beige':'#9a8870','--white':'#1a1a1a',
+    '--red':'#e06855','--red-bg':'rgba(224,104,85,0.1)',
+    '--green':'#5aad78','--green-bg':'rgba(90,173,120,0.1)',
+    '--orange':'#d48a40','--orange-bg':'rgba(212,138,64,0.1)',
+    '--r':'3px','--tab-h':'46px','--font-sz':'14px','--kpi-sz':'28px',
+  },
+  'Clair': {
+    dark: false,
+    '--bg':'#f8f8f8','--bg-alt':'#f0f0f0','--bg-card':'#e8e8e8','--border':'#d8d8d8',
+    '--navy':'#111111','--navy2':'#333333','--muted':'#888',
+    '--kaki':'#6B7053','--kaki-lt':'#8A9A6A','--kaki-bg':'rgba(107,112,83,0.1)',
+    '--beige':'#b8a890','--white':'#ffffff',
+    '--red':'#c0392b','--red-bg':'rgba(192,57,43,0.08)',
+    '--green':'#27ae60','--green-bg':'rgba(39,174,96,0.08)',
+    '--orange':'#d68910','--orange-bg':'rgba(214,137,16,0.08)',
+    '--r':'3px','--tab-h':'46px','--font-sz':'14px','--kpi-sz':'28px',
+  },
+  'Ardoise': {
+    dark: true,
+    '--bg':'#0d1117','--bg-alt':'#161b22','--bg-card':'#1c2333','--border':'#263044',
+    '--navy':'#cdd9e5','--navy2':'#8da8c4','--muted':'#485e74',
+    '--kaki':'#7cb87c','--kaki-lt':'#96cc96','--kaki-bg':'rgba(124,184,124,0.1)',
+    '--beige':'#8a7060','--white':'#161b22',
+    '--red':'#f47067','--red-bg':'rgba(244,112,103,0.1)',
+    '--green':'#57ab5a','--green-bg':'rgba(87,171,90,0.1)',
+    '--orange':'#e3b341','--orange-bg':'rgba(227,179,65,0.1)',
+    '--r':'4px','--tab-h':'46px','--font-sz':'14px','--kpi-sz':'28px',
+  },
+  'FOCUS': {
+    dark: false,
+    '--bg':'#F2F0EB','--bg-alt':'#EAE7E0','--bg-card':'#E2DDD6','--border':'#CEC9BE',
+    '--navy':'#162035','--navy2':'#2A3D5C','--muted':'#7A7E8A',
+    '--kaki':'#6B7053','--kaki-lt':'#8A9A6A','--kaki-bg':'rgba(107,112,83,0.12)',
+    '--beige':'#C4B49A','--white':'#FAF8F4',
+    '--red':'#C0452A','--red-bg':'rgba(192,69,42,0.08)',
+    '--green':'#4A8C5F','--green-bg':'rgba(74,140,95,0.08)',
+    '--orange':'#C07A2A','--orange-bg':'rgba(192,122,42,0.08)',
+    '--r':'3px','--tab-h':'46px','--font-sz':'14px','--kpi-sz':'28px',
+  },
+};
+
+// Variables d'appui pour taille
+const SIZE_VARS = [
+  { var:'--r',       label:'Arrondi des coins', min:0, max:16, unit:'px', step:1 },
+  { var:'--tab-h',   label:'Hauteur onglets',   min:36, max:64, unit:'px', step:2 },
+  { var:'--font-sz', label:'Taille texte',       min:11, max:18, unit:'px', step:1 },
+  { var:'--kpi-sz',  label:'Taille KPIs',        min:18, max:42, unit:'px', step:2 },
+];
+
+function openCustomizer(){
+  document.getElementById('customizer-overlay').classList.add('open');
+  document.getElementById('customizer').classList.add('open');
+  buildCustomizerUI();
+}
+function closeCustomizer(){
+  document.getElementById('customizer-overlay').classList.remove('open');
+  document.getElementById('customizer').classList.remove('open');
+}
+
+function getCSSVar(v){
+  const saved = JSON.parse(localStorage.getItem('focus-custom-vars')||'{}');
+  if(saved[v]) return saved[v];
+  return getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+}
+
+function setCSSVar(v, val){
+  document.documentElement.style.setProperty(v, val);
+  const saved = JSON.parse(localStorage.getItem('focus-custom-vars')||'{}');
+  saved[v] = val;
+  localStorage.setItem('focus-custom-vars', JSON.stringify(saved));
+  // Sync les inputs dans le panneau
+  const inp = document.querySelector(`[data-cvar="${v}"]`);
+  if(inp && inp !== document.activeElement) inp.value = val.replace('px','').replace('#','') ? val : val;
+}
+
+function applyCustomVarsFromStorage(){
+  const saved = JSON.parse(localStorage.getItem('focus-custom-vars')||'{}');
+  const root = document.documentElement;
+  Object.entries(saved).forEach(([v,val])=>{ root.style.setProperty(v, val); });
+  // Sync bouton toggle
+  const isDark = localStorage.getItem('focus-is-dark') !== 'false';
+  const btn = document.getElementById('btn-dark');
+  if(btn) btn.textContent = isDark ? 'Clair' : 'Sombre';
+  // Appliquer les vars de taille sur les éléments
+  applySizeVars();
+}
+
+function applySizeVars(){
+  const fSz = getCSSVar('--font-sz') || '14px';
+  const kpiSz = getCSSVar('--kpi-sz') || '30px';
+  const tabH = getCSSVar('--tab-h') || '48px';
+  document.documentElement.style.setProperty('--font-sz', fSz);
+  document.documentElement.style.setProperty('--kpi-sz', kpiSz);
+  document.documentElement.style.setProperty('--tab-h', tabH);
+  // Appliquer dynamiquement aux éléments
+  document.querySelectorAll('body').forEach(el=>el.style.fontSize = fSz);
+  document.querySelectorAll('.kpi-value, .stock-kpi-val, .capsule-stat-val').forEach(el=>el.style.fontSize = kpiSz);
+  document.querySelectorAll('.tab').forEach(el=>el.style.height = tabH);
+}
+
+function buildCustomizerUI(){
+  const body = document.getElementById('cust-body');
+
+  // Présets
+  let html = `<div class="cust-section">
+    <div class="cust-section-title">Presets FOCUS</div>
+    <div class="preset-grid">
+      ${Object.keys(PRESETS).map(name=>`
+        <button class="preset-btn" onclick="applyPreset('${name}')">${name}</button>
+      `).join('')}
+    </div>
+  </div>`;
+
+  // Palette de la marque
+  html += `<div class="cust-section">
+    <div class="cust-section-title">Palette FOCUS officielle</div>
+    <div class="brand-palette">
+      ${FOCUS_PALETTE.map(s=>`
+        <div class="swatch-group">
+          <div class="swatch" style="background:${s.hex}" title="${s.name} — ${s.hex}"
+            onclick="copyColorToClipboard('${s.hex}', this)"></div>
+          <div class="swatch-label">${s.name}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div id="cust-copied" style="font-size:11px;color:var(--kaki);height:16px;transition:opacity 0.3s;opacity:0">Couleur copiée</div>
+  </div>`;
+
+  // Sections couleurs
+  const sections = [
+    { key:'backgrounds', title:'Fonds & Bordures' },
+    { key:'text',        title:'Couleurs de texte' },
+    { key:'accents',     title:'Couleurs accent' },
+    { key:'states',      title:'Etats (succès / erreur / alerte)' },
+  ];
+  sections.forEach(({key, title})=>{
+    html += `<div class="cust-section">
+      <div class="cust-section-title">${title}</div>`;
+    CUST_VARS[key].forEach(({var:v, label, sub})=>{
+      const cur = getCSSVar(v);
+      const isColor = cur.startsWith('#') || cur.startsWith('rgb') || cur.startsWith('rgba');
+      html += `<div class="cust-row">
+        <label class="cust-row-label" for="ci_${v.replace('--','')}">
+          ${label}${sub?`<span class="cust-row-sub">${sub}</span>`:''}
+        </label>
+        ${isColor ? `
+          <input type="color" class="cust-color-input" id="ci_${v.replace('--','')}"
+            data-cvar="${v}" value="${toHex(cur)}"
+            oninput="setCSSVar('${v}', this.value)"
+            onchange="setCSSVar('${v}', this.value)"/>
+        ` : `<input type="text" style="width:80px;padding:5px 8px;font-size:11px;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--navy);font-family:var(--font)"
+            data-cvar="${v}" value="${cur}"
+            oninput="setCSSVar('${v}', this.value)"/>`}
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  // Tailles
+  html += `<div class="cust-section">
+    <div class="cust-section-title">Tailles & formes</div>`;
+  SIZE_VARS.forEach(({var:v, label, min, max, unit, step})=>{
+    const cur = parseFloat(getCSSVar(v)) || min;
+    html += `<div class="cust-row" style="flex-direction:column;align-items:flex-start;gap:6px">
+      <div style="display:flex;justify-content:space-between;width:100%">
+        <span class="cust-row-label">${label}</span>
+        <span class="cust-range-val" id="rv_${v.replace('--','')}">${cur}${unit}</span>
+      </div>
+      <div class="cust-range-wrap" style="width:100%">
+        <input type="range" class="cust-range" data-cvar="${v}"
+          min="${min}" max="${max}" step="${step}" value="${cur}"
+          oninput="
+            document.getElementById('rv_${v.replace('--','')}').textContent=this.value+'${unit}';
+            setCSSVar('${v}', this.value+'${unit}');
+            applySizeVars();
+          "/>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  body.innerHTML = html;
+}
+
+function toHex(color){
+  if(!color || color.startsWith('rgba') || color.startsWith('rgb(')) {
+    // Try to convert simple rgb to hex
+    const m = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(m) return '#'+[m[1],m[2],m[3]].map(x=>parseInt(x).toString(16).padStart(2,'0')).join('');
+    return '#888888';
+  }
+  if(color.startsWith('#')) return color.length===4 ?
+    '#'+color[1]+color[1]+color[2]+color[2]+color[3]+color[3] : color;
+  return '#888888';
+}
+
+function copyColorToClipboard(hex, el){
+  navigator.clipboard.writeText(hex).catch(()=>{});
+  const msg = document.getElementById('cust-copied');
+  msg.style.opacity='1';
+  msg.textContent = `${hex} copié`;
+  setTimeout(()=>msg.style.opacity='0', 1800);
+}
+
+function applyPreset(name){
+  const preset = PRESETS[name];
+  if(!preset) return;
+  const root = document.documentElement;
+  // Appliquer toutes les vars CSS (sauf la clé "dark" qui est un méta-flag)
+  const saved = JSON.parse(localStorage.getItem('focus-custom-vars')||'{}');
+  Object.entries(preset).forEach(([v, val])=>{
+    if(v === 'dark') return;
+    root.style.setProperty(v, val);
+    saved[v] = val;
+  });
+  localStorage.setItem('focus-custom-vars', JSON.stringify(saved));
+  // Gérer l'état dark/light
+  const isDark = preset.dark === true;
+  localStorage.setItem('focus-is-dark', isDark ? 'true' : 'false');
+  const btn = document.getElementById('btn-dark');
+  if(btn) btn.textContent = isDark ? 'Clair' : 'Sombre';
+  // Reconstruire le panneau + appliquer les tailles
+  buildCustomizerUI();
+  applySizeVars();
+  toast(`Theme "${name}" appliqué`);
+}
+
+function resetCustomizer(){
+  if(!confirm('Réinitialiser toutes les personnalisations ?')) return;
+  localStorage.removeItem('focus-custom-vars');
+  localStorage.removeItem('focus-is-dark');
+  // Supprimer toutes les propriétés inline sur :root
+  const root = document.documentElement;
+  const allVars = [...CUST_VARS.backgrounds,...CUST_VARS.text,...CUST_VARS.accents,...CUST_VARS.states].map(x=>x.var);
+  SIZE_VARS.forEach(x=>allVars.push(x.var));
+  allVars.forEach(v=>root.style.removeProperty(v));
+  // Appliquer le preset Sombre par défaut
+  applyPreset('Sombre');
+  toast('Réinitialisé — theme Sombre appliqué');
+}
+
+// Appliquer au chargement
+document.addEventListener('DOMContentLoaded', applyCustomVarsFromStorage);
+
+// ── NOTION LIVE SYNC ──────────────────────────────────────────
+const NOTION_PROXY = 'http://localhost:3099';
+
+function setNotionDot(state){
+  const el = document.getElementById('notion-dot');
+  if(!el) return;
+  if(state==='ok')   { el.textContent='✓'; el.style.color='var(--green)'; }
+  else if(state==='err') { el.textContent='✗'; el.style.color='var(--red)'; }
+  else if(state==='busy'){ el.textContent='…'; el.style.color='var(--muted)'; }
+}
+
+async function notionSync(showToast=false){
+  setNotionDot('busy');
+  try {
+    const r = await fetch(`${NOTION_PROXY}/api/sync-all`, { signal: AbortSignal.timeout(12000) });
+    if(!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+    if(!d.ok) throw new Error(d.error || 'Erreur Notion');
+
+    if(d.capsules?.length){
+      capsules = d.capsules.map(c=>({
+        id:c.id, name:c.nom||'', status:c.statut||'',
+        coloris:Array.isArray(c.coloris)?c.coloris.join(', '):'',
+        pieces:c.pieces??0, prix:c.prix??0,
+        lancement:c.lancement||'', notes:c.notes||'',
+        sold:0, revenue:0, media:[], img:'',
+      }));
+      DB.save('capsules', capsules);
+    }
+    if(d.stock?.length){
+      stock = d.stock.map(s=>({
+        id:s.id, capsule:'Capsule 01',
+        article:s.article||'', coloris:s.coloris||'', taille:s.taille||'',
+        qty:s.qty??0, seuil:s.seuil??0, localisation:s.localisation||'', notes:s.notes||'',
+      }));
+      DB.save('stock', stock);
+    }
+    if(d.commandes?.length){
+      orders = d.commandes.map(o=>({
+        id:o.id, capsule:o.capsule||'', client:o.fournisseur||'',
+        taille:'', coloris:'', qty:o.qty??1, prix:o.montant??0,
+        statut:o.statut||'En attente', date:o.dateCommande||'',
+        livraison:o.dateLivraison||'', notes:o.notes||'',
+      }));
+      DB.save('orders', orders);
+    }
+    if(d.fournisseurs?.length){
+      suppliers = d.fournisseurs.map(f=>({
+        id:f.id, name:f.nom||'', contact:f.contact||'',
+        email:f.email||'', tel:f.tel||'', notes:f.notes||'',
+      }));
+      DB.save('suppliers', suppliers);
+    }
+    if(d.evenements?.length){
+      events = d.evenements.map(e=>({
+        id:e.id, title:e.titre||'', date:e.date||'',
+        lieu:e.lieu||'', statut:e.statut||'', notes:e.notes||'',
+        sales:0, revenue:0,
+      }));
+      DB.save('events', events);
+    }
+    if(d.reunions?.length){
+      meetingNotes = d.reunions.map(m=>({
+        id:m.id, title:m.titre||'', date:m.date||'', notes:m.notes||'',
+      }));
+      DB.save('meetingNotes', meetingNotes);
+    }
+    if(d.clients?.length){
+      clients = d.clients.map(c=>({
+        id:c.id, name:c.nom||'', email:c.email||'', tel:c.tel||'',
+        capsule:c.capsule||'', commande:c.commande||'', notes:c.notes||'',
+      }));
+      DB.save('clients', clients);
+    }
+
+    renderAll();
+    setNotionDot('ok');
+    if(showToast) toast(`Notion synchronisé — ${new Date().toLocaleTimeString('fr-FR')} ✓`);
+  } catch(e){
+    setNotionDot('err');
+    if(showToast) toast(e.message.includes('fetch')||e.message.includes('Failed')
+      ? '⚠️  Serveur Notion non actif (port 3099)'
+      : `Notion : ${e.message}`);
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+renderAll();
+initTabDrag();
+if(CFG.get().binId) setSyncStatus('ok');
+applyCustomVarsFromStorage();
+// Auto-sync Notion au chargement
+notionSync(false);
+</script>
+
+<!-- PANNEAU DE PERSONNALISATION -->
+<div id="customizer-overlay" onclick="closeCustomizer()"></div>
+<div id="customizer">
+  <div class="cust-header">
+    <div class="cust-title">Personnaliser</div>
+    <button class="cust-close" onclick="closeCustomizer()">×</button>
+  </div>
+  <div class="cust-body" id="cust-body">
+    <!-- Contenu généré par buildCustomizerUI() -->
+  </div>
+  <div class="cust-footer">
+    <button class="btn btn-ghost" onclick="resetCustomizer()">Réinitialiser</button>
+    <button class="btn btn-primary" onclick="closeCustomizer()">Fermer</button>
+  </div>
+</div>
+
+</body>
+</html>

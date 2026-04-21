@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOCUS — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,300&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #EFE9DC;
+  --bg2:     #E8E2D5;
+  --olive:   #6B7840;
+  --olive-m: rgba(107,120,64,0.55);
+  --olive-l: rgba(107,120,64,0.28);
+  --navy:    #162035;
+  --navy-m:  rgba(22,32,53,0.65);
+  --line:    rgba(107,120,64,0.18);
+  --line-l:  rgba(107,120,64,0.1);
+  --alert:   #8B3A28;
+  --alert-l: rgba(139,58,40,0.1);
+  --warn:    #7A5820;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--olive);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── TOP NAV ── */
+.topnav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center;
+  height: 68px;
+  padding: 0 48px;
+  gap: 0;
+}
+
+.nav-logo {
+  height: 22px;
+  flex-shrink: 0;
+  margin-right: 56px;
+}
+
+.nav-logo svg { height: 22px; width: auto; }
+
+.nav-links {
+  display: flex; align-items: center;
+  gap: 0; list-style: none; flex: 1;
+}
+
+.nav-links a {
+  display: block;
+  padding: 0 18px;
+  height: 68px;
+  line-height: 68px;
+  font-size: 12px; font-weight: 400;
+  letter-spacing: 0.5px;
+  color: var(--olive-m);
+  text-decoration: none;
+  transition: color 0.2s;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.nav-links a:hover { color: var(--olive); }
+
+.nav-links a.active {
+  color: var(--navy);
+  font-weight: 500;
+  border-bottom-color: var(--navy);
+}
+
+.nav-right {
+  display: flex; align-items: center;
+  gap: 36px; margin-left: auto;
+}
+
+.nav-stat { text-align: right; }
+
+.nav-stat-val {
+  font-size: 16px; font-weight: 600;
+  color: var(--navy); line-height: 1;
+  letter-spacing: -0.3px;
+}
+
+.nav-stat-lbl {
+  font-size: 10px; font-weight: 400;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--olive-m); margin-top: 2px;
+}
+
+.live-indicator {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--olive-m);
+}
+
+.live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--olive);
+  animation: pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0.3; }
+}
+
+/* ── SHELL ── */
+.shell {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 48px 80px;
+}
+
+/* ── PAGE SECTIONS ── */
+.page { display: none; padding-top: 52px; }
+.page.active { display: block; }
+
+/* ── PAGE TITLE ── */
+.page-header {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-title {
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--olive-m);
+}
+
+.page-date {
+  font-size: 11px; font-weight: 300;
+  color: var(--olive-m); letter-spacing: 0.5px;
+}
+
+/* ── SECTION LABEL ── */
+.sec-label {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--olive-m);
+  margin-bottom: 24px;
+}
+
+/* ── RULE ── */
+.rule { height: 1px; background: var(--line); margin: 32px 0; }
+.rule-l { height: 1px; background: var(--line-l); margin: 20px 0; }
+
+/* ── KPI GRID ── */
+.kpi-row {
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--line);
+  margin-bottom: 40px;
+}
+
+.kpi-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.kpi-row.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.kpi-row.cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+.kpi-cell {
+  padding: 32px 36px;
+  border-right: 1px solid var(--line);
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.kpi-cell:last-child { border-right: none; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.k1 { animation-delay: 0.05s; }
+.k2 { animation-delay: 0.12s; }
+.k3 { animation-delay: 0.19s; }
+.k4 { animation-delay: 0.26s; }
+.k5 { animation-delay: 0.33s; }
+
+.kpi-lbl {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--olive-m); margin-bottom: 14px;
+}
+
+.kpi-num {
+  font-size: 48px; font-weight: 300;
+  line-height: 1; letter-spacing: -2px;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-num.alert { color: var(--alert); }
+.kpi-num.olive { color: var(--olive); }
+
+.kpi-sub {
+  font-size: 11px; font-weight: 400;
+  color: var(--olive-m); margin-top: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.kpi-tag {
+  display: inline-block;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  color: var(--olive);
+}
+
+.kpi-tag.up   { border-color: var(--olive); color: var(--olive); }
+.kpi-tag.warn { border-color: rgba(139,58,40,0.3); color: var(--alert); }
+.kpi-tag.ok   { border-color: rgba(50,100,70,0.3); color: #3C7055; }
+
+/* ── TWO COLUMN ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 40px;
+}
+
+.three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  margin-bottom: 40px;
+}
+
+/* ── CONTENT BLOCK ── */
+.block {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.block-title {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--olive-m); margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ── TABLE ── */
+.dt { width: 100%; border-collapse: collapse; }
+
+.dt th {
+  font-size: 9px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--olive-m);
+  padding: 0 0 12px; text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.dt th.r, .dt td.r { text-align: right; }
+
+.dt td {
+  padding: 14px 0;
+  font-size: 13px; font-weight: 300;
+  color: var(--olive);
+  border-bottom: 1px solid var(--line-l);
+  vertical-align: middle;
+}
+
+.dt tr:last-child td { border-bottom: none; }
+.dt tbody tr:hover td { color: var(--navy); }
+
+.dt-id {
+  font-size: 11px; font-weight: 400;
+  color: var(--navy); letter-spacing: 0.5px;
+}
+
+.dt-amt {
+  font-size: 13px; font-weight: 500;
+  color: var(--navy);
+}
+
+/* ── STATUS BADGE ── */
+.st {
+  display: inline-block;
+  font-size: 9px; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  color: var(--olive-m);
+}
+.st.shipped { border-color: var(--olive); color: var(--olive); }
+.st.done    { border-color: rgba(60,112,85,0.4); color: #3C7055; }
+.st.wait    { border-color: rgba(122,88,32,0.4); color: var(--warn); }
+.st.proc    { border-color: rgba(22,32,53,0.3);  color: var(--navy); }
+.st.alert   { border-color: rgba(139,58,40,0.4); color: var(--alert); }
+.st.prep    { border-color: rgba(107,120,64,0.4); color: var(--olive-m); }
+
+/* ── PROGRESS BAR ── */
+.pb-row { margin-bottom: 20px; }
+.pb-row:last-child { margin-bottom: 0; }
+
+.pb-head {
+  display: flex; justify-content: space-between;
+  align-items: baseline; margin-bottom: 8px;
+}
+
+.pb-name {
+  font-size: 13px; font-weight: 400;
+  color: var(--olive);
+}
+
+.pb-pct {
+  font-size: 13px; font-weight: 300;
+  color: var(--navy); letter-spacing: -0.3px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pb-track { height: 1px; background: var(--line); }
+.pb-fill {
+  height: 1px; background: var(--navy);
+  width: 0;
+  transition: width 1.4s cubic-bezier(0.22,1,0.36,1);
+}
+
+/* ── SPARKLINE ── */
+.sparkline { width: 100%; height: 32px; display: block; margin-top: 14px; }
+
+/* ── SUPPLIER ROW ── */
+.sup {
+  display: flex; align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line-l);
+}
+.sup:last-child { border-bottom: none; }
+.sup-name { flex: 1; font-size: 13px; font-weight: 400; }
+.sup-country { font-size: 12px; color: var(--olive-m); margin-right: 16px; }
+.sup-delay { font-size: 12px; color: var(--navy); font-weight: 500; margin-right: 16px; min-width: 44px; text-align: right; }
+
+/* ── STOCK ROW ── */
+.stk {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-l);
+}
+.stk:last-child { border-bottom: none; }
+.stk-ref  { font-size: 11px; color: var(--olive-m); min-width: 100px; letter-spacing: 0.3px; }
+.stk-name { flex: 1; font-size: 13px; font-weight: 300; }
+.stk-bar-track { width: 80px; height: 1px; background: var(--line); flex-shrink: 0; }
+.stk-bar-fill  { height: 1px; transition: width 1.2s cubic-bezier(0.22,1,0.36,1); }
+.stk-ok  .stk-bar-fill { background: var(--olive); }
+.stk-med .stk-bar-fill { background: var(--warn); }
+.stk-low .stk-bar-fill { background: var(--alert); }
+.stk-qty { font-size: 12px; font-weight: 500; min-width: 32px; text-align: right; }
+.stk-ok  .stk-qty { color: var(--olive); }
+.stk-med .stk-qty { color: var(--warn); }
+.stk-low .stk-qty { color: var(--alert); }
+
+/* ── ALERT BANNER ── */
+.alert-banner {
+  background: var(--alert-l);
+  border: 1px solid rgba(139,58,40,0.22);
+  padding: 14px 20px;
+  font-size: 12px; font-weight: 400;
+  color: var(--alert);
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* ── BIG STAT (for sub-metrics) ── */
+.big-stat {
+  margin-bottom: 28px;
+}
+
+.big-stat-num {
+  font-size: 64px; font-weight: 200;
+  line-height: 1; letter-spacing: -3px;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+.big-stat-lbl {
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--olive-m); margin-top: 8px;
+}
+
+/* ── EVENT ── */
+.event {
+  display: flex; align-items: flex-start; gap: 28px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line-l);
+}
+.event:last-child { border-bottom: none; }
+.event-date { min-width: 60px; flex-shrink: 0; }
+.event-day  { font-size: 36px; font-weight: 200; color: var(--navy); line-height: 1; letter-spacing: -1px; }
+.event-month{ font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--olive-m); }
+.event-vline { width: 1px; background: var(--line); align-self: stretch; flex-shrink: 0; }
+.event-body { flex: 1; }
+.event-name { font-size: 15px; font-weight: 500; color: var(--navy); margin-bottom: 5px; }
+.event-desc { font-size: 12px; font-weight: 300; color: var(--olive-m); line-height: 1.6; }
+.event-meta { margin-top: 10px; display: flex; align-items: center; gap: 10px; }
+.event-countdown { font-size: 12px; color: var(--olive-m); margin-left: auto; white-space: nowrap; }
+.event-j { font-size: 20px; font-weight: 200; color: var(--navy); }
+
+/* ── CAPSULE CARD ── */
+.cap-card {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line-l);
+}
+.cap-card:last-child { border-bottom: none; }
+
+.cap-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 14px;
+}
+
+.cap-name { font-size: 16px; font-weight: 500; color: var(--navy); margin-bottom: 4px; }
+.cap-season { font-size: 11px; font-weight: 300; color: var(--olive-m); letter-spacing: 0.5px; }
+
+.cap-stats-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  margin-top: 16px;
+}
+
+.cap-stat {
+  padding: 14px 18px;
+  border-right: 1px solid var(--line);
+}
+.cap-stat:last-child { border-right: none; }
+.cap-stat-n { font-size: 22px; font-weight: 300; color: var(--navy); line-height: 1; margin-bottom: 5px; letter-spacing: -0.5px; }
+.cap-stat-l { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--olive-m); }
+
+/* ── TEAM ── */
+.team-member {
+  display: flex; align-items: center; gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-l);
+}
+.team-member:last-child { border-bottom: none; }
+.team-initials {
+  width: 36px; height: 36px;
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 500; color: var(--navy);
+  flex-shrink: 0;
+}
+.team-name-r { font-size: 13px; font-weight: 500; color: var(--navy); }
+.team-role-r { font-size: 11px; font-weight: 300; color: var(--olive-m); }
+
+/* ── TASK ── */
+.task {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line-l);
+  font-size: 13px; font-weight: 300; color: var(--olive);
+}
+.task:last-child { border-bottom: none; }
+.task-box {
+  width: 14px; height: 14px; flex-shrink: 0;
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; color: var(--olive);
+}
+.task-box.done { border-color: var(--olive); }
+.task.done .task-text { text-decoration: line-through; color: var(--olive-m); }
+.task-text { flex: 1; }
+
+/* ── ACTIVITY ── */
+.act {
+  display: flex; gap: 20px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line-l);
+  font-size: 12px; font-weight: 300; color: var(--olive-m);
+}
+.act:last-child { border-bottom: none; }
+.act-time { font-size: 11px; color: var(--olive-m); min-width: 44px; flex-shrink: 0; padding-top: 1px; }
+.act-text { line-height: 1.5; }
+.act-text strong { color: var(--olive); font-weight: 500; }
+
+/* ── TEXTAREA ── */
+.note-area {
+  width: 100%;
+  background: transparent;
+  border: none; border-bottom: 1px solid var(--line);
+  padding: 12px 0;
+  font-size: 13px; font-weight: 300;
+  color: var(--olive);
+  font-family: 'Inter', sans-serif;
+  resize: none;
+  outline: none;
+  line-height: 1.6;
+}
+.note-area::placeholder { color: var(--olive-m); }
+
+/* ── SEND BTN ── */
+.btn {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid var(--olive);
+  padding: 8px 20px;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--olive);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.btn:hover { background: var(--olive); color: var(--bg); }
+
+/* ── FILTER BAR ── */
+.filter-row {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+}
+.filter-in {
+  flex: 1; background: transparent;
+  border: none; border-bottom: 1px solid var(--line);
+  padding: 8px 0; font-size: 13px; font-weight: 300;
+  color: var(--olive); outline: none;
+  font-family: 'Inter', sans-serif;
+}
+.filter-in::placeholder { color: var(--olive-m); }
+.filter-tab {
+  font-size: 10px; font-weight: 500; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--olive-m);
+  cursor: pointer; transition: color 0.2s; border: none;
+  background: transparent; font-family: 'Inter', sans-serif;
+  padding: 4px 0; border-bottom: 1px solid transparent;
+}
+.filter-tab:hover { color: var(--navy); }
+.filter-tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+
+/* ── RING SVG ── */
+.ring-wrap { position: relative; width: 72px; height: 72px; }
+.ring-lbl {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.ring-n { font-size: 16px; font-weight: 300; color: var(--navy); line-height: 1; }
+.ring-s { font-size: 9px; color: var(--olive-m); letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── FOOTER ── */
+.footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex; gap: 36px;
+  font-size: 10px; font-weight: 400;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--olive-m);
+}
+.footer span { color: var(--olive); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .topnav { padding: 0 24px; }
+  .shell  { padding: 0 24px 60px; }
+  .two-col, .three-col { grid-template-columns: 1fr; gap: 32px; }
+  .kpi-row.cols-3, .kpi-row.cols-5 { grid-template-columns: 1fr 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ── TOP NAV ── -->
+<nav class="topnav">
+  <div class="nav-logo">
+    <svg viewBox="50 494 750 115" xmlns="http://www.w3.org/2000/svg" style="height:22px;width:auto;display:block;">
+      <path fill="#162035" d="m 58.81974,599.3663 c 0,-0.88872 5.242691,-22.00123 13.997965,-56.37032 4.378471,-17.18783 8.389618,-33.04216 8.91366,-35.23185 0.524041,-2.18969 1.235231,-4.40181 1.580421,-4.91582 0.508625,-0.75738 7.828616,-0.93703 38.608464,-0.94758 20.88946,-0.007 47.87645,0.09 59.97108,0.21601 l 21.99024,0.22902 -3.44235,2.78931 c -4.49468,3.642 -9.03433,9.96922 -11.27009,15.70789 l -1.79078,4.59651 -32.42914,0.0107 c -17.83603,0.006 -32.82512,0.24293 -33.30908,0.5267 -0.73907,0.43334 -4.07877,11.53891 -4.07877,13.5632 0,0.38376 12.754,0.64682 31.35962,0.64682 26.94726,0 31.30044,0.14195 30.93905,1.0089 -0.23132,0.5549 -1.54135,5.60772 -2.9112,11.2285 l -2.49062,10.21959 -31.30922,0.18324 -31.30922,0.18323 -4.19583,15.44973 -4.19583,15.44973 -2.28863,0.21542 c -2.375243,0.22357 -35.498298,4.73035 -39.860386,5.42347 -1.363645,0.21668 -2.479354,0.13458 -2.479354,-0.18245 z m 166.78107,-2.30417 c -21.87258,-1.12102 -30.63826,-3.51604 -36.90124,-10.08239 -3.24692,-3.40419 -4.27613,-7.27964 -3.75457,-14.13769 0.60884,-8.00578 10.52265,-46.26032 13.45362,-51.91363 5.71557,-11.0243 14.74048,-16.2223 33.21301,-19.12944 9.67169,-1.52209 54.28749,-1.74199 66.3704,-0.32711 15.54011,1.81971 22.61648,3.90192 27.7392,8.16225 6.66056,5.53928 7.34935,13.18933 2.87735,31.95734 -7.35028,30.8475 -9.99338,37.5192 -17.42709,43.98929 -6.7246,5.8529 -14.02524,8.6789 -26.78058,10.36647 -9.58061,1.26755 -43.32571,1.9075 -58.7901,1.11491 z m 48.34097,-25.98456 c 2.15304,-1.10973 4.03671,-2.80357 5.07627,-4.5647 0.9091,-1.54011 3.43867,-9.95573 5.62128,-18.70136 4.46256,-17.88142 4.43161,-18.73049 -0.77142,-21.16101 -2.37096,-1.10756 -4.67229,-1.22525 -20.59683,-1.05339 -19.61795,0.21173 -22.0592,0.66407 -24.86604,4.60746 -1.53685,2.15915 -8.52567,27.46628 -9.21316,33.36164 -0.68883,5.90693 0.76882,7.81916 6.99702,9.17907 0.83917,0.18323 8.90661,0.27996 17.92764,0.21496 15.98397,-0.11518 16.4891,-0.16315 19.82524,-1.88267 z m 217.12295,25.2603 c -16.71191,-1.06369 -26.66211,-4.21244 -30.5937,-9.6814 -2.33828,-3.25263 -3.63874,-9.20293 -3.01919,-13.81442 0.42879,-3.1916 8.64141,-35.55397 17.50944,-68.99709 l 0.41898,-1.58009 h 21.39746 c 20.01685,0 21.37258,0.0793 21.01185,1.22896 -0.68198,2.1735 -4.09888,14.84824 -8.47197,31.42615 -2.3434,8.8836 -5.16831,19.47017 -6.27757,23.52573 -3.78919,13.85352 -1.88175,15.12527 21.95389,14.63728 17.83861,-0.36521 18.73402,-1.11775 23.59616,-19.83149 1.73608,-6.68195 5.46352,-20.80846 8.2832,-31.39225 l 5.1267,-19.24325 20.8127,-0.18694 c 19.59185,-0.17598 20.78886,-0.11419 20.40619,1.05339 -0.22358,0.68218 -3.51427,12.93297 -7.31266,27.22397 -9.93778,37.38976 -11.60642,41.78005 -18.78733,49.43044 -7.37056,7.85246 -23.62606,13.64326 -43.40751,15.46334 -11.78683,1.08451 -31.7675,1.43012 -42.64664,0.73767 z m -131.28957,-0.69444 c -10.04807,-0.7766 -15.51012,-1.86131 -20.08043,-3.98777 -10.88372,-5.06394 -12.20999,-11.76344 -6.71345,-33.91221 8.10233,-32.64906 7.95472,-32.14767 11.17537,-37.95904 2.82947,-5.10552 9.38052,-10.84362 14.72251,-12.89553 10.80723,-4.15116 10.66996,-4.14112 60.66646,-4.43897 l 46.03865,-0.27428 -0.5225,2.8469 c -0.28738,1.5658 -1.60859,6.87917 -2.93604,11.80749 l -2.41354,8.96058 -35.09239,0.35113 c -23.95307,0.23967 -35.69779,0.60612 -36.99959,1.15444 -4.55138,1.91706 -5.35546,3.62458 -9.61379,20.41539 -2.23192,8.80061 -4.07153,16.99315 -4.08803,18.20565 -0.0448,3.29509 2.11067,5.25746 6.50393,5.92118 2.07072,0.31284 18.2757,0.58764 36.01107,0.61066 l 32.24614,0.0419 2.24872,0.0468 c -0.52259,-0.0109 -0.85536,12.60262 4.03183,16.89395 l 7.06696,6.20534 -57.66138,0.45884 c -20.74791,0.1651 -40.81423,-0.16007 -44.59048,-0.45194 z m 208.91886,-1.42038 c 8.49141,-3.21277 17.0811,-10.43774 20.64848,-17.36787 l 2.22966,-4.33143 44.17697,-0.19198 c 42.72254,-0.18566 44.21262,-0.23686 45.25951,-1.55516 1.54619,-1.94705 1.39183,-5.80876 -0.26481,-6.62492 -0.74104,-0.36508 -13.63285,-2.44753 -28.64847,-4.62767 -30.18375,-4.38244 -36.91613,-5.74021 -42.70847,-8.61339 -7.90796,-3.92258 -9.35842,-8.69868 -6.341,-20.87971 2.95245,-11.91878 4.64264,-15.54782 9.19146,-19.7352 4.47301,-4.11758 9.73833,-6.06266 19.74978,-7.29581 3.64526,-0.449 25.57136,-0.73504 56.34388,-0.73504 41.84146,0 50.30978,0.15975 49.98332,0.94289 -0.21617,0.51858 -1.64521,5.33784 -3.17563,10.70947 -1.53043,5.37162 -2.95931,10.3227 -3.1753,11.00239 -0.36912,1.1616 -2.90454,1.23032 -42.22146,1.14441 -23.00582,-0.0503 -42.22733,0.13535 -42.71446,0.4125 -1.25341,0.71309 -2.35658,3.66978 -1.83556,4.91964 0.62912,1.50918 3.56494,2.09522 26.60039,5.30993 35.86049,5.0045 42.93448,6.50498 48.24439,10.23324 4.23781,2.9755 5.53241,5.56399 5.53567,11.06831 0.003,5.61417 -2.44788,15.95923 -5.09567,21.50587 -3.39772,7.11762 -9.62562,11.57382 -19.88287,14.22662 -5.8381,1.50989 -6.7601,1.53214 -70.75982,1.7072 l -64.84464,0.17738 z"/>
+    </svg>
+  </div>
+
+  <ul class="nav-links" id="main-nav">
+    <li><a href="#" class="active" data-page="globale">Vue globale</a></li>
+    <li><a href="#" data-page="capsules">Capsules</a></li>
+    <li><a href="#" data-page="fournisseurs">Fournisseurs</a></li>
+    <li><a href="#" data-page="commandes">Commandes</a></li>
+    <li><a href="#" data-page="stock">Stock</a></li>
+    <li><a href="#" data-page="evenements">Événements</a></li>
+    <li><a href="#" data-page="cowork">CoWork</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div class="nav-stat">
+      <div class="nav-stat-val" id="hdr-ca">€ 48 290</div>
+      <div class="nav-stat-lbl">CA mensuel</div>
+    </div>
+    <div class="nav-stat">
+      <div class="nav-stat-val">127</div>
+      <div class="nav-stat-lbl">Commandes</div>
+    </div>
+    <div class="live-indicator">
+      <div class="live-dot"></div>
+      Live
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+<!-- ════════════════════════════════════
+     VUE GLOBALE
+════════════════════════════════════ -->
+<section class="page active" id="page-globale">
+
+  <div class="page-header">
+    <div class="page-title">Vue globale</div>
+    <div class="page-date">Avril 2026</div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row cols-5">
+    <div class="kpi-cell k1">
+      <div class="kpi-lbl">Chiffre d'affaires</div>
+      <div class="kpi-num" id="ca-val">0</div>
+      <div class="kpi-sub">
+        <span class="kpi-tag up">▲ +12%</span>
+        vs mois dernier
+      </div>
+    </div>
+    <div class="kpi-cell k2">
+      <div class="kpi-lbl">Commandes</div>
+      <div class="kpi-num" id="cmd-val">0</div>
+      <div class="kpi-sub"><span class="kpi-tag up">▲ +8%</span></div>
+    </div>
+    <div class="kpi-cell k3">
+      <div class="kpi-lbl">Capsules actives</div>
+      <div class="kpi-num olive">3 / 5</div>
+      <div class="kpi-sub">taux 41,7%</div>
+    </div>
+    <div class="kpi-cell k4">
+      <div class="kpi-lbl">Stock critique</div>
+      <div class="kpi-num alert">2</div>
+      <div class="kpi-sub"><span class="kpi-tag warn">⚠ Alerte</span></div>
+    </div>
+    <div class="kpi-cell k5">
+      <div class="kpi-lbl">Fournisseurs</div>
+      <div class="kpi-num olive">8</div>
+      <div class="kpi-sub"><span class="kpi-tag ok">Actifs</span></div>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="two-col">
+
+    <!-- Commandes récentes -->
+    <div class="block k1">
+      <div class="block-title">Commandes récentes</div>
+      <table class="dt">
+        <thead>
+          <tr>
+            <th>Réf.</th>
+            <th>Client</th>
+            <th>Capsule</th>
+            <th class="r">Montant</th>
+            <th class="r">Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="dt-id">CMD-0127</span></td><td>Marie Dupont</td><td>Oversize Premium</td><td class="r"><span class="dt-amt">€ 89</span></td><td class="r"><span class="st shipped">Expédié</span></td></tr>
+          <tr><td><span class="dt-id">CMD-0126</span></td><td>Lucas Martin</td><td>Hoodie Signature</td><td class="r"><span class="dt-amt">€ 124</span></td><td class="r"><span class="st proc">En cours</span></td></tr>
+          <tr><td><span class="dt-id">CMD-0125</span></td><td>Sophie Bernard</td><td>Pack Été 2025</td><td class="r"><span class="dt-amt">€ 210</span></td><td class="r"><span class="st wait">Attente</span></td></tr>
+          <tr><td><span class="dt-id">CMD-0124</span></td><td>Thomas Leroy</td><td>Oversize Premium</td><td class="r"><span class="dt-amt">€ 89</span></td><td class="r"><span class="st shipped">Expédié</span></td></tr>
+          <tr><td><span class="dt-id">CMD-0123</span></td><td>Camille Petit</td><td>Hoodie Signature</td><td class="r"><span class="dt-amt">€ 124</span></td><td class="r"><span class="st done">Livré</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:16px; text-align:right;">
+        <a href="#" class="nav-link" data-page="commandes" style="font-size:11px; color:var(--olive-m); text-decoration:none; letter-spacing:1px; text-transform:uppercase;">Voir toutes →</a>
+      </div>
+    </div>
+
+    <!-- CA + Capsules perf -->
+    <div class="block k2">
+      <div class="block-title">Performance capsules</div>
+
+      <div class="pb-row">
+        <div class="pb-head">
+          <span class="pb-name">T-Shirt Oversize Premium</span>
+          <span class="pb-pct" id="g-p1">0%</span>
+        </div>
+        <div class="pb-track"><div class="pb-fill" id="g-f1" data-v="68"></div></div>
+      </div>
+      <div class="pb-row">
+        <div class="pb-head">
+          <span class="pb-name">Hoodie Signature</span>
+          <span class="pb-pct" id="g-p2">0%</span>
+        </div>
+        <div class="pb-track"><div class="pb-fill" id="g-f2" data-v="45"></div></div>
+      </div>
+      <div class="pb-row">
+        <div class="pb-head">
+          <span class="pb-name">Pack Été 2025</span>
+          <span class="pb-pct" id="g-p3">0%</span>
+        </div>
+        <div class="pb-track"><div class="pb-fill" id="g-f3" data-v="12"></div></div>
+      </div>
+
+      <div class="rule"></div>
+
+      <div class="block-title">Évolution du chiffre d'affaires</div>
+      <svg class="sparkline" viewBox="0 0 400 32" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(107,120,64,0.2)"/>
+            <stop offset="100%" stop-color="rgba(107,120,64,0)"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,26 L40,23 L80,24 L120,18 L160,20 L200,14 L240,16 L280,9 L320,11 L360,5 L400,2"
+              fill="none" stroke="rgba(22,32,53,0.4)" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M0,26 L40,23 L80,24 L120,18 L160,20 L200,14 L240,16 L280,9 L320,11 L360,5 L400,2 L400,32 L0,32 Z"
+              fill="url(#sg)"/>
+      </svg>
+      <div style="margin-top:12px; font-size:11px; color:var(--olive-m);">
+        Objectif mensuel : <strong style="color:var(--navy);">€ 50 000</strong>
+        &nbsp;—&nbsp; Base : €43 116
+      </div>
+
+      <div class="rule"></div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--line);">
+        <div style="padding:16px 20px; border-right:1px solid var(--line);">
+          <div class="kpi-lbl">Taux de retour</div>
+          <div style="font-size:28px; font-weight:200; color:var(--navy); letter-spacing:-1px;">2,4%</div>
+        </div>
+        <div style="padding:16px 20px;">
+          <div class="kpi-lbl">Satisfaction</div>
+          <div style="font-size:28px; font-weight:200; color:var(--navy); letter-spacing:-1px;">4,8 ★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Stock + Fournisseurs -->
+  <div class="two-col" style="margin-top:0;">
+    <div class="block k3">
+      <div class="block-title">Stock — alertes</div>
+      <div class="alert-banner">
+        <span>⚠</span>
+        <span><strong>Hoodie Noir XS</strong> — 3 unités restantes &nbsp;·&nbsp; <strong>T-Shirt Blanc S</strong> — 1 unité restante</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--line);">
+        <div style="padding:18px 20px; border-right:1px solid var(--line);">
+          <div style="font-size:32px; font-weight:200; color:var(--alert); letter-spacing:-1px; line-height:1;">2</div>
+          <div class="kpi-lbl" style="margin-top:8px;">Critiques</div>
+        </div>
+        <div style="padding:18px 20px; border-right:1px solid var(--line);">
+          <div style="font-size:32px; font-weight:200; color:var(--navy); letter-spacing:-1px; line-height:1;">148</div>
+          <div class="kpi-lbl" style="margin-top:8px;">Références</div>
+        </div>
+        <div style="padding:18px 20px;">
+          <div style="font-size:32px; font-weight:200; color:var(--navy); letter-spacing:-1px; line-height:1;">5</div>
+          <div class="kpi-lbl" style="margin-top:8px;">Réappros</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block k4">
+      <div class="block-title">Fournisseurs</div>
+      <div class="sup">
+        <div class="sup-name">Stanley / Stella</div>
+        <div class="sup-country">Belgique</div>
+        <div class="sup-delay">14 j</div>
+        <span class="st shipped">Actif</span>
+      </div>
+      <div class="sup">
+        <div class="sup-name">Continental Clothing</div>
+        <div class="sup-country">Royaume-Uni</div>
+        <div class="sup-delay">21 j</div>
+        <span class="st wait">Lent</span>
+      </div>
+      <div class="sup">
+        <div class="sup-name">Gildan</div>
+        <div class="sup-country">USA</div>
+        <div class="sup-delay">8 j</div>
+        <span class="st done">Rapide</span>
+      </div>
+      <div class="sup">
+        <div class="sup-name">Atlantique Textile</div>
+        <div class="sup-country">France</div>
+        <div class="sup-delay">10 j</div>
+        <span class="st shipped">Actif</span>
+      </div>
+      <div style="margin-top:16px; text-align:right;">
+        <a href="#" class="nav-link" data-page="fournisseurs" style="font-size:11px; color:var(--olive-m); text-decoration:none; letter-spacing:1px; text-transform:uppercase;">Voir tous →</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ════════════════════════════════════
+     CAPSULES
+════════════════════════════════════ -->
+<section class="page" id="page-capsules">
+  <div class="page-header">
+    <div class="page-title">Capsules</div>
+    <div class="page-date">5 collections</div>
+  </div>
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-cell k1">
+      <div class="kpi-lbl">Collections actives</div>
+      <div class="kpi-num olive">3 / 5</div>
+    </div>
+    <div class="kpi-cell k2">
+      <div class="kpi-lbl">CA total capsules</div>
+      <div class="kpi-num">€ 48 290</div>
+    </div>
+    <div class="kpi-cell k3">
+      <div class="kpi-lbl">Engagement moyen</div>
+      <div class="kpi-num olive">41,7%</div>
+    </div>
+    <div class="kpi-cell k4">
+      <div class="kpi-lbl">Références catalogue</div>
+      <div class="kpi-num">412</div>
+    </div>
+  </div>
+
+  <div style="margin-top:40px;">
+
+    <div class="cap-card k1" style="animation-delay:0.05s; margin-bottom:28px;">
+      <div class="cap-top">
+        <div>
+          <div class="cap-name">T-Shirt Oversize Premium</div>
+          <div class="cap-season">Printemps / Été 2025</div>
+        </div>
+        <span class="st shipped">Actif</span>
+      </div>
+      <div class="pb-row">
+        <div class="pb-head"><span class="pb-name" style="font-size:12px; color:var(--olive-m);">Sell-through</span><span class="pb-pct">68%</span></div>
+        <div class="pb-track"><div class="pb-fill" style="width:68%"></div></div>
+      </div>
+      <div class="cap-stats-row">
+        <div class="cap-stat"><div class="cap-stat-n">€ 24 600</div><div class="cap-stat-l">CA généré</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">68%</div><div class="cap-stat-l">Sell-through</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">214</div><div class="cap-stat-l">Produits</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">4,9 ★</div><div class="cap-stat-l">Note moy.</div></div>
+      </div>
+    </div>
+
+    <div class="cap-card k2" style="animation-delay:0.12s; margin-bottom:28px;">
+      <div class="cap-top">
+        <div>
+          <div class="cap-name">Hoodie Signature</div>
+          <div class="cap-season">Automne / Hiver 2024</div>
+        </div>
+        <span class="st shipped">Actif</span>
+      </div>
+      <div class="pb-row">
+        <div class="pb-head"><span class="pb-name" style="font-size:12px; color:var(--olive-m);">Sell-through</span><span class="pb-pct">45%</span></div>
+        <div class="pb-track"><div class="pb-fill" style="width:45%"></div></div>
+      </div>
+      <div class="cap-stats-row">
+        <div class="cap-stat"><div class="cap-stat-n">€ 16 200</div><div class="cap-stat-l">CA généré</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">45%</div><div class="cap-stat-l">Sell-through</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">98</div><div class="cap-stat-l">Produits</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">4,7 ★</div><div class="cap-stat-l">Note moy.</div></div>
+      </div>
+    </div>
+
+    <div class="cap-card k3" style="animation-delay:0.19s; margin-bottom:28px;">
+      <div class="cap-top">
+        <div>
+          <div class="cap-name">Pack Été 2025</div>
+          <div class="cap-season">Été 2025 — Édition limitée</div>
+        </div>
+        <span class="st shipped">Actif</span>
+      </div>
+      <div class="pb-row">
+        <div class="pb-head"><span class="pb-name" style="font-size:12px; color:var(--olive-m);">Sell-through</span><span class="pb-pct">12%</span></div>
+        <div class="pb-track"><div class="pb-fill" style="width:12%"></div></div>
+      </div>
+      <div class="cap-stats-row">
+        <div class="cap-stat"><div class="cap-stat-n">€ 7 490</div><div class="cap-stat-l">CA généré</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">12%</div><div class="cap-stat-l">Sell-through</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">60</div><div class="cap-stat-l">Produits</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">—</div><div class="cap-stat-l">Note moy.</div></div>
+      </div>
+    </div>
+
+    <div class="cap-card k4" style="animation-delay:0.26s; margin-bottom:28px; opacity:0.5;">
+      <div class="cap-top">
+        <div>
+          <div class="cap-name" style="color:var(--olive-m);">Capsule Automne 2024</div>
+          <div class="cap-season">Automne 2024</div>
+        </div>
+        <span class="st">Terminée</span>
+      </div>
+      <div class="cap-stats-row">
+        <div class="cap-stat"><div class="cap-stat-n">€ 32 110</div><div class="cap-stat-l">CA total</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">94%</div><div class="cap-stat-l">Sell-through</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">120</div><div class="cap-stat-l">Produits</div></div>
+        <div class="cap-stat"><div class="cap-stat-n">4,8 ★</div><div class="cap-stat-l">Note moy.</div></div>
+      </div>
+    </div>
+
+    <div class="cap-card k5" style="animation-delay:0.33s; opacity:0.6;">
+      <div class="cap-top">
+        <div>
+          <div class="cap-name" style="color:var(--olive-m);">Capsule Automne 2026</div>
+          <div class="cap-season">Automne / Hiver 2026</div>
+        </div>
+        <span class="st prep">En préparation</span>
+      </div>
+      <div style="margin-top:14px; font-size:13px; font-weight:300; color:var(--olive-m); line-height:1.8;">
+        Lancement prévu <strong style="color:var(--olive)">Septembre 2026</strong>
+        &nbsp;·&nbsp; Fournisseur : <strong style="color:var(--olive)">Stanley / Stella</strong>
+        &nbsp;·&nbsp; Prév. 80 références
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════
+     FOURNISSEURS
+════════════════════════════════════ -->
+<section class="page" id="page-fournisseurs">
+  <div class="page-header">
+    <div class="page-title">Fournisseurs</div>
+    <div class="page-date">8 partenaires actifs</div>
+  </div>
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-cell k1">
+      <div class="kpi-lbl">Partenaires actifs</div>
+      <div class="kpi-num olive">8</div>
+    </div>
+    <div class="kpi-cell k2">
+      <div class="kpi-lbl">Délai moyen</div>
+      <div class="kpi-num">14 j</div>
+    </div>
+    <div class="kpi-cell k3">
+      <div class="kpi-lbl">Commandes en cours</div>
+      <div class="kpi-num">3</div>
+    </div>
+    <div class="kpi-cell k4">
+      <div class="kpi-lbl">Achats ce mois</div>
+      <div class="kpi-num">€ 12 400</div>
+    </div>
+  </div>
+
+  <div class="block k1" style="animation-delay:0.1s; margin-top:8px;">
+    <table class="dt">
+      <thead>
+        <tr>
+          <th>Fournisseur</th>
+          <th>Pays</th>
+          <th>Spécialité</th>
+          <th>Délai</th>
+          <th>Contact</th>
+          <th class="r">Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong style="color:var(--navy);">Stanley / Stella</strong></td><td>Belgique</td><td style="color:var(--olive-m);font-size:12px;">T-shirts, Sweats, Polos</td><td>14 j</td><td style="color:var(--olive-m);font-size:12px;">contact@stanleystella.com</td><td class="r"><span class="st shipped">Actif</span></td></tr>
+        <tr><td><strong style="color:var(--navy);">Continental Clothing</strong></td><td>Royaume-Uni</td><td style="color:var(--olive-m);font-size:12px;">T-shirts basiques</td><td>21 j</td><td style="color:var(--olive-m);font-size:12px;">sales@continentalclothing.com</td><td class="r"><span class="st wait">Lent</span></td></tr>
+        <tr><td><strong style="color:var(--navy);">Gildan</strong></td><td>USA / Canada</td><td style="color:var(--olive-m);font-size:12px;">T-shirts, Sweats basiques</td><td>8 j</td><td style="color:var(--olive-m);font-size:12px;">orders@gildan.com</td><td class="r"><span class="st done">Rapide</span></td></tr>
+        <tr><td><strong style="color:var(--navy);">AS Colour</strong></td><td>N.-Zélande</td><td style="color:var(--olive-m);font-size:12px;">Premium basics</td><td>18 j</td><td style="color:var(--olive-m);font-size:12px;">wholesale@ascolour.com</td><td class="r"><span class="st shipped">Actif</span></td></tr>
+        <tr><td><strong style="color:var(--navy);">Fairtrade Studio</strong></td><td>Portugal</td><td style="color:var(--olive-m);font-size:12px;">Éco-responsable</td><td>12 j</td><td style="color:var(--olive-m);font-size:12px;">info@fairtradeportugal.eu</td><td class="r"><span class="st shipped">Actif</span></td></tr>
+        <tr><td><strong style="color:var(--navy);">Atlantique Textile</strong></td><td>France</td><td style="color:var(--olive-m);font-size:12px;">Sur-mesure, petites séries</td><td>10 j</td><td style="color:var(--olive-m);font-size:12px;">commercial@atl-textile.fr</td><td class="r"><span class="st shipped">Actif</span></td></tr>
+        <tr><td><strong style="color:var(--navy);">Kariban</strong></td><td>France</td><td style="color:var(--olive-m);font-size:12px;">Workwear, Polaires</td><td>9 j</td><td style="color:var(--olive-m);font-size:12px;">b2b@kariban.com</td><td class="r"><span class="st shipped">Actif</span></td></tr>
+        <tr><td><strong style="color:var(--navy);">Neutral®</strong></td><td>Danemark</td><td style="color:var(--olive-m);font-size:12px;">Organic, GOTS certifié</td><td>16 j</td><td style="color:var(--olive-m);font-size:12px;">info@neutral.eu</td><td class="r"><span class="st proc">Évaluation</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════
+     COMMANDES
+════════════════════════════════════ -->
+<section class="page" id="page-commandes">
+  <div class="page-header">
+    <div class="page-title">Commandes</div>
+    <div class="page-date">Avril 2026</div>
+  </div>
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-cell k1">
+      <div class="kpi-lbl">Total ce mois</div>
+      <div class="kpi-num">127</div>
+    </div>
+    <div class="kpi-cell k2">
+      <div class="kpi-lbl">Expédiées / Livrées</div>
+      <div class="kpi-num olive">89</div>
+    </div>
+    <div class="kpi-cell k3">
+      <div class="kpi-lbl">En cours</div>
+      <div class="kpi-num">12</div>
+    </div>
+    <div class="kpi-cell k4">
+      <div class="kpi-lbl">En attente</div>
+      <div class="kpi-num alert">26</div>
+    </div>
+  </div>
+
+  <div class="block k1">
+    <div class="filter-row">
+      <input class="filter-in" type="text" placeholder="Rechercher une commande, un client…" />
+      <button class="filter-tab active">Tout</button>
+      <button class="filter-tab">En cours</button>
+      <button class="filter-tab">Expédié</button>
+      <button class="filter-tab">Attente</button>
+    </div>
+    <table class="dt">
+      <thead>
+        <tr>
+          <th>Réf.</th>
+          <th>Client</th>
+          <th>Email</th>
+          <th>Capsule</th>
+          <th>Date</th>
+          <th class="r">Montant</th>
+          <th class="r">Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="dt-id">CMD-0127</span></td><td>Marie Dupont</td><td style="color:var(--olive-m);font-size:12px;">marie.d@email.fr</td><td>Oversize Premium</td><td style="color:var(--olive-m);font-size:12px;">17 avr.</td><td class="r"><span class="dt-amt">€ 89</span></td><td class="r"><span class="st shipped">Expédié</span></td></tr>
+        <tr><td><span class="dt-id">CMD-0126</span></td><td>Lucas Martin</td><td style="color:var(--olive-m);font-size:12px;">l.martin@email.fr</td><td>Hoodie Signature</td><td style="color:var(--olive-m);font-size:12px;">17 avr.</td><td class="r"><span class="dt-amt">€ 124</span></td><td class="r"><span class="st proc">En cours</span></td></tr>
+        <tr><td><span class="dt-id">CMD-0125</span></td><td>Sophie Bernard</td><td style="color:var(--olive-m);font-size:12px;">s.bernard@email.fr</td><td>Pack Été 2025</td><td style="color:var(--olive-m);font-size:12px;">16 avr.</td><td class="r"><span class="dt-amt">€ 210</span></td><td class="r"><span class="st wait">En attente</span></td></tr>
+        <tr><td><span class="dt-id">CMD-0124</span></td><td>Thomas Leroy</td><td style="color:var(--olive-m);font-size:12px;">t.leroy@email.fr</td><td>Oversize Premium</td><td style="color:var(--olive-m);font-size:12px;">16 avr.</td><td class="r"><span class="dt-amt">€ 89</span></td><td class="r"><span class="st shipped">Expédié</span></td></tr>
+        <tr><td><span class="dt-id">CMD-0123</span></td><td>Camille Petit</td><td style="color:var(--olive-m);font-size:12px;">c.petit@email.fr</td><td>Hoodie Signature</td><td style="color:var(--olive-m);font-size:12px;">15 avr.</td><td class="r"><span class="dt-amt">€ 124</span></td><td class="r"><span class="st done">Livré</span></td></tr>
+        <tr><td><span class="dt-id">CMD-0122</span></td><td>Antoine Roux</td><td style="color:var(--olive-m);font-size:12px;">a.roux@email.fr</td><td>Pack Été 2025</td><td style="color:var(--olive-m);font-size:12px;">15 avr.</td><td class="r"><span class="dt-amt">€ 210</span></td><td class="r"><span class="st done">Livré</span></td></tr>
+        <tr><td><span class="dt-id">CMD-0121</span></td><td>Julie Moreau</td><td style="color:var(--olive-m);font-size:12px;">j.moreau@email.fr</td><td>Oversize Premium</td><td style="color:var(--olive-m);font-size:12px;">14 avr.</td><td class="r"><span class="dt-amt">€ 89</span></td><td class="r"><span class="st done">Livré</span></td></tr>
+        <tr><td><span class="dt-id">CMD-0120</span></td><td>Maxime Girard</td><td style="color:var(--olive-m);font-size:12px;">m.girard@email.fr</td><td>Hoodie Signature</td><td style="color:var(--olive-m);font-size:12px;">14 avr.</td><td class="r"><span class="dt-amt">€ 124</span></td><td class="r"><span class="st proc">En cours</span></td></tr>
+        <tr><td><span class="dt-id">CMD-0119</span></td><td>Clara Fontaine</td><td style="color:var(--olive-m);font-size:12px;">c.fontaine@email.fr</td><td>Oversize Premium</td><td style="color:var(--olive-m);font-size:12px;">13 avr.</td><td class="r"><span class="dt-amt">€ 178</span></td><td class="r"><span class="st shipped">Expédié</span></td></tr>
+        <tr><td><span class="dt-id">CMD-0118</span></td><td>Raphaël Simon</td><td style="color:var(--olive-m);font-size:12px;">r.simon@email.fr</td><td>Pack Été 2025</td><td style="color:var(--olive-m);font-size:12px;">13 avr.</td><td class="r"><span class="dt-amt">€ 420</span></td><td class="r"><span class="st wait">En attente</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
+      <div style="font-size:11px; color:var(--olive-m); letter-spacing:0.5px;">1 – 10 sur 127 commandes</div>
+      <div style="display:flex; gap:16px;">
+        <button class="filter-tab">← Préc.</button>
+        <button class="filter-tab">Suiv. →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════
+     STOCK
+════════════════════════════════════ -->
+<section class="page" id="page-stock">
+  <div class="page-header">
+    <div class="page-title">Stock</div>
+    <div class="page-date">148 références</div>
+  </div>
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-cell k1">
+      <div class="kpi-lbl">Références totales</div>
+      <div class="kpi-num">148</div>
+    </div>
+    <div class="kpi-cell k2">
+      <div class="kpi-lbl">Stock critique</div>
+      <div class="kpi-num alert">2</div>
+      <div class="kpi-sub"><span class="kpi-tag warn">⚠ Action requise</span></div>
+    </div>
+    <div class="kpi-cell k3">
+      <div class="kpi-lbl">Réapprovisionnements</div>
+      <div class="kpi-num">5</div>
+    </div>
+    <div class="kpi-cell k4">
+      <div class="kpi-lbl">Disponibilité</div>
+      <div class="kpi-num olive">94%</div>
+    </div>
+  </div>
+
+  <div class="alert-banner" style="margin-bottom:32px;">
+    <span>⚠</span>
+    <span>
+      <strong>2 articles sous le seuil critique.</strong> Réapprovisionnement requis sous 48h.<br>
+      <strong>Hoodie Noir XS</strong> — 3 unités · <strong>T-Shirt Blanc S</strong> — 1 unité
+    </span>
+  </div>
+
+  <div class="two-col">
+    <div class="block k1">
+      <div class="block-title">T-Shirts Oversize Premium</div>
+      <div class="stk stk-ok">
+        <div class="stk-ref">OVS-BLK-XS</div>
+        <div class="stk-name">Noir — XS</div>
+        <div class="stk-bar-track"><div class="stk-bar-fill" style="width:70%"></div></div>
+        <div class="stk-qty">42</div>
+        <span class="st done" style="font-size:9px;">OK</span>
+      </div>
+      <div class="stk stk-ok">
+        <div class="stk-ref">OVS-BLK-S</div>
+        <div class="stk-name">Noir — S</div>
+        <div class="stk-bar-track"><div class="stk-bar-fill" style="width:85%"></div></div>
+        <div class="stk-qty">68</div>
+        <span class="st done" style="font-size:9px;">OK</span>
+      </div>
+      <div class="stk stk-med">
+        <div class="stk-ref">OVS-WHT-XS</div>
+        <div class="stk-name">Blanc — XS</div>
+        <div class="stk-bar-track"><div class="stk-bar-fill" style="width:25%"></div></div>
+        <div class="stk-qty">12</div>
+        <span class="st wait" style="font-size:9px;">Bas</span>
+      </div>
+      <div class="stk stk-low">
+        <div class="stk-ref">OVS-WHT-S</div>
+        <div class="stk-name">Blanc — S</div>
+        <div class="stk-bar-track"><div class="stk-bar-fill" style="width:3%"></div></div>
+        <div class="stk-qty">1</div>
+        <span class="st alert" style="font-size:9px;">⚠</span>
+      </div>
+      <div class="stk stk-ok">
+        <div class="stk-ref">OVS-OLV-M</div>
+        <div class="stk-name">Olive — M</div>
+        <div class="stk-bar-track"><div class="stk-bar-fill" style="width:60%"></div></div>
+        <div class="stk-qty">38</div>
+        <span class="st done" style="font-size:9px;">OK</span>
+      </div>
+    </div>
+
+    <div class="block k2">
+      <div class="block-title">Hoodies Signature</div>
+      <div class="stk stk-low">
+        <div class="stk-ref">HOD-BLK-XS</div>
+        <div class="stk-name">Noir — XS</div>
+        <div class="stk-bar-track"><div class="stk-bar-fill" style="width:6%"></div></div>
+        <div class="stk-qty">3</div>
+        <span class="st alert" style="font-size:9px;">⚠</span>
+      </div>
+      <div class="stk stk-med">
+        <div class="stk-ref">HOD-BLK-S</div>
+        <div class="stk-name">Noir — S</div>
+        <div class="stk-bar-track"><div class="stk-bar-fill" style="width:30%"></div></div>
+        <div class="stk-qty">18</div>
+        <span class="st wait" style="font-size:9px;">Bas</span>
+      </div>
+      <div class="stk stk-ok">
+        <div class="stk-ref">HOD-NVY-M</div>
+        <div class="stk-name">Navy — M</div>
+        <div class="stk-bar-track"><div class="stk-bar-fill" style="width:75%"></div></div>
+        <div class="stk-qty">52</div>
+        <span class="st done" style="font-size:9px;">OK</span>
+      </div>
+      <div class="stk stk-ok">
+        <div class="stk-ref">HOD-NVY-L</div>
+        <div class="stk-name">Navy — L</div>
+        <div class="stk-bar-track"><div class="stk-bar-fill" style="width:55%"></div></div>
+        <div class="stk-qty">34</div>
+        <span class="st done" style="font-size:9px;">OK</span>
+      </div>
+      <div class="stk stk-ok">
+        <div class="stk-ref">HOD-NVY-XL</div>
+        <div class="stk-name">Navy — XL</div>
+        <div class="stk-bar-track"><div class="stk-bar-fill" style="width:48%"></div></div>
+        <div class="stk-qty">29</div>
+        <span class="st done" style="font-size:9px;">OK</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════
+     ÉVÉNEMENTS
+════════════════════════════════════ -->
+<section class="page" id="page-evenements">
+  <div class="page-header">
+    <div class="page-title">Événements</div>
+    <div class="page-date">Calendrier 2026</div>
+  </div>
+
+  <div class="kpi-row cols-3">
+    <div class="kpi-cell k1">
+      <div class="kpi-lbl">À venir</div>
+      <div class="kpi-num">3</div>
+    </div>
+    <div class="kpi-cell k2">
+      <div class="kpi-lbl">Prochain événement</div>
+      <div class="kpi-num olive">J–20</div>
+      <div class="kpi-sub">8 Mai — Drop Été 2026</div>
+    </div>
+    <div class="kpi-cell k3">
+      <div class="kpi-lbl">Drops planifiés 2026</div>
+      <div class="kpi-num">3</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="margin-top:16px;">À venir</div>
+
+  <div class="event">
+    <div class="event-date">
+      <div class="event-day">8</div>
+      <div class="event-month">Mai</div>
+    </div>
+    <div class="event-vline"></div>
+    <div class="event-body">
+      <div class="event-name">Drop Capsule Été 2026</div>
+      <div class="event-desc">Lancement officiel en ligne à 10h00. Édition limitée 200 pièces. Pop-up simultané à Paris.</div>
+      <div class="event-meta">
+        <span class="st prep">Drop</span>
+        <span style="font-size:11px; color:var(--olive-m);">En ligne + Paris</span>
+      </div>
+    </div>
+    <div class="event-countdown">
+      <div class="event-j">J–20</div>
+      <div style="font-size:10px; color:var(--olive-m); text-align:center; letter-spacing:1px; text-transform:uppercase;">jours</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-date">
+      <div class="event-day">15</div>
+      <div class="event-month">Mai</div>
+    </div>
+    <div class="event-vline"></div>
+    <div class="event-body">
+      <div class="event-name">Pop-Up Store — Le Marais, Paris</div>
+      <div class="event-desc">Boutique éphémère 3 jours. Ventes physiques, rencontres communauté. 75003 Paris.</div>
+      <div class="event-meta">
+        <span class="st proc">Pop-Up</span>
+        <span style="font-size:11px; color:var(--olive-m);">Durée : 3 jours</span>
+      </div>
+    </div>
+    <div class="event-countdown">
+      <div class="event-j">J–27</div>
+      <div style="font-size:10px; color:var(--olive-m); text-align:center; letter-spacing:1px; text-transform:uppercase;">jours</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-date">
+      <div class="event-day">20</div>
+      <div class="event-month">Juin</div>
+    </div>
+    <div class="event-vline"></div>
+    <div class="event-body">
+      <div class="event-name">Shooting Automne 2026</div>
+      <div class="event-desc">Session photo pour la capsule automne. Studio Belleville, Paris. Direction artistique Victor.</div>
+      <div class="event-meta">
+        <span class="st">Shooting</span>
+        <span style="font-size:11px; color:var(--olive-m);">Studio Belleville</span>
+      </div>
+    </div>
+    <div class="event-countdown">
+      <div class="event-j">J–63</div>
+      <div style="font-size:10px; color:var(--olive-m); text-align:center; letter-spacing:1px; text-transform:uppercase;">jours</div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+  <div class="sec-label">Passés</div>
+
+  <div class="event" style="opacity:0.45;">
+    <div class="event-date">
+      <div class="event-day">12</div>
+      <div class="event-month">Avr.</div>
+    </div>
+    <div class="event-vline"></div>
+    <div class="event-body">
+      <div class="event-name" style="color:var(--olive-m);">Drop Pack Été 2025</div>
+      <div class="event-desc">210 commandes en 48h. Sell-through 12% le premier jour.</div>
+      <div class="event-meta"><span class="st">Terminé</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════
+     COWORK
+════════════════════════════════════ -->
+<section class="page" id="page-cowork">
+  <div class="page-header">
+    <div class="page-title">CoWork</div>
+    <div class="page-date">Équipe & activité</div>
+  </div>
+
+  <div class="two-col">
+
+    <div>
+      <div class="block k1">
+        <div class="block-title">Équipe</div>
+        <div class="team-member">
+          <div class="team-initials">VB</div>
+          <div>
+            <div class="team-name-r">Victor B.</div>
+            <div class="team-role-r">Fondateur · Direction créative</div>
+          </div>
+          <span class="st shipped" style="margin-left:auto;">En ligne</span>
+        </div>
+        <div class="team-member">
+          <div class="team-initials">RM</div>
+          <div>
+            <div class="team-name-r">Rémi M.</div>
+            <div class="team-role-r">Opérations · Logistique</div>
+          </div>
+          <span class="st shipped" style="margin-left:auto;">En ligne</span>
+        </div>
+        <div class="team-member">
+          <div class="team-initials">AL</div>
+          <div>
+            <div class="team-name-r">Alice L.</div>
+            <div class="team-role-r">Community Manager</div>
+          </div>
+          <span class="st" style="margin-left:auto;">Hors ligne</span>
+        </div>
+        <div class="team-member">
+          <div class="team-initials">TG</div>
+          <div>
+            <div class="team-name-r">Thomas G.</div>
+            <div class="team-role-r">Photographie · Contenu</div>
+          </div>
+          <span class="st proc" style="margin-left:auto;">Occupé</span>
+        </div>
+      </div>
+
+      <div class="rule"></div>
+
+      <div class="block k2" style="animation-delay:0.1s;">
+        <div class="block-title">Note rapide</div>
+        <textarea class="note-area" rows="3" placeholder="Ajouter un message pour l'équipe…"></textarea>
+        <div style="margin-top:14px; text-align:right;">
+          <button class="btn">Envoyer</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="block k3" style="animation-delay:0.08s;">
+        <div class="block-title">Tâches</div>
+        <div class="task done">
+          <div class="task-box done">✓</div>
+          <div class="task-text">Finaliser le devis Stanley/Stella</div>
+        </div>
+        <div class="task">
+          <div class="task-box"></div>
+          <div class="task-text">Préparer la communication drop Mai 2026</div>
+          <span class="st wait" style="font-size:9px; white-space:nowrap;">Urgent</span>
+        </div>
+        <div class="task">
+          <div class="task-box"></div>
+          <div class="task-text">Confirmer la réservation Studio Belleville</div>
+          <span class="st proc" style="font-size:9px; white-space:nowrap;">Mai</span>
+        </div>
+        <div class="task">
+          <div class="task-box"></div>
+          <div class="task-text">Réappro Hoodie Noir XS — commander 100 unités</div>
+          <span class="st alert" style="font-size:9px; white-space:nowrap;">Stock ⚠</span>
+        </div>
+        <div class="task">
+          <div class="task-box"></div>
+          <div class="task-text">Mettre à jour le catalogue produits</div>
+        </div>
+      </div>
+
+      <div class="rule"></div>
+
+      <div class="block k4" style="animation-delay:0.15s;">
+        <div class="block-title">Activité récente</div>
+        <div class="act">
+          <div class="act-time">14:32</div>
+          <div class="act-text"><strong>Victor B.</strong> a mis à jour le stock — Oversize Premium Noir XS</div>
+        </div>
+        <div class="act">
+          <div class="act-time">13:08</div>
+          <div class="act-text"><strong>Rémi M.</strong> a expédié la commande <strong>CMD-0127</strong></div>
+        </div>
+        <div class="act">
+          <div class="act-time">11:45</div>
+          <div class="act-text"><strong>Rémi M.</strong> a traité 6 commandes en attente</div>
+        </div>
+        <div class="act">
+          <div class="act-time">10:20</div>
+          <div class="act-text"><strong>Alice L.</strong> a publié le contenu Instagram — Pack Été 2025</div>
+        </div>
+        <div class="act">
+          <div class="act-time">09:15</div>
+          <div class="act-text"><strong>Victor B.</strong> a créé l'événement Drop Capsule Été 2026</div>
+        </div>
+        <div class="act">
+          <div class="act-time">Hier</div>
+          <div class="act-text"><strong>Thomas G.</strong> a uploadé 24 visuels pour l'Automne 2026</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>FOCUS · <span>Système actif</span></div>
+  <div>Sync · <span id="clock">--:--:--</span></div>
+  <div>Opérateur · <span>VIC-01</span></div>
+  <div>Build · <span>5.1.0</span></div>
+</div>
+
+</div><!-- /shell -->
+
+<script>
+// ── NAVIGATION ────────────────────────────────────
+function go(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+  const pg = document.getElementById('page-' + id);
+  const lk = document.querySelector(`.nav-links a[data-page="${id}"]`);
+
+  if (pg) {
+    pg.classList.add('active');
+    // Re-trigger animations
+    pg.querySelectorAll('.kpi-cell,.block,.cap-card,.event-card').forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetHeight;
+      el.style.animation = '';
+    });
+    if (id === 'globale') initGlobale();
+  }
+  if (lk) lk.classList.add('active');
+}
+
+document.querySelectorAll('.nav-links a').forEach(a =>
+  a.addEventListener('click', e => { e.preventDefault(); go(a.dataset.page); })
+);
+document.querySelectorAll('.nav-link').forEach(a =>
+  a.addEventListener('click', e => { e.preventDefault(); go(a.dataset.page); })
+);
+
+// ── COUNTER ──────────────────────────────────────
+function count(el, target, pre, dur) {
+  const s = performance.now();
+  (function tick(now) {
+    const t = Math.min((now - s) / dur, 1);
+    const v = Math.round((1 - Math.pow(1 - t, 4)) * target);
+    el.textContent = pre + v.toLocaleString('fr-FR');
+    if (t < 1) requestAnimationFrame(tick);
+  })(s);
+}
+
+function initBars(pairs) {
+  pairs.forEach(([fid, pid, val]) => {
+    const f = document.getElementById(fid);
+    const p = document.getElementById(pid);
+    if (!f || !p) return;
+    f.style.width = val + '%';
+    const s = performance.now();
+    (function tick(now) {
+      const t = Math.min((now - s) / 1300, 1);
+      p.textContent = Math.round((1 - Math.pow(1 - t, 3)) * val) + '%';
+      if (t < 1) requestAnimationFrame(tick);
+    })(s);
+  });
+}
+
+function initGlobale() {
+  setTimeout(() => {
+    count(document.getElementById('ca-val'), 48290, '€ ', 1800);
+    count(document.getElementById('cmd-val'), 127, '', 1400);
+  }, 150);
+  setTimeout(() => {
+    initBars([['g-f1','g-p1',68], ['g-f2','g-p2',45], ['g-f3','g-p3',12]]);
+  }, 350);
+}
+
+// ── CLOCK ────────────────────────────────────────
+function tick() {
+  const n = new Date();
+  document.getElementById('clock').textContent =
+    [n.getHours(),n.getMinutes(),n.getSeconds()].map(v => String(v).padStart(2,'0')).join(':');
+}
+setInterval(tick, 1000); tick();
+
+// ── FILTER TABS ──────────────────────────────────
+document.querySelectorAll('.filter-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.filter-row').querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// ── INIT ─────────────────────────────────────────
+window.addEventListener('load', initGlobale);
+</script>
+</body>
+</html>

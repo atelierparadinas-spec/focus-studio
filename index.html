@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FOCUS — Capsule 01</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script type="importmap">
+  { "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }}
+  </script>
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --navy:  #0E1520;
+      --kaki:  #6B7A52;
+      --kaki2: #8A9A6A;
+      --beige: #F3EFE6;
+      --muted: rgba(243,239,230,.42);
+      --font-t:'Bebas Neue',sans-serif;
+      --font-b:'Inter',sans-serif;
+      --ease:  cubic-bezier(.22,1,.36,1);
+    }
+
+    html,body{width:100%;height:100%;overflow:hidden}
+    body{background:var(--navy);font-family:var(--font-b);-webkit-font-smoothing:antialiased}
+
+    /* ── CURSOR ─────────────────────────────────────────────── */
+    @media(hover:hover) and (pointer:fine){
+      body{cursor:none}
+      .cur-dot,.cur-ring{position:fixed;top:0;left:0;z-index:999;pointer-events:none}
+      .cur-dot{
+        width:5px;height:5px;background:var(--beige);border-radius:50%;
+        transform:translate(-50%,-50%);
+      }
+      .cur-ring{
+        width:32px;height:32px;
+        border:1px solid rgba(243,239,230,.4);border-radius:50%;
+        transform:translate(-50%,-50%);
+        transition:width .3s var(--ease),height .3s var(--ease),border-color .3s;
+      }
+      body.hov .cur-ring{width:56px;height:56px;border-color:rgba(139,154,106,.9)}
+      body.hov .cur-dot{transform:translate(-50%,-50%) scale(0)}
+    }
+
+    /* ── CANVAS ─────────────────────────────────────────────── */
+    #c{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+
+    /* ── GRAIN ───────────────────────────────────────────────── */
+    .grain{
+      position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.032;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:200px;
+    }
+
+    /* ── VIGNETTE ───────────────────────────────────────────── */
+    .vignette{
+      position:fixed;inset:0;z-index:2;pointer-events:none;
+      background:radial-gradient(ellipse at center,transparent 30%,rgba(10,15,28,.75) 100%);
+    }
+
+    /* ── UI TOP ─────────────────────────────────────────────── */
+    .ui-top{
+      position:fixed;top:0;left:0;right:0;z-index:10;
+      display:flex;flex-direction:column;align-items:center;
+      padding:clamp(36px,5.5vh,64px) 40px 0;
+      pointer-events:none;
+    }
+    .eyebrow{
+      display:flex;align-items:center;gap:12px;
+      font-size:9px;font-weight:600;letter-spacing:5px;
+      text-transform:uppercase;color:var(--kaki2);
+      opacity:0;animation:up .8s .1s var(--ease) forwards;
+    }
+    .eyebrow::before,.eyebrow::after{
+      content:'';flex:none;width:20px;height:1px;background:var(--kaki2);opacity:.6;
+    }
+    .logo-wrap{
+      margin-top:clamp(14px,2vh,28px);
+      opacity:0;animation:up 1s .3s var(--ease) forwards;
+    }
+    .logo-wrap img{
+      width:clamp(180px,32vw,460px);height:auto;
+      filter:invert(1) brightness(2) opacity(.9);
+      display:block;
+    }
+
+    /* ── UI BOTTOM ──────────────────────────────────────────── */
+    .ui-bottom{
+      position:fixed;bottom:0;left:0;right:0;z-index:10;
+      display:flex;flex-direction:column;align-items:center;
+      padding:0 40px clamp(32px,5vh,60px);
+      pointer-events:none;
+    }
+    .sub{
+      font-size:clamp(10px,1vw,12px);font-weight:300;
+      letter-spacing:3px;text-transform:uppercase;
+      color:var(--muted);margin-bottom:clamp(28px,4vh,44px);
+      opacity:0;animation:up .8s .6s var(--ease) forwards;
+    }
+    .enter{
+      position:relative;display:inline-flex;align-items:center;gap:12px;
+      padding:15px 40px 15px 36px;
+      border:1px solid rgba(243,239,230,.2);
+      background:transparent;appearance:none;
+      color:var(--beige);
+      font-family:var(--font-b);font-size:10px;font-weight:600;
+      letter-spacing:4px;text-transform:uppercase;
+      cursor:none;pointer-events:auto;overflow:hidden;
+      transition:border-color .4s var(--ease),transform .4s var(--ease);
+      opacity:0;animation:up .8s .8s var(--ease) forwards;
+    }
+    .enter::before{
+      content:'';position:absolute;inset:0;background:var(--kaki);
+      transform:translateX(-101%);transition:transform .5s var(--ease);
+    }
+    .enter:hover::before{transform:translateX(0)}
+    .enter:hover{border-color:var(--kaki);transform:translateY(-2px)}
+    .enter .txt,.enter .arr{position:relative;z-index:1}
+    .enter .arr{display:inline-block;transition:transform .4s var(--ease)}
+    .enter:hover .arr{transform:translateX(5px)}
+
+    /* ── COLOR SWITCHER ─────────────────────────────────────── */
+    .colors{
+      position:fixed;left:5vw;bottom:clamp(28px,4.5vh,52px);z-index:10;
+      display:flex;gap:10px;align-items:center;
+      opacity:0;animation:up .8s 1.2s var(--ease) forwards;
+    }
+    .color-btn{
+      width:18px;height:18px;border-radius:50%;border:2px solid transparent;
+      cursor:none;transition:border-color .25s,transform .25s;
+      background:none;padding:0;appearance:none;
+    }
+    .color-btn:hover,.color-btn.active{border-color:rgba(243,239,230,.7);transform:scale(1.25)}
+    .color-btn[data-color="kaki"] { background:#6a7558 }
+    .color-btn[data-color="navy"] { background:#162035 }
+    .color-btn[data-color="beige"]{ background:#C8B89A }
+
+    /* ── INDICATEURS ────────────────────────────────────────── */
+    .angle{
+      position:fixed;bottom:clamp(28px,4.5vh,52px);right:5vw;z-index:10;
+      font-family:var(--font-t);font-size:10px;letter-spacing:3px;
+      color:rgba(243,239,230,.18);
+      opacity:0;animation:up .8s 1.1s var(--ease) forwards;
+    }
+    .drag-hint{
+      position:fixed;left:5vw;top:50%;transform:translateY(-50%);z-index:10;
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      font-size:8px;letter-spacing:3px;text-transform:uppercase;
+      color:rgba(243,239,230,.22);pointer-events:none;
+      opacity:0;animation:up .8s 1.1s var(--ease) forwards;
+    }
+    .drag-hint::before{
+      content:'';width:1px;height:28px;background:rgba(243,239,230,.15);
+      animation:pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{opacity:.15;transform:scaleY(.3);transform-origin:top}
+      50%{opacity:.7;transform:scaleY(1)}
+    }
+
+    /* ── LOADER HINT ────────────────────────────────────────── */
+    #load-hint{
+      position:fixed;bottom:50%;left:50%;transform:translate(-50%,50%);
+      z-index:10;font-size:9px;letter-spacing:3px;text-transform:uppercase;
+      color:rgba(243,239,230,.3);pointer-events:none;
+      transition:opacity .6s;
+    }
+    #load-hint.hidden{opacity:0}
+
+    /* ── TRANSITION OUT ─────────────────────────────────────── */
+    .cover{
+      position:fixed;inset:0;z-index:100;background:var(--beige);
+      clip-path:inset(100% 0 0 0);
+      transition:clip-path .8s var(--ease);pointer-events:none;
+    }
+    .cover.reveal{clip-path:inset(0% 0 0 0)}
+
+    @keyframes up{
+      from{opacity:0;transform:translateY(18px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cur-dot"></div>
+  <div class="cur-ring"></div>
+
+  <canvas id="c"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <div class="ui-top">
+    <div class="eyebrow">Made in Toulouse</div>
+    <div class="logo-wrap"><img src="focus-logo-clean.svg" alt="FOCUS" /></div>
+  </div>
+
+  <div class="ui-bottom">
+    <div class="sub">Capsule 01 &nbsp;·&nbsp; T-shirt Pro Club</div>
+    <button class="enter" id="enter-btn">
+      <span class="txt">Découvrir la capsule</span>
+      <span class="arr">→</span>
+    </button>
+  </div>
+
+  <div id="load-hint">Chargement…</div>
+
+  <!-- Color switcher -->
+  <div class="colors" id="color-switcher">
+    <button class="color-btn active" data-color="kaki"  title="Kaki olive"></button>
+    <button class="color-btn"        data-color="navy"  title="Navy"></button>
+    <button class="color-btn"        data-color="beige" title="Beige"></button>
+  </div>
+
+  <div class="angle" id="angle-display" aria-hidden="true">000°</div>
+  <div class="drag-hint" aria-hidden="true">Drag</div>
+  <div class="cover" id="cover"></div>
+
+  <script type="module">
+    import * as THREE           from 'three';
+    import { GLTFLoader }        from 'three/addons/loaders/GLTFLoader.js';
+    import { SVGLoader }         from 'three/addons/loaders/SVGLoader.js';
+    import { RoomEnvironment }   from 'three/addons/environments/RoomEnvironment.js';
+
+    /* ── CURSOR ──────────────────────────────────────────────── */
+    const dot  = document.querySelector('.cur-dot');
+    const ring = document.querySelector('.cur-ring');
+    let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my, lastT = performance.now();
+    addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+    });
+    (function tickCursor(now = performance.now()){
+      const dt = Math.min((now - lastT) / 16.67, 4); lastT = now;
+      const f  = 1 - Math.pow(0.58, dt);
+      rx += (mx - rx) * f; ry += (my - ry) * f;
+      ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+      requestAnimationFrame(tickCursor);
+    })();
+    document.querySelectorAll('button,a').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+    });
+
+    /* ── RENDERER ────────────────────────────────────────────── */
+    const canvas   = document.getElementById('c');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.toneMapping         = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.3;
+    renderer.shadowMap.enabled   = true;
+    renderer.shadowMap.type      = THREE.PCFSoftShadowMap;
+
+    const scene  = new THREE.Scene();
+    scene.background = new THREE.Color(0x0E1520);
+    scene.fog = new THREE.FogExp2(0x0E1520, 0.028);
+
+    const camera = new THREE.PerspectiveCamera(26, innerWidth/innerHeight, 0.1, 60);
+    camera.position.set(0, 0.4, 13);
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    pmrem.compileEquirectangularShader();
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    pmrem.dispose();
+
+    function resize(){
+      renderer.setSize(innerWidth, innerHeight);
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    addEventListener('resize', resize);
+
+    /* ── ÉCLAIRAGE ───────────────────────────────────────────── */
+    scene.add(new THREE.AmbientLight(0x1a2030, 1.8));
+
+    const key = new THREE.SpotLight(0xfff3e0, 80, 28, Math.PI/5, 0.38, 1.2);
+    key.position.set(4.5, 9, 8);
+    key.castShadow = true;
+    key.shadow.mapSize.setScalar(2048);
+    key.shadow.bias   = -0.0005;
+    key.shadow.radius = 5;
+    scene.add(key, key.target);
+
+    const rim = new THREE.DirectionalLight(0x6e8858, 3.0);
+    rim.position.set(-7, 3, -6);
+    scene.add(rim);
+
+    const fill = new THREE.DirectionalLight(0xb89870, 0.55);
+    fill.position.set(2, -5, 6);
+    scene.add(fill);
+
+    const accent = new THREE.DirectionalLight(0x283850, 1.0);
+    accent.position.set(-3, -1, 7);
+    scene.add(accent);
+
+    /* ── MATÉRIAUX ───────────────────────────────────────────── */
+    const COLORS = {
+      kaki:  0x6a7558,
+      navy:  0x162035,
+      beige: 0xC8B89A,
+    };
+
+    const teeMat = new THREE.MeshPhysicalMaterial({
+      color:              COLORS.kaki,
+      roughness:          0.86,
+      metalness:          0.0,
+      clearcoat:          0.05,
+      clearcoatRoughness: 0.94,
+      envMapIntensity:    0.4,
+      side:               THREE.DoubleSide,
+    });
+
+    const seriMat = new THREE.MeshBasicMaterial({
+      color:              0xFFFFFF,
+      side:               THREE.FrontSide,
+      depthWrite:         false,
+      polygonOffset:      true,
+      polygonOffsetFactor:-1,
+      polygonOffsetUnits: -4,
+    });
+
+    /* ── PLAN D'OMBRE ────────────────────────────────────────── */
+    const shadowPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(24, 24),
+      new THREE.ShadowMaterial({ opacity: 0.4 })
+    );
+    shadowPlane.rotation.x = -Math.PI / 2;
+    shadowPlane.position.y = -3.2;
+    shadowPlane.receiveShadow = true;
+    scene.add(shadowPlane);
+
+    /* ── GROUPE ROTATIF ──────────────────────────────────────── */
+    const spin = new THREE.Group();
+    scene.add(spin);
+
+    /* ── LOGO SÉRIGRAPHIE ────────────────────────────────────── */
+    function loadLogo(chestY, chestZ) {
+      const svgLoader = new SVGLoader();
+      svgLoader.load('focus-logo-clean.svg', data => {
+        const logoG = new THREE.Group();
+        data.paths.forEach(path => {
+          SVGLoader.createShapes(path).forEach(shape => {
+            const geo = new THREE.ShapeGeometry(shape, 8);
+            geo.scale(1, -1, 1);
+            // Fix winding order reversed by Y-flip so FrontSide culling works correctly
+            const idx = geo.index;
+            if (idx) {
+              const arr = idx.array;
+              for (let i = 0; i < arr.length; i += 3) {
+                const t = arr[i+1]; arr[i+1] = arr[i+2]; arr[i+2] = t;
+              }
+              idx.needsUpdate = true;
+            }
+            geo.computeVertexNormals();
+            logoG.add(new THREE.Mesh(geo, seriMat));
+          });
+        });
+        // Centrer l'ensemble des lettres
+        const b = new THREE.Box3().setFromObject(logoG);
+        const cx = (b.min.x+b.max.x)/2, cy = (b.min.y+b.max.y)/2, cz = (b.min.z+b.max.z)/2;
+        logoG.children.forEach(m => m.geometry.translate(-cx,-cy,-cz));
+        const b2 = new THREE.Box3().setFromObject(logoG);
+        const w = b2.max.x - b2.min.x;
+        if (w > 0) logoG.scale.setScalar(0.6 / w);
+        logoG.position.set(0, chestY, chestZ);
+        spin.add(logoG);
+      });
+    }
+
+    /* ── HELPER CENTRAGE SVG ─────────────────────────────────── */
+    function centerGeo(geo){
+      geo.computeBoundingBox();
+      const b = geo.boundingBox;
+      geo.translate(-(b.min.x+b.max.x)/2, -(b.min.y+b.max.y)/2, -(b.min.z+b.max.z)/2);
+    }
+
+    /* ── FALLBACK SVG (si pas de .glb) ──────────────────────── */
+    function loadSVGFallback(){
+      document.getElementById('load-hint').classList.add('hidden');
+      const svgLoader = new SVGLoader();
+      svgLoader.load('focus-tee-kaki.svg', data => {
+        data.paths.forEach(path => {
+          const fc = path.userData?.style?.fill ?? '';
+          if (fc === '#576048') return;
+          SVGLoader.createShapes(path).forEach(shape => {
+            const geo = new THREE.ExtrudeGeometry(shape, {
+              depth:10, bevelEnabled:true, bevelThickness:1.4,
+              bevelSize:1.0, bevelSegments:4, curveSegments:26,
+            });
+            centerGeo(geo);
+            geo.scale(1,-1,1);
+            geo.computeBoundingBox();
+            const h = geo.boundingBox.max.y - geo.boundingBox.min.y;
+            geo.scale(4.2/h, 4.2/h, 4.2/h);
+            const mesh = new THREE.Mesh(geo, teeMat);
+            mesh.castShadow = true;
+            spin.add(mesh);
+          });
+        });
+        // Logo SVG sur la poitrine (extrusion, front face ≈ 0.16)
+        loadLogo(0.3, 0.22);
+      });
+    }
+
+    /* ── CHARGEMENT GLB ──────────────────────────────────────── */
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load(
+      't_shirt.glb',
+
+      // ── Succès ──
+      gltf => {
+        document.getElementById('load-hint').classList.add('hidden');
+        const model = gltf.scene;
+
+        // Appliquer le matériau kaki sur tous les meshes
+        model.traverse(n => {
+          if (!n.isMesh) return;
+          n.material    = teeMat;
+          n.castShadow  = true;
+          n.receiveShadow = true;
+        });
+
+        // Centrer et mettre à l'échelle à ~4.2 unités de haut
+        const box    = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        const size   = box.getSize(new THREE.Vector3());
+        const s      = 4.2 / size.y;
+
+        model.scale.setScalar(s);
+        model.position.set(-center.x * s, -center.y * s, -center.z * s);
+
+        spin.add(model);
+
+        // Front face world z = (box.max.z - center.z) * s  (le côté qui fait face à la caméra)
+        const frontZ = (box.max.z - center.z) * s;
+        // Poitrine : ~15% au-dessus du centre du modèle centré = y ≈ +0.3 à +0.6
+        const chestY = size.y * s * 0.20;
+        loadLogo(chestY, frontZ);
+      },
+
+      // ── Progression ──
+      xhr => {
+        const pct = Math.round(xhr.loaded / xhr.total * 100);
+        const el = document.getElementById('load-hint');
+        if (el && !el.classList.contains('hidden')) el.textContent = `Chargement… ${pct}%`;
+      },
+
+      // ── Erreur (fichier absent) → fallback SVG ──
+      () => loadSVGFallback()
+    );
+
+    /* ── COLOR SWITCHER ─────────────────────────────────────── */
+    document.querySelectorAll('.color-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const hex = COLORS[btn.dataset.color];
+        teeMat.color.setHex(hex);
+        teeMat.needsUpdate = true;
+        seriMat.color.setHex(0xFFFFFF);
+        seriMat.needsUpdate = true;
+      });
+    });
+
+    /* ── INTERACTION DRAG ────────────────────────────────────── */
+    let autoY = 0, mouseRX = 0;
+    let isDragging = false, dSX = 0, dSY = 0, dRY = 0, dRX = 0;
+
+    canvas.addEventListener('pointerdown', e => {
+      isDragging = true; dSX = e.clientX; dSY = e.clientY;
+      dRY = spin.rotation.y; dRX = spin.rotation.x;
+      autoY = spin.rotation.y;
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener('pointermove', e => {
+      if (!isDragging){ mouseRX = (e.clientY/innerHeight-.5)*.14; return; }
+      spin.rotation.y = dRY + (e.clientX-dSX) * 0.008;
+      spin.rotation.x = dRX + (e.clientY-dSY) * 0.006;
+      autoY = spin.rotation.y;
+    });
+    canvas.addEventListener('pointerup',     () => { isDragging = false; });
+    canvas.addEventListener('pointercancel', () => { isDragging = false; });
+
+    /* ── TRANSITION ──────────────────────────────────────────── */
+    const angleEl = document.getElementById('angle-display');
+    document.getElementById('enter-btn').addEventListener('click', () => {
+      document.getElementById('cover').classList.add('reveal');
+      setTimeout(() => { window.location.href = 'index-v2.html'; }, 820);
+    });
+
+    /* ── BOUCLE DE RENDU ─────────────────────────────────────── */
+    const clock = new THREE.Clock();
+    (function loop(){
+      const dt = clock.getDelta();
+      const t  = clock.elapsedTime;
+
+      if (!isDragging){
+        autoY += dt * 0.33;
+        spin.rotation.y  = autoY;
+        spin.rotation.x += (mouseRX - spin.rotation.x) * 0.04;
+      }
+
+      spin.position.y = Math.sin(t * 0.42) * 0.07;
+
+      const deg = ((spin.rotation.y % (Math.PI*2)) / (Math.PI*2) * 360 + 360) % 360;
+      angleEl.textContent = String(Math.round(deg)).padStart(3,'0') + '°';
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(loop);
+    })();
+
+  </script>
+</body>
+</html>
