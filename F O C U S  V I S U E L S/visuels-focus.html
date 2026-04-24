@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FOCUS — Visuels Sport</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#F3EFE6;--dark:#14110F;--red:#C8412B;--navy:#162035;
+}
+body{background:#0c0c0c;font-family:'Bebas Neue',sans-serif;color:var(--cream);padding:40px 40px 100px}
+
+/* ── TOP BAR ── */
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px}
+.topbar-logo{font-family:'Inter',sans-serif;font-weight:300;font-size:11px;letter-spacing:.4em;opacity:.35;text-transform:uppercase}
+.topbar-count{font-family:'Inter',sans-serif;font-weight:300;font-size:11px;letter-spacing:.2em;opacity:.25}
+
+/* ── FILTERS ── */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:44px}
+.f-btn{
+  background:none;border:1px solid #222;color:#444;
+  padding:6px 18px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.15em;
+  cursor:pointer;transition:all .18s;
+}
+.f-btn:hover,.f-btn.on{background:var(--cream);color:#0c0c0c;border-color:var(--cream)}
+
+/* ── GRID ── */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(440px,1fr));
+  gap:20px;
+}
+
+/* ── CARD ── */
+.card{
+  position:relative;aspect-ratio:16/9;overflow:hidden;
+  cursor:pointer;transition:transform .3s cubic-bezier(.25,.46,.45,.94);
+}
+.card:hover{transform:scale(1.016)}
+.card-img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s cubic-bezier(.25,.46,.45,.94), filter .4s;
+  filter:saturate(.7) brightness(.7);
+}
+.card:hover .card-img{transform:scale(1.04);filter:saturate(.85) brightness(.6)}
+
+/* ── GRADIENT ── */
+.grad{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(
+    165deg,
+    rgba(12,12,12,.08) 0%,
+    rgba(12,12,12,0) 25%,
+    rgba(12,12,12,.45) 65%,
+    rgba(12,12,12,.95) 100%
+  );
+}
+
+/* ── CONTENT ── */
+.content{
+  position:absolute;inset:0;
+  padding:24px 28px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.c-top{display:flex;justify-content:space-between;align-items:flex-start}
+.c-focus{
+  font-family:'Inter',sans-serif;font-weight:300;
+  font-size:9px;letter-spacing:.5em;opacity:.6;text-transform:uppercase;
+}
+.c-num{
+  font-family:'Inter',sans-serif;font-weight:300;
+  font-size:9px;letter-spacing:.2em;opacity:.25;
+}
+.c-bottom{}
+.c-tag{
+  font-family:'Inter',sans-serif;font-weight:300;
+  font-size:9px;letter-spacing:.2em;opacity:.3;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.c-bar{width:32px;height:2px;background:var(--red);margin-bottom:14px}
+.c-word{
+  font-size:clamp(44px,4.5vw,68px);
+  line-height:.92;letter-spacing:.025em;
+  color:var(--cream);text-transform:uppercase;
+  margin-bottom:8px;
+}
+.c-sub{
+  font-family:'Inter',sans-serif;font-weight:300;
+  font-size:10px;letter-spacing:.22em;opacity:.45;text-transform:uppercase;
+  line-height:1.6;
+}
+
+/* VARIANT — accent rouge */
+.card.v-red .c-word{color:var(--red)}
+.card.v-red .c-bar{background:var(--cream)}
+
+/* VARIANT — mot fin */
+.card.v-thin .c-word{font-size:clamp(32px,3.2vw,50px);letter-spacing:.08em}
+
+/* ── HOVER OVERLAY ── */
+.hover-actions{
+  position:absolute;top:16px;right:16px;
+  display:flex;gap:8px;opacity:0;transition:opacity .2s;
+}
+.card:hover .hover-actions{opacity:1}
+.h-btn{
+  background:rgba(12,12,12,.75);border:1px solid rgba(255,255,255,.12);
+  color:var(--cream);width:34px;height:34px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:13px;transition:background .2s;
+}
+.h-btn:hover{background:var(--red)}
+
+/* ── BOTTOM BAR ── */
+.bottombar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(12,12,12,.92);backdrop-filter:blur(12px);
+  border-top:1px solid #1a1a1a;
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.b-info{font-family:'Inter',sans-serif;font-weight:300;font-size:10px;letter-spacing:.18em;opacity:.3;text-transform:uppercase}
+.b-pdf{
+  background:var(--cream);color:#0c0c0c;border:none;
+  padding:11px 30px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.2em;
+  cursor:pointer;transition:background .2s;
+}
+.b-pdf:hover{background:var(--red);color:var(--cream)}
+
+/* ── PRINT ── */
+@media print{
+  body{background:#fff;padding:0}
+  .topbar,.filters,.bottombar,.hover-actions{display:none!important}
+  .grid{display:block}
+  .card{page-break-after:always;aspect-ratio:unset;width:100vw;height:56.25vw}
+  .card.hidden{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">F · O · C · U · S &nbsp;— Visuels Sport</div>
+  <div class="topbar-count" id="count">40 visuels</div>
+</div>
+
+<div class="filters">
+  <button class="f-btn on" onclick="filter('all',this)">Tous</button>
+  <button class="f-btn" onclick="filter('piste',this)">Piste</button>
+  <button class="f-btn" onclick="filter('tennis',this)">Tennis</button>
+  <button class="f-btn" onclick="filter('basket',this)">Basket</button>
+  <button class="f-btn" onclick="filter('terrain',this)">Terrain</button>
+  <button class="f-btn" onclick="filter('stade',this)">Stade</button>
+  <button class="f-btn" onclick="filter('montagne',this)">Montagne</button>
+  <button class="f-btn" onclick="filter('ocean',this)">Océan</button>
+  <button class="f-btn" onclick="filter('foret',this)">Forêt</button>
+  <button class="f-btn" onclick="filter('hiver',this)">Hiver</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="bottombar">
+  <div class="b-info">Hover → exporter · Photos Unsplash — libres de droits</div>
+  <button class="b-pdf" onclick="window.print()">↓ Exporter PDF</button>
+</div>
+
+<script>
+const V = [
+  // PISTES
+  {f:'01-piste-athletisme.jpg', w:'DISCIPLINE',    s:'L\'excellence se forge chaque jour',       t:'piste',   v:''},
+  {f:'02-piste-courbe.jpg',     w:'PERFORMANCE',   s:'La courbe ne pardonne pas',                t:'piste',   v:'v-red'},
+  {f:'03-tartan-rouge.jpg',     w:'DÉTERMINATION', s:'Rouge comme la volonté',                   t:'piste',   v:''},
+  {f:'04-piste-track.jpg',      w:'VITESSE',       s:'Chaque milliseconde est une décision',     t:'piste',   v:'v-red'},
+  // TENNIS
+  {f:'05-tennis-court.jpg',     w:'PRÉCISION',     s:'Un centimètre fait la différence',         t:'tennis',  v:''},
+  {f:'06-tennis-lignes.jpg',    w:'RIGUEUR',       s:'Le terrain dit la vérité',                 t:'tennis',  v:'v-red'},
+  {f:'07-tennis-vue.jpg',       w:'CONCENTRATION', s:'Vide le mental, plein le jeu',             t:'tennis',  v:'v-thin'},
+  {f:'08-tennis-filet.jpg',     w:'DÉPASSEMENT',   s:'Le filet est là pour être franchi',        t:'tennis',  v:''},
+  {f:'09-tennis-sol.jpg',       w:'IMPACT',        s:'Chaque frappe est une intention',          t:'tennis',  v:'v-red'},
+  {f:'10-tennis-surface.jpg',   w:'CONSTANCE',     s:'Gagner c\'est revenir encore',             t:'tennis',  v:''},
+  // BASKET
+  {f:'11-basket-vide.jpg',      w:'INSTINCT',      s:'Le terrain parle à ceux qui écoutent',     t:'basket',  v:''},
+  {f:'12-basket-panier.jpg',    w:'VISION',        s:'Voir avant d\'agir',                       t:'basket',  v:'v-red'},
+  {f:'13-basket-nuit.jpg',      w:'MENTAL',        s:'La lumière n\'efface pas l\'ombre',        t:'basket',  v:''},
+  {f:'14-basket-outdoor.jpg',   w:'LIBERTÉ',       s:'La rue est la première école',             t:'basket',  v:'v-red'},
+  {f:'15-basket-colors.jpg',    w:'ÉLAN',          s:'Le mouvement précède la pensée',           t:'basket',  v:''},
+  {f:'16-basket-ocean.jpg',     w:'HORIZON',       s:'Joue face à l\'infini',                    t:'basket',  v:'v-red'},
+  // TERRAINS
+  {f:'17-terrain-foot.jpg',     w:'COLLECTIF',     s:'Le terrain appartient à tous',             t:'terrain', v:''},
+  {f:'18-terrain-urbain.jpg',   w:'CONQUÊTE',      s:'Chaque mur est une frontière à franchir',  t:'terrain', v:'v-red'},
+  // STADES
+  {f:'19-stade-tribunes.jpg',   w:'AMBITION',      s:'Les grandes scènes attendent les grands',  t:'stade',   v:''},
+  {f:'20-stade-brun.jpg',       w:'SILENCE',       s:'Avant le bruit, le calme',                 t:'stade',   v:'v-thin'},
+  {f:'21-stade-vert.jpg',       w:'ARÈNE',         s:'L\'histoire s\'écrit ici',                 t:'stade',   v:'v-red'},
+  {f:'22-stade-rouge.jpg',      w:'INTENSITÉ',     s:'Chaque siège, un témoin',                  t:'stade',   v:''},
+  {f:'23-stade-vert2.jpg',      w:'PUISSANCE',     s:'Le vert du gazon, la force du geste',      t:'stade',   v:'v-red'},
+  {f:'24-stade-blanc.jpg',      w:'VICTOIRE',      s:'Ici les champions sont nés',               t:'stade',   v:''},
+  {f:'25-stade-orange.jpg',     w:'PASSION',       s:'La couleur du feu qui ne s\'éteint pas',   t:'stade',   v:'v-red'},
+  // MONTAGNES
+  {f:'26-montagne-trail.jpg',   w:'DÉPASSEMENT',   s:'La montagne ne se négocie pas',            t:'montagne',v:''},
+  {f:'27-montagne-sommets.jpg', w:'ALTITUDE',      s:'Plus haut, toujours',                      t:'montagne',v:'v-red'},
+  {f:'28-montagne-lac.jpg',     w:'ÉQUILIBRE',     s:'L\'eau reflète le calme du sommet',        t:'montagne',v:''},
+  {f:'29-montagne-brume.jpg',   w:'VISION',        s:'Avance dans le brouillard',                t:'montagne',v:'v-thin'},
+  {f:'30-montagne-etoiles.jpg', w:'INFINI',        s:'Les étoiles guident ceux qui osent',       t:'montagne',v:'v-red'},
+  {f:'33-paysage-vert.jpg',     w:'ENDURANCE',     s:'Le chemin forge celui qui marche',         t:'montagne',v:''},
+  {f:'34-montagne-vue.jpg',     w:'PERSÉVÉRANCE',  s:'Chaque pas compte, même les derniers',     t:'montagne',v:'v-red'},
+  // FORÊTS
+  {f:'31-foret-chemin.jpg',     w:'INSTINCT',      s:'Le silence est la meilleure boussole',     t:'foret',   v:''},
+  {f:'32-foret-lumiere.jpg',    w:'ÉNERGIE',       s:'La lumière filtre pour ceux qui cherchent',t:'foret',   v:'v-red'},
+  // OCÉAN
+  {f:'35-ocean-vague.jpg',      w:'FORCE',         s:'La vague se forme en silence',             t:'ocean',   v:''},
+  {f:'36-plage-horizon.jpg',    w:'SACRIFICE',     s:'Ce que tu donnes revient amplifié',        t:'ocean',   v:'v-red'},
+  {f:'37-ocean-surf.jpg',       w:'AUDACE',        s:'La mer attend ceux qui n\'ont pas peur',   t:'ocean',   v:''},
+  // HIVER
+  {f:'38-neige-montagne.jpg',   w:'RÉSISTANCE',    s:'Le froid durcit ce que la chaleur amollit',t:'hiver',   v:''},
+  {f:'39-ski-piste.jpg',        w:'DESCENTE',      s:'La piste est droite pour ceux qui osent',  t:'hiver',   v:'v-red'},
+  {f:'40-paysage-hiver.jpg',    w:'INVINCIBLE',    s:'Sous la neige, la force attend',           t:'hiver',   v:''},
+];
+
+function buildCard(d, i){
+  const num = String(i+1).padStart(2,'0');
+  return `<div class="card ${d.v}" data-tag="${d.t}">
+  <img class="card-img" src="photos/${d.f}" alt="${d.w}" loading="lazy">
+  <div class="grad"></div>
+  <div class="content">
+    <div class="c-top">
+      <span class="c-focus">Focus</span>
+      <span class="c-num">${num} / 40</span>
+    </div>
+    <div class="c-bottom">
+      <div class="c-tag">${d.t}</div>
+      <div class="c-bar"></div>
+      <div class="c-word">${d.w}</div>
+      <div class="c-sub">${d.s}</div>
+    </div>
+  </div>
+  <div class="hover-actions">
+    <button class="h-btn" title="Plein écran" onclick="openFull(event)">⛶</button>
+    <button class="h-btn" title="Télécharger JPG" onclick="dlCard(event,${i})">↓</button>
+  </div>
+</div>`;
+}
+
+const grid = document.getElementById('grid');
+V.forEach((d,i)=>{
+  const el = document.createElement('div');
+  el.innerHTML = buildCard(d,i);
+  grid.appendChild(el.firstElementChild);
+});
+
+// ── FILTER ──
+let activeTag = 'all';
+function filter(tag, btn){
+  activeTag = tag;
+  document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  let n = 0;
+  document.querySelectorAll('.card').forEach(c=>{
+    const show = tag==='all' || c.dataset.tag===tag;
+    c.style.display = show ? '' : 'none';
+    if(show) n++;
+  });
+  document.getElementById('count').textContent = n + ' visuel' + (n>1?'s':'');
+}
+
+// ── PLEIN ÉCRAN ──
+function openFull(e){
+  e.stopPropagation();
+  const card = e.currentTarget.closest('.card');
+  if(card.requestFullscreen) card.requestFullscreen();
+}
+
+// ── EXPORT CANVAS ──
+function dlCard(e, idx){
+  e.stopPropagation();
+  const d = V[idx];
+  const card = document.querySelectorAll('.card')[idx];
+  const imgEl = card.querySelector('.card-img');
+
+  const canvas = document.createElement('canvas');
+  canvas.width = 1920; canvas.height = 1080;
+  const ctx = canvas.getContext('2d');
+
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = ()=>{
+    // Photo
+    ctx.filter = 'saturate(0.75) brightness(0.65)';
+    ctx.drawImage(img,0,0,1920,1080);
+    ctx.filter = 'none';
+
+    // Gradient overlay
+    const g = ctx.createLinearGradient(0,0,1920,1080);
+    g.addColorStop(0,'rgba(12,12,12,.08)');
+    g.addColorStop(.65,'rgba(12,12,12,.45)');
+    g.addColorStop(1,'rgba(12,12,12,.96)');
+    ctx.fillStyle = g; ctx.fillRect(0,0,1920,1080);
+
+    // FOCUS
+    ctx.fillStyle='rgba(243,239,230,.55)';
+    ctx.font='300 18px Inter,sans-serif';
+    ctx.fillText('F · O · C · U · S',52,56);
+
+    // Num
+    ctx.fillStyle='rgba(243,239,230,.22)';
+    ctx.font='300 16px Inter,sans-serif';
+    ctx.textAlign='right';
+    ctx.fillText(String(idx+1).padStart(2,'0')+' / 40',1868,56);
+    ctx.textAlign='left';
+
+    // Tag
+    ctx.fillStyle='rgba(243,239,230,.28)';
+    ctx.font='300 16px Inter,sans-serif';
+    ctx.fillText(d.t.toUpperCase(),52,940);
+
+    // Bar
+    const barCol = d.v==='v-red' ? '#F3EFE6' : '#C8412B';
+    ctx.fillStyle = barCol;
+    ctx.fillRect(52,958,48,2.5);
+
+    // Word
+    const wordCol = d.v==='v-red' ? '#C8412B' : '#F3EFE6';
+    const wordSize = d.v==='v-thin' ? 110 : 148;
+    ctx.fillStyle = wordCol;
+    ctx.font = `900 ${wordSize}px "Bebas Neue",Arial Black,sans-serif`;
+    ctx.fillText(d.w, 52, 1042);
+
+    // Sub
+    ctx.fillStyle='rgba(243,239,230,.42)';
+    ctx.font='300 17px Inter,sans-serif';
+    ctx.fillText(d.s.toUpperCase(), 52, 1068);
+
+    // Download
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/jpeg',.93);
+    a.download = `focus-${d.w.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'-')}.jpg`;
+    a.click();
+  };
+  img.src = 'photos/' + d.f;
+}
+</script>
+</body>
+</html>
